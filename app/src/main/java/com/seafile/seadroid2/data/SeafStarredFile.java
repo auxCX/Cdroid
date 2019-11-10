@@ -8,8 +8,22 @@ import android.util.Log;
 import com.seafile.seadroid2.R;
 import com.seafile.seadroid2.util.Utils;
 
+/**
+ * The type Seaf starred file.
+ */
 public class SeafStarredFile implements SeafItem {
-    public enum FileType { DIR, FILE };
+    /**
+     * The enum File type.
+     */
+    public enum FileType {
+        /**
+         * Dir file type.
+         */
+        DIR,
+        /**
+         * File file type.
+         */
+        FILE };
     private static final String DEBUG_TAG = "SeafStarredFile";
 
     private String repoID;
@@ -18,6 +32,12 @@ public class SeafStarredFile implements SeafItem {
     private FileType type;
     private long size;    // size of file, 0 if type is dir
 
+    /**
+     * From json seaf starred file.
+     *
+     * @param obj the obj
+     * @return the seaf starred file
+     */
     static SeafStarredFile fromJson(JSONObject obj) {
         SeafStarredFile starredFile = new SeafStarredFile();
         try {
@@ -37,22 +57,47 @@ public class SeafStarredFile implements SeafItem {
         }
     }
 
+    /**
+     * Gets size.
+     *
+     * @return the size
+     */
     public long getSize() {
         return size;
     }
 
+    /**
+     * Gets mtime.
+     *
+     * @return the mtime
+     */
     public long getMtime() {
         return mtime;
     }
 
+    /**
+     * Is dir boolean.
+     *
+     * @return the boolean
+     */
     public boolean isDir() {
         return (type == FileType.DIR);
     }
 
+    /**
+     * Gets repo id.
+     *
+     * @return the repo id
+     */
     public String getRepoID() {
         return repoID;
     }
 
+    /**
+     * Gets path.
+     *
+     * @return the path
+     */
     public String getPath() {
         return path;
     }

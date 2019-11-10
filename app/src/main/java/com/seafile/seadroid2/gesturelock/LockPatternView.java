@@ -45,14 +45,14 @@ import com.google.common.collect.Lists;
 import com.seafile.seadroid2.R;
 
 
-/**
- * Displays and detects the user's unlock attempt, which is a drag of a finger
- * across 9 regions of the screen.
- *
- * Is also capable of displaying a static pattern in "in progress", "wrong" or
- * "correct" states.
- */
-public class LockPatternView extends View {
+    /**
+     * Displays and detects the user's unlock attempt, which is a drag of a finger
+     * across 9 regions of the screen.
+     * <p>
+     * Is also capable of displaying a static pattern in "in progress", "wrong" or
+     * "correct" states.
+     */
+    public class LockPatternView extends View {
     private static final String TAG = "LockPatternView";
     // Aspect to use when rendering this view
     private static final int ASPECT_SQUARE = 0; // View will be the minimum of
@@ -68,7 +68,10 @@ public class LockPatternView extends View {
     private Paint mPaint = new Paint();
     private Paint mPathPaint = new Paint();
 
-    // TODO: make this common with PhoneWindow
+        /**
+         * The constant STATUS_BAR_HEIGHT.
+         */
+// TODO: make this common with PhoneWindow
     static final int STATUS_BAR_HEIGHT = 25;
 
     /**
@@ -124,14 +127,23 @@ public class LockPatternView extends View {
     private int mAspect;
     private final Matrix mCircleMatrix = new Matrix();
 
-    /**
-     * Represents a cell in the 3 X 3 matrix of the unlock pattern view.
-     */
-    public static class Cell {
-        int row;
-        int column;
+        /**
+         * Represents a cell in the 3 X 3 matrix of the unlock pattern view.
+         */
+        public static class Cell {
+            /**
+             * The Row.
+             */
+            int row;
+            /**
+             * The Column.
+             */
+            int column;
 
-        // keep # objects limited to 9
+            /**
+             * The constant sCells.
+             */
+// keep # objects limited to 9
         static Cell[][] sCells = new Cell[3][3];
         static {
             for (int i = 0; i < 3; i++) {
@@ -153,21 +165,32 @@ public class LockPatternView extends View {
             this.column = column;
         }
 
-        public int getRow() {
+            /**
+             * Gets row.
+             *
+             * @return the row
+             */
+            public int getRow() {
             return row;
         }
 
-        public int getColumn() {
+            /**
+             * Gets column.
+             *
+             * @return the column
+             */
+            public int getColumn() {
             return column;
         }
 
-        /**
-         * @param row
-         *            The row of the cell.
-         * @param column
-         *            The column of the cell.
-         */
-        public static synchronized Cell of(int row, int column) {
+            /**
+             * Of cell.
+             *
+             * @param row    The row of the cell.
+             * @param column The column of the cell.
+             * @return the cell
+             */
+            public static synchronized Cell of(int row, int column) {
             checkRange(row, column);
             return sCells[row][column];
         }
@@ -187,64 +210,73 @@ public class LockPatternView extends View {
         }
     }
 
-    /**
-     * How to display the current pattern.
-     */
-    public enum DisplayMode {
-
         /**
-         * The pattern drawn is correct (i.e draw it in a friendly color)
+         * How to display the current pattern.
          */
-        Correct,
+        public enum DisplayMode {
 
-        /**
-         * Animate the pattern (for demo, and help).
-         */
-        Animate,
+            /**
+             * The pattern drawn is correct (i.e draw it in a friendly color)
+             */
+            Correct,
 
-        /**
-         * The pattern is wrong (i.e draw a foreboding color)
-         */
-        Wrong
+            /**
+             * Animate the pattern (for demo, and help).
+             */
+            Animate,
+
+            /**
+             * The pattern is wrong (i.e draw a foreboding color)
+             */
+            Wrong
     }
 
-    /**
-     * The call back interface for detecting patterns entered by the user.
-     */
-    public static interface OnPatternListener {
-
         /**
-         * A new pattern has begun.
+         * The call back interface for detecting patterns entered by the user.
          */
-        void onPatternStart();
+        public static interface OnPatternListener {
 
-        /**
-         * The pattern was cleared.
-         */
-        void onPatternCleared();
+            /**
+             * A new pattern has begun.
+             */
+            void onPatternStart();
 
-        /**
-         * The user extended the pattern currently being drawn by one cell.
-         * 
-         * @param pattern
-         *            The pattern with newly added cell.
-         */
-        void onPatternCellAdded(List<Cell> pattern);
+            /**
+             * The pattern was cleared.
+             */
+            void onPatternCleared();
 
-        /**
-         * A pattern was detected from the user.
-         * 
-         * @param pattern
-         *            The pattern.
-         */
-        void onPatternDetected(List<Cell> pattern);
+            /**
+             * The user extended the pattern currently being drawn by one cell.
+             *
+             * @param pattern The pattern with newly added cell.
+             */
+            void onPatternCellAdded(List<Cell> pattern);
+
+            /**
+             * A pattern was detected from the user.
+             *
+             * @param pattern The pattern.
+             */
+            void onPatternDetected(List<Cell> pattern);
     }
 
-    public LockPatternView(Context context) {
+        /**
+         * Instantiates a new Lock pattern view.
+         *
+         * @param context the context
+         */
+        public LockPatternView(Context context) {
         this(context, null);
     }
 
-    public LockPatternView(Context context, AttributeSet attrs) {
+        /**
+         * Instantiates a new Lock pattern view.
+         *
+         * @param context the context
+         * @param attrs   the attrs
+         */
+        public LockPatternView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         TypedArray a = context.obtainStyledAttributes(attrs,
@@ -290,62 +322,61 @@ public class LockPatternView extends View {
         return BitmapFactory.decodeResource(getContext().getResources(), resId);
     }
 
-    /**
-     * @return Whether the view is in stealth mode.
-     */
-    public boolean isInStealthMode() {
+        /**
+         * Is in stealth mode boolean.
+         *
+         * @return Whether the view is in stealth mode.
+         */
+        public boolean isInStealthMode() {
         return mInStealthMode;
     }
 
-    /**
-     * @return Whether the view has tactile feedback enabled.
-     */
-    public boolean isTactileFeedbackEnabled() {
+        /**
+         * Is tactile feedback enabled boolean.
+         *
+         * @return Whether the view has tactile feedback enabled.
+         */
+        public boolean isTactileFeedbackEnabled() {
         return mEnableHapticFeedback;
     }
 
-    /**
-     * Set whether the view is in stealth mode. If true, there will be no
-     * visible feedback as the user enters the pattern.
-     * 
-     * @param inStealthMode
-     *            Whether in stealth mode.
-     */
-    public void setInStealthMode(boolean inStealthMode) {
+        /**
+         * Set whether the view is in stealth mode. If true, there will be no
+         * visible feedback as the user enters the pattern.
+         *
+         * @param inStealthMode Whether in stealth mode.
+         */
+        public void setInStealthMode(boolean inStealthMode) {
         mInStealthMode = inStealthMode;
     }
 
-    /**
-     * Set whether the view will use tactile feedback. If true, there will be
-     * tactile feedback as the user enters the pattern.
-     * 
-     * @param tactileFeedbackEnabled
-     *            Whether tactile feedback is enabled
-     */
-    public void setTactileFeedbackEnabled(boolean tactileFeedbackEnabled) {
+        /**
+         * Set whether the view will use tactile feedback. If true, there will be
+         * tactile feedback as the user enters the pattern.
+         *
+         * @param tactileFeedbackEnabled Whether tactile feedback is enabled
+         */
+        public void setTactileFeedbackEnabled(boolean tactileFeedbackEnabled) {
         mEnableHapticFeedback = tactileFeedbackEnabled;
     }
 
-    /**
-     * Set the call back for pattern detection.
-     * 
-     * @param onPatternListener
-     *            The call back.
-     */
-    public void setOnPatternListener(OnPatternListener onPatternListener) {
+        /**
+         * Set the call back for pattern detection.
+         *
+         * @param onPatternListener The call back.
+         */
+        public void setOnPatternListener(OnPatternListener onPatternListener) {
         mOnPatternListener = onPatternListener;
     }
 
-    /**
-     * Set the pattern explicitely (rather than waiting for the user to input a
-     * pattern).
-     * 
-     * @param displayMode
-     *            How to display the pattern.
-     * @param pattern
-     *            The pattern.
-     */
-    public void setPattern(DisplayMode displayMode, List<Cell> pattern) {
+        /**
+         * Set the pattern explicitely (rather than waiting for the user to input a
+         * pattern).
+         *
+         * @param displayMode How to display the pattern.
+         * @param pattern     The pattern.
+         */
+        public void setPattern(DisplayMode displayMode, List<Cell> pattern) {
         mPattern.clear();
         mPattern.addAll(pattern);
         clearPatternDrawLookup();
@@ -356,15 +387,14 @@ public class LockPatternView extends View {
         setDisplayMode(displayMode);
     }
 
-    /**
-     * Set the display mode of the current pattern. This can be useful, for
-     * instance, after detecting a pattern to tell this view whether change the
-     * in progress result to correct or wrong.
-     * 
-     * @param displayMode
-     *            The display mode.
-     */
-    public void setDisplayMode(DisplayMode displayMode) {
+        /**
+         * Set the display mode of the current pattern. This can be useful, for
+         * instance, after detecting a pattern to tell this view whether change the
+         * in progress result to correct or wrong.
+         *
+         * @param displayMode The display mode.
+         */
+        public void setDisplayMode(DisplayMode displayMode) {
         mPatternDisplayMode = displayMode;
         if (displayMode == DisplayMode.Animate) {
             if (mPattern.size() == 0) {
@@ -409,10 +439,10 @@ public class LockPatternView extends View {
         sendAccessEvent(R.string.lockscreen_access_pattern_cleared);
     }
 
-    /**
-     * Clear the pattern.
-     */
-    public void clearPattern() {
+        /**
+         * Clear the pattern.
+         */
+        public void clearPattern() {
         resetPattern();
     }
 
@@ -437,18 +467,18 @@ public class LockPatternView extends View {
         }
     }
 
-    /**
-     * Disable input (for instance when displaying a message that will timeout
-     * so user doesn't get view into messy state).
-     */
-    public void disableInput() {
+        /**
+         * Disable input (for instance when displaying a message that will timeout
+         * so user doesn't get view into messy state).
+         */
+        public void disableInput() {
         mInputEnabled = false;
     }
 
-    /**
-     * Enable input.
-     */
-    public void enableInput() {
+        /**
+         * Enable input.
+         */
+        public void enableInput() {
         mInputEnabled = true;
     }
 
@@ -1103,22 +1133,47 @@ public class LockPatternView extends View {
             mTactileFeedbackEnabled = (Boolean) in.readValue(null);
         }
 
+        /**
+         * Gets serialized pattern.
+         *
+         * @return the serialized pattern
+         */
         public String getSerializedPattern() {
             return mSerializedPattern;
         }
 
+        /**
+         * Gets display mode.
+         *
+         * @return the display mode
+         */
         public int getDisplayMode() {
             return mDisplayMode;
         }
 
+        /**
+         * Is input enabled boolean.
+         *
+         * @return the boolean
+         */
         public boolean isInputEnabled() {
             return mInputEnabled;
         }
 
+        /**
+         * Is in stealth mode boolean.
+         *
+         * @return the boolean
+         */
         public boolean isInStealthMode() {
             return mInStealthMode;
         }
 
+        /**
+         * Is tactile feedback enabled boolean.
+         *
+         * @return the boolean
+         */
         public boolean isTactileFeedbackEnabled() {
             return mTactileFeedbackEnabled;
         }
@@ -1133,6 +1188,9 @@ public class LockPatternView extends View {
             dest.writeValue(mTactileFeedbackEnabled);
         }
 
+        /**
+         * The constant CREATOR.
+         */
         public static final Parcelable.Creator<SavedState> CREATOR = new Creator<SavedState>() {
             public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);

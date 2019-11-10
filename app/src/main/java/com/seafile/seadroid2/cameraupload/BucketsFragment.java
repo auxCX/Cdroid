@@ -112,6 +112,11 @@ public class BucketsFragment extends Fragment {
 
     };
 
+    /**
+     * Is auto scan selected boolean.
+     *
+     * @return the boolean
+     */
     public boolean isAutoScanSelected() {
         return mRadioGroup.getCheckedRadioButtonId() == R.id.cuc_local_directory_auto_scan_rb;
     }
@@ -167,6 +172,8 @@ public class BucketsFragment extends Fragment {
     /**
      * Instantiates a new fragment if mSelectionFragment is null.
      * Returns the current fragment, otherwise.
+     *
+     * @return the selection fragment
      */
     public BucketsSelectionFragment getSelectionFragment() {
         if (mSelectionFragment == null) {

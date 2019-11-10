@@ -257,17 +257,30 @@ public class FileActivity extends BaseActivity implements Toolbar.OnMenuItemClic
         passwordDialog.show(getSupportFragmentManager(), "DialogFragment");
     }
 
+    /**
+     * Show toast.
+     *
+     * @param msg the msg
+     */
     public void showToast(CharSequence msg) {
         Context context = getApplicationContext();
         Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
         toast.show();
     }
 
+    /**
+     * Show toast.
+     *
+     * @param id the id
+     */
     public void showToast(int id) {
         showToast(getString(id));
     }
 
 
+    /**
+     * Start timer.
+     */
     public void startTimer() {
         if (timerStarted) {
             return;
@@ -298,6 +311,9 @@ public class FileActivity extends BaseActivity implements Toolbar.OnMenuItemClic
         }, 1 * 1000);
     }
 
+    /**
+     * Stop timer.
+     */
     public void stopTimer() {
         if (!timerStarted) {
             return;

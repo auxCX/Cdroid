@@ -22,8 +22,17 @@ import java.util.Map;
 public class DownloadTaskManager extends TransferManager implements DownloadStateListener {
     private static final String DEBUG_TAG = "DownloadTaskManager";
 
+    /**
+     * The constant BROADCAST_FILE_DOWNLOAD_SUCCESS.
+     */
     public static final String BROADCAST_FILE_DOWNLOAD_SUCCESS = "downloaded";
+    /**
+     * The constant BROADCAST_FILE_DOWNLOAD_FAILED.
+     */
     public static final String BROADCAST_FILE_DOWNLOAD_FAILED = "downloadFailed";
+    /**
+     * The constant BROADCAST_FILE_DOWNLOAD_PROGRESS.
+     */
     public static final String BROADCAST_FILE_DOWNLOAD_PROGRESS = "downloadProgress";
 
     private static DownloadNotificationProvider mNotifProvider;
@@ -31,6 +40,13 @@ public class DownloadTaskManager extends TransferManager implements DownloadStat
     /**
      * Add a new download task.
      * call this method to execute a task immediately.
+     *
+     * @param account  the account
+     * @param repoName the repo name
+     * @param repoID   the repo id
+     * @param path     the path
+     * @param fileSize the file size
+     * @return the int
      */
     public int addTask(Account account, String repoName, String repoID, String path, long fileSize) {
         TransferTask task = new DownloadTask(++notificationID, account, repoName, repoID, path, this);
@@ -54,12 +70,27 @@ public class DownloadTaskManager extends TransferManager implements DownloadStat
         return task.getTaskID();
     }
 
+    /**
+     * Add task to que.
+     *
+     * @param account  the account
+     * @param repoName the repo name
+     * @param repoID   the repo id
+     * @param path     the path
+     */
     public void addTaskToQue(Account account, String repoName, String repoID, String path) {
         // create a new one to avoid IllegalStateException
         DownloadTask downloadTask = new DownloadTask(++notificationID, account, repoName, repoID, path, this);
         addTaskToQue(downloadTask);
     }
 
+    /**
+     * Gets downloading file count by path.
+     *
+     * @param repoID the repo id
+     * @param dir    the dir
+     * @return the downloading file count by path
+     */
     public int getDownloadingFileCountByPath(String repoID, String dir) {
         List<DownloadTaskInfo> downloadTaskInfos = getTaskInfoListByPath(repoID, dir);
         int count = 0;
@@ -74,9 +105,9 @@ public class DownloadTaskManager extends TransferManager implements DownloadStat
     /**
      * get all download task info under a specific directory.
      *
-     * @param repoID
-     * @param dir
-     * @return List<DownloadTaskInfo>
+     * @param repoID the repo id
+     * @param dir    the dir
+     * @return List<DownloadTaskInfo> task info list by path
      */
     public List<DownloadTaskInfo> getTaskInfoListByPath(String repoID, String dir) {
         ArrayList<DownloadTaskInfo> infos = Lists.newArrayList();
@@ -99,8 +130,8 @@ public class DownloadTaskManager extends TransferManager implements DownloadStat
     /**
      * get all download task info under a specific repo.
      *
-     * @param repoID
-     * @return List<DownloadTaskInfo>
+     * @param repoID the repo id
+     * @return List<DownloadTaskInfo> task info list by repo
      */
     public List<DownloadTaskInfo> getTaskInfoListByRepo(String repoID) {
         ArrayList<DownloadTaskInfo> infos = Lists.newArrayList();
@@ -116,6 +147,11 @@ public class DownloadTaskManager extends TransferManager implements DownloadStat
         return infos;
     }
 
+    /**
+     * Retry.
+     *
+     * @param taskID the task id
+     */
     public void retry(int taskID) {
         DownloadTask task = (DownloadTask) getTask(taskID);
         if (task == null || !task.canRetry())
@@ -132,14 +168,29 @@ public class DownloadTaskManager extends TransferManager implements DownloadStat
             mNotifProvider.updateNotification();
     }
 
+    /**
+     * Save notif provider.
+     *
+     * @param provider the provider
+     */
     public void saveNotifProvider(DownloadNotificationProvider provider) {
         mNotifProvider = provider;
     }
 
+    /**
+     * Has notif provider boolean.
+     *
+     * @return the boolean
+     */
     public boolean hasNotifProvider() {
         return mNotifProvider != null;
     }
 
+    /**
+     * Gets notif provider.
+     *
+     * @return the notif provider
+     */
     public DownloadNotificationProvider getNotifProvider() {
         if (hasNotifProvider())
             return mNotifProvider;
@@ -147,6 +198,9 @@ public class DownloadTaskManager extends TransferManager implements DownloadStat
             return null;
     }
 
+    /**
+     * Cancel all download notification.
+     */
     public void cancelAllDownloadNotification() {
         if (mNotifProvider != null)
             mNotifProvider.cancelNotification();

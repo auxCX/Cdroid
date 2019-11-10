@@ -15,6 +15,9 @@ import com.seafile.seadroid2.gallery.MultipleImageSelectionActivity;
 import com.seafile.seadroid2.ui.activity.BrowserActivity;
 import com.seafile.seadroid2.util.Utils;
 
+/**
+ * The type Upload choice dialog.
+ */
 public class UploadChoiceDialog extends DialogFragment {
     private Context ctx = SeadroidApplication.getAppContext();
 

@@ -23,6 +23,9 @@ import com.seafile.seadroid2.gesturelock.LockPatternView.Cell;
 import java.util.List;
 
 
+/**
+ * The type Unlock gesture password activity.
+ */
 public class UnlockGesturePasswordActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
     private LockPatternView mLockPatternView;
     private int mFailedPatternAttemptsSinceLastTimeout = 0;
@@ -33,6 +36,9 @@ public class UnlockGesturePasswordActivity extends BaseActivity implements Toolb
 
     private Toast mToast;
 
+    /**
+     * The Settings mgr.
+     */
     SettingsManager settingsMgr;
     
     @Override
@@ -79,6 +85,9 @@ public class UnlockGesturePasswordActivity extends BaseActivity implements Toolb
         }
     };
 
+    /**
+     * The M choose new lock pattern listener.
+     */
     protected LockPatternView.OnPatternListener mChooseNewLockPatternListener = new LockPatternView.OnPatternListener() {
 
         public void onPatternStart() {
@@ -133,6 +142,9 @@ public class UnlockGesturePasswordActivity extends BaseActivity implements Toolb
         private void patternInProgress() {
         }
     };
+    /**
+     * The Attempt lockout.
+     */
     Runnable attemptLockout = new Runnable() {
 
         @Override

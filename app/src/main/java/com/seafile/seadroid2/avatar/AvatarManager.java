@@ -12,7 +12,6 @@ import com.seafile.seadroid2.util.Utils;
 
 /**
  * load, cache, update avatars
- *
  */
 public class AvatarManager {
     private static final String DEBUG_TAG = "AvatarManager";
@@ -21,6 +20,9 @@ public class AvatarManager {
     private List<Avatar> avatars;
     private AccountManager accountMgr;
 
+    /**
+     * Instantiates a new Avatar manager.
+     */
     public AvatarManager() {
         this.avatars = Lists.newArrayList();
         this.accountMgr = new AccountManager(SeadroidApplication.getAppContext());
@@ -29,7 +31,7 @@ public class AvatarManager {
     /**
      * get accounts who don`t have avatars yet
      *
-     * @return ArrayList<Account>
+     * @return ArrayList<Account> accounts without avatars
      */
     public ArrayList<Account> getAccountsWithoutAvatars() {
         List<Account> accounts = accountMgr.getAccountList();
@@ -51,6 +53,11 @@ public class AvatarManager {
         return dbHelper.hasAvatar(account);
     }
 
+    /**
+     * Is need to load new avatars boolean.
+     *
+     * @return the boolean
+     */
     public boolean isNeedToLoadNewAvatars() {
         ArrayList<Account> accounts = getAccountsWithoutAvatars();
         if (accounts == null || accounts.size() ==0) return false;
@@ -58,14 +65,30 @@ public class AvatarManager {
             return true;
     }
 
+    /**
+     * Gets avatar list.
+     *
+     * @return the avatar list
+     */
     public List<Avatar> getAvatarList() {
         return dbHelper.getAvatarList();
     }
 
+    /**
+     * Save avatar list.
+     *
+     * @param avatars the avatars
+     */
     public void saveAvatarList(List<Avatar> avatars) {
         dbHelper.saveAvatars(avatars);
     }
 
+    /**
+     * Parse avatar avatar.
+     *
+     * @param json the json
+     * @return the avatar
+     */
     public Avatar parseAvatar(String json) {
         if (json == null) return null;
 

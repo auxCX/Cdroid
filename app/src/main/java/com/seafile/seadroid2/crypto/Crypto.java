@@ -5,6 +5,10 @@ import android.util.Base64;
 import android.util.Log;
 import android.util.Pair;
 
+
+import com.goterl.lazycode.lazysodium.SodiumAndroid;
+import com.goterl.lazycode.lazysodium.exceptions.SodiumException;
+import com.goterl.lazycode.lazysodium.interfaces.PwHash;
 import com.seafile.seadroid2.SeafException;
 
 import org.spongycastle.crypto.PBEParametersGenerator;
@@ -27,6 +31,8 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import com.goterl.lazycode.lazysodium.LazySodiumAndroid;
+import com.sun.jna.NativeLong;
 
 /**
  * There are a few ways to derive keys, but most of them are not particularly secure.
@@ -53,6 +59,7 @@ public class Crypto {
     private static int ITERATION_COUNT = 1000;
     // Should generate random salt for each repo
     private static byte[] salt = {(byte) 0xda, (byte) 0x90, (byte) 0x45, (byte) 0xc3, (byte) 0x06, (byte) 0xc7, (byte) 0xcc, (byte) 0x26};
+    private static LazySodiumAndroid lazySodium = new LazySodiumAndroid(new SodiumAndroid());
 
     static {
         // http://stackoverflow.com/questions/6898801/how-to-include-the-spongy-castle-jar-in-android
@@ -88,14 +95,19 @@ public class Crypto {
     /**
      * Recompute the magic and compare it with the one comes with the repo.
      *
-     * @param repoId
-     * @param password
-     * @param version
-     * @param magic
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeySpecException
-     * @throws UnsupportedEncodingException
-     * @throws SeafException
+     * @param repoId   the repo id
+     * @param password the password
+     * @param version  the version
+     * @param magic    the magic
+     * @throws NoSuchAlgorithmException           the no such algorithm exception
+     * @throws InvalidKeySpecException            the invalid key spec exception
+     * @throws UnsupportedEncodingException       the unsupported encoding exception
+     * @throws SeafException                      the seaf exception
+     * @throws IllegalBlockSizeException          the illegal block size exception
+     * @throws InvalidKeyException                the invalid key exception
+     * @throws BadPaddingException                the bad padding exception
+     * @throws InvalidAlgorithmParameterException the invalid algorithm parameter exception
+     * @throws NoSuchPaddingException             the no such padding exception
      */
     public static void verifyRepoPassword(String repoId, String password, int version, String magic) throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException, SeafException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, InvalidAlgorithmParameterException, NoSuchPaddingException {
         final byte[] generateMagic = generateMagic(repoId, password, version);
@@ -114,16 +126,31 @@ public class Crypto {
      * then use AES 256/CBC to decrypt the "file key" from randomKey (the "encrypted file key").
      * The client only saves the key/iv pair derived from the "file key", which is used to decrypt the data.
      *
-     * @param password
+     * @param password  the password
      * @param randomKey encrypted file key
-     * @param version
-     * @return
-     * @throws UnsupportedEncodingException
-     * @throws NoSuchAlgorithmException
+     * @param version   the version
+     * @return pair
+     * @throws UnsupportedEncodingException the unsupported encoding exception
+     * @throws NoSuchAlgorithmException     the no such algorithm exception
      */
     public static Pair<String, String> generateKey(@NonNull String password, @NonNull String randomKey, int version) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        try {
+            return new Pair<>(
+                    lazySodium.cryptoPwHash(
+                            password,
+                            randomKey.length(),
+                            randomKey.getBytes(),
+                            PwHash.ARGON2ID_OPSLIMIT_INTERACTIVE,
+                            new NativeLong((long) PwHash.ARGON2ID_MEMLIMIT_INTERACTIVE),
+                            PwHash.Alg.getDefault()
+                    ), null);
+        }catch(SodiumException e){
+            System.out.println(e.getMessage());
+            System.out.println(e.getStackTrace());
+        }
+        return null;
         // derive a key/iv pair from the password
-        final byte[] key = deriveKey(password, version);
+        /*final byte[] key = deriveKey(password, version);
         SecretKey derivedKey = new SecretKeySpec(key, "AES");
         final byte[] iv = deriveIv(key);
 
@@ -131,7 +158,7 @@ public class Crypto {
         final byte[] fileKey = seafileDecrypt(fromHex(randomKey), derivedKey, iv);
         // The client only saves the key/iv pair derived from the "file key", which is used to decrypt the data
         final String encKey = deriveKey(fileKey, version);
-        return new Pair<>(encKey, toHex(deriveIv(fromHex(encKey))));
+        return new Pair<>(encKey, toHex(deriveIv(fromHex(encKey))));*/
     }
 
     /**
@@ -270,12 +297,12 @@ public class Crypto {
     /**
      * All file data is encrypted by the encKey/encIv with AES 256/CBC.
      *
-     * @param plaintext
-     * @param encKey
-     * @param iv
-     * @return
-     * @throws NoSuchAlgorithmException
-     * @throws UnsupportedEncodingException
+     * @param plaintext the plaintext
+     * @param encKey    the enc key
+     * @param iv        the iv
+     * @return byte [ ]
+     * @throws NoSuchAlgorithmException     the no such algorithm exception
+     * @throws UnsupportedEncodingException the unsupported encoding exception
      */
     public static byte[] encrypt(@NonNull byte[] plaintext, @NonNull String encKey, @NonNull String iv) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         return encrypt(plaintext, plaintext.length, encKey, iv);
@@ -284,13 +311,13 @@ public class Crypto {
     /**
      * All file data is encrypted by the encKey/encIv with AES 256/CBC.
      *
-     * @param plaintext
-     * @param inputLen
-     * @param encKey
-     * @param iv
-     * @return
-     * @throws NoSuchAlgorithmException
-     * @throws UnsupportedEncodingException
+     * @param plaintext the plaintext
+     * @param inputLen  the input len
+     * @param encKey    the enc key
+     * @param iv        the iv
+     * @return byte [ ]
+     * @throws NoSuchAlgorithmException     the no such algorithm exception
+     * @throws UnsupportedEncodingException the unsupported encoding exception
      */
     public static byte[] encrypt(@NonNull byte[] plaintext, int inputLen, @NonNull String encKey, @NonNull String iv) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         SecretKey secretKey = new SecretKeySpec(fromHex(encKey), "AES");
@@ -300,12 +327,12 @@ public class Crypto {
     /**
      * All file data is decrypted by the encKey/encIv with AES 256/CBC.
      *
-     * @param plaintext
-     * @param encKey
-     * @param iv
-     * @return
-     * @throws NoSuchAlgorithmException
-     * @throws UnsupportedEncodingException
+     * @param plaintext the plaintext
+     * @param encKey    the enc key
+     * @param iv        the iv
+     * @return byte [ ]
+     * @throws NoSuchAlgorithmException     the no such algorithm exception
+     * @throws UnsupportedEncodingException the unsupported encoding exception
      */
     public static byte[] decrypt(@NonNull byte[] plaintext, @NonNull String encKey, @NonNull String iv) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         SecretKey realKey = new SecretKeySpec(fromHex(encKey), "AES");
@@ -346,14 +373,33 @@ public class Crypto {
         return bytes;
     }
 
+    /**
+     * To base 64 string.
+     *
+     * @param bytes the bytes
+     * @return the string
+     */
     public static String toBase64(byte[] bytes) {
         return Base64.encodeToString(bytes, Base64.NO_WRAP);
     }
 
+    /**
+     * From base 64 byte [ ].
+     *
+     * @param base64 the base 64
+     * @return the byte [ ]
+     */
     public static byte[] fromBase64(String base64) {
         return Base64.decode(base64, Base64.NO_WRAP);
     }
 
+    /**
+     * Sha 1 string.
+     *
+     * @param cipher the cipher
+     * @return the string
+     * @throws NoSuchAlgorithmException the no such algorithm exception
+     */
     public static String sha1(@NonNull byte[] cipher) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-1");
         md.update(cipher, 0, cipher.length);

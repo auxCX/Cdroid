@@ -20,9 +20,9 @@ import javax.net.ssl.TrustManager;
 
 /**
  * Custom SSLSocketFactory.
- *
+ * <p>
  * Used to manually select TLS protocol versions.
- *
+ * <p>
  * based on:
  * https://stackoverflow.com/questions/1037590/which-cipher-suites-to-enable-for-ssl-socket
  */
@@ -32,6 +32,15 @@ public class SSLSeafileSocketFactory extends SSLSocketFactory {
     private String[] allowedCiphers;
     private String[] allowedProtocols;
 
+    /**
+     * Instantiates a new Ssl seafile socket factory.
+     *
+     * @param km     the km
+     * @param tm     the tm
+     * @param random the random
+     * @throws NoSuchAlgorithmException the no such algorithm exception
+     * @throws KeyManagementException   the key management exception
+     */
     public SSLSeafileSocketFactory(KeyManager[] km, TrustManager[] tm, SecureRandom random) throws NoSuchAlgorithmException, KeyManagementException {
         context = SSLContext.getInstance("TLS");
         context.init(km, tm, random);
@@ -100,6 +109,11 @@ public class SSLSeafileSocketFactory extends SSLSocketFactory {
         return ss;
     }
 
+    /**
+     * Get protocol list string [ ].
+     *
+     * @return the string [ ]
+     */
     protected String[] getProtocolList() {
         // don't offer SSLv2 or SSLv3
         if (Build.VERSION.SDK_INT >= 16) {
@@ -109,6 +123,11 @@ public class SSLSeafileSocketFactory extends SSLSocketFactory {
         }
     }
 
+    /**
+     * Get cipher list string [ ].
+     *
+     * @return the string [ ]
+     */
     protected String[] getCipherList() {
         // only allow ciphers which are still considered secure.
         // based on:

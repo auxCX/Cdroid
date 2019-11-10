@@ -15,10 +15,15 @@ import java.util.List;
 
 /**
  * Upload notification provider
- *
  */
 public class UploadNotificationProvider extends BaseNotificationProvider {
 
+    /**
+     * Instantiates a new Upload notification provider.
+     *
+     * @param uploadTaskManager the upload task manager
+     * @param transferService   the transfer service
+     */
     public UploadNotificationProvider(UploadTaskManager uploadTaskManager,
                                       TransferService transferService) {
         super(uploadTaskManager, transferService);

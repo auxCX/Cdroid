@@ -23,13 +23,34 @@ import java.security.cert.CertificateParsingException;
 import java.security.cert.X509Certificate;
 
 
+/**
+ * The type Ssl confirm dialog.
+ */
 public class SslConfirmDialog extends DialogFragment {
+    /**
+     * The interface Listener.
+     */
     public interface Listener {
+        /**
+         * On accepted.
+         *
+         * @param rememberChoice the remember choice
+         */
         void onAccepted(boolean rememberChoice);
+
+        /**
+         * On rejected.
+         */
         void onRejected();
     }
 
+    /**
+     * The constant FRAGMENT_TAG.
+     */
     public static final String FRAGMENT_TAG = "SslConfirmDialog";
+    /**
+     * The constant DEBUG_TAG.
+     */
     public static final String DEBUG_TAG = "SslConfirmDialog";
 
     private Account account;
@@ -45,15 +66,31 @@ public class SslConfirmDialog extends DialogFragment {
     private TextView notBeforeText;
     private TextView notAfterText;
 
+    /**
+     * Instantiates a new Ssl confirm dialog.
+     */
     public SslConfirmDialog() {
     }
 
+    /**
+     * Instantiates a new Ssl confirm dialog.
+     *
+     * @param account  the account
+     * @param listener the listener
+     */
     @SuppressLint("ValidFragment")
     public SslConfirmDialog(Account account, Listener listener) {
         this.listener = listener;
         this.account = account;
     }
 
+    /**
+     * Instantiates a new Ssl confirm dialog.
+     *
+     * @param account     the account
+     * @param certificate the certificate
+     * @param listener    the listener
+     */
     @SuppressLint("ValidFragment")
     public SslConfirmDialog(Account account, X509Certificate certificate, Listener listener) {
         this.listener = listener;

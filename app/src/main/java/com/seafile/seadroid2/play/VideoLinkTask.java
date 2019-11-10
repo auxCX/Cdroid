@@ -13,6 +13,9 @@ import java.net.URLEncoder;
  * get video reused link task
  */
 public class VideoLinkTask extends AsyncTask<Void, Long, String> {
+    /**
+     * The constant DEBUG_TAG.
+     */
     public static final String DEBUG_TAG = "VideoLinkTask";
     private final Account account;
     private final String repoID;
@@ -22,6 +25,14 @@ public class VideoLinkTask extends AsyncTask<Void, Long, String> {
     private SeafConnection sc;
     private SeafException err;
 
+    /**
+     * Instantiates a new Video link task.
+     *
+     * @param account  the account
+     * @param repoID   the repo id
+     * @param path     the path
+     * @param listener the listener
+     */
     public VideoLinkTask(Account account, String repoID, String path, VideoLinkStateListener listener) {
         this.account = account;
         this.repoID = repoID;

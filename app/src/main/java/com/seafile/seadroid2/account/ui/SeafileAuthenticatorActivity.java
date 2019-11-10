@@ -19,25 +19,61 @@ import com.seafile.seadroid2.ui.BaseAuthenticatorActivity;
 
 /**
  * The Authenticator activity.
- *
+ * <p>
  * Called by the Authenticator and in charge of identifing the user.
- *
+ * <p>
  * It sends back to the Authenticator the result.
  */
 public class SeafileAuthenticatorActivity extends BaseAuthenticatorActivity {
 
+    /**
+     * The constant SEACLOUD_CC.
+     */
     public static final int SEACLOUD_CC = 0;
+    /**
+     * The constant SINGLE_SIGN_ON_LOGIN.
+     */
     public static final int SINGLE_SIGN_ON_LOGIN = 1;
+    /**
+     * The constant OTHER_SERVER.
+     */
     public static final int OTHER_SERVER = 2;
 
+    /**
+     * The constant ARG_ACCOUNT_TYPE.
+     */
     public final static String ARG_ACCOUNT_TYPE = "ACCOUNT_TYPE";
+    /**
+     * The constant ARG_ACCOUNT_NAME.
+     */
     public final static String ARG_ACCOUNT_NAME = "ACCOUNT_NAME";
+    /**
+     * The constant ARG_SERVER_URI.
+     */
     public final static String ARG_SERVER_URI = "SERVER_URI";
+    /**
+     * The constant ARG_EDIT_OLD_ACCOUNT_NAME.
+     */
     public final static String ARG_EDIT_OLD_ACCOUNT_NAME = "EDIT_OLD_ACCOUNT";
+    /**
+     * The constant ARG_EMAIL.
+     */
     public final static String ARG_EMAIL = "EMAIL";
+    /**
+     * The constant ARG_NAME.
+     */
     public final static String ARG_NAME = "NAME";
+    /**
+     * The constant ARG_SHIB.
+     */
     public final static String ARG_SHIB = "SHIB";
+    /**
+     * The constant ARG_AUTH_SESSION_KEY.
+     */
     public final static String ARG_AUTH_SESSION_KEY = "TWO_FACTOR_AUTH";
+    /**
+     * The constant ARG_IS_EDITING.
+     */
     public final static String ARG_IS_EDITING = "isEdited";
 
     private static final int REQ_SIGNUP = 1;

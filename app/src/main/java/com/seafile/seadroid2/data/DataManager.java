@@ -6,6 +6,11 @@ import android.util.Pair;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.goterl.lazycode.lazysodium.LazySodiumAndroid;
+import com.goterl.lazycode.lazysodium.SodiumAndroid;
+import com.goterl.lazycode.lazysodium.exceptions.SodiumException;
+import com.goterl.lazycode.lazysodium.interfaces.SecretStream;
+import com.goterl.lazycode.lazysodium.utils.Key;
 import com.seafile.seadroid2.R;
 import com.seafile.seadroid2.SeadroidApplication;
 import com.seafile.seadroid2.SeafConnection;
@@ -38,22 +43,43 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * The type Data manager.
+ */
 public class DataManager {
     private static final String DEBUG_TAG = "DataManager";
     private static final long SET_PASSWORD_INTERVAL = 59 * 60 * 1000; // 59 min
     // private static final long SET_PASSWORD_INTERVAL = 5 * 1000; // 5s
 
-    // pull to refresh
+    /**
+     * The constant PULL_TO_REFRESH_LAST_TIME_FOR_REPOS_FRAGMENT.
+     */
+// pull to refresh
     public static final String PULL_TO_REFRESH_LAST_TIME_FOR_REPOS_FRAGMENT = "repo fragment last update";
+    /**
+     * The constant PULL_TO_REFRESH_LAST_TIME_FOR_STARRED_FRAGMENT.
+     */
     public static final String PULL_TO_REFRESH_LAST_TIME_FOR_STARRED_FRAGMENT = "starred fragment last update ";
     private static SimpleDateFormat ptrDataFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private static Map<String, PasswordInfo> passwords = Maps.newHashMap();
     private static Map<String, Long> direntsRefreshTimeMap = Maps.newHashMap();
+    /**
+     * The constant REFRESH_EXPIRATION_MSECS.
+     */
     public static final long REFRESH_EXPIRATION_MSECS = 10 * 60 * 1000; // 10 mins
+    /**
+     * The constant repoRefreshTimeStamp.
+     */
     public static long repoRefreshTimeStamp = 0;
 
+    /**
+     * The constant BUFFER_SIZE.
+     */
     public static final int BUFFER_SIZE = 2 * 1024 * 1024;
+    /**
+     * The constant PAGE_SIZE.
+     */
     public static final int PAGE_SIZE = 25;
 
     private SeafConnection sc;
@@ -63,6 +89,16 @@ public class DataManager {
 
     private List<SeafRepo> reposCache = null;
 
+
+    private static LazySodiumAndroid lazySodium = new LazySodiumAndroid(new SodiumAndroid());
+
+
+
+    /**
+     * Instantiates a new Data manager.
+     *
+     * @param act the act
+     */
     public DataManager(Account act) {
         account = act;
         sc = new SeafConnection(act);
@@ -97,6 +133,15 @@ public class DataManager {
         }
     }
 
+    /**
+     * Gets thumbnail link.
+     *
+     * @param repoName the repo name
+     * @param repoID   the repo id
+     * @param filePath the file path
+     * @param size     the size
+     * @return the thumbnail link
+     */
     public String getThumbnailLink(String repoName, String repoID, String filePath, int size) {
         File file = null;
         try {
@@ -125,6 +170,14 @@ public class DataManager {
         }
     }
 
+    /**
+     * Gets thumbnail link.
+     *
+     * @param repoID   the repo id
+     * @param filePath the file path
+     * @param size     the size
+     * @return the thumbnail link
+     */
     public String getThumbnailLink(String repoID, String filePath, int size) {
         SeafRepo repo = getCachedRepoByID(repoID);
         if (repo != null)
@@ -133,6 +186,13 @@ public class DataManager {
             return null;
     }
 
+    /**
+     * Gets account info.
+     *
+     * @return the account info
+     * @throws SeafException the seaf exception
+     * @throws JSONException the json exception
+     */
     public AccountInfo getAccountInfo() throws SeafException, JSONException {
         String json = sc.getAccountInfo();
         return parseAccountInfo(json);
@@ -146,6 +206,13 @@ public class DataManager {
         return AccountInfo.fromJson(object, account.getServer());
     }
 
+    /**
+     * Gets server info.
+     *
+     * @return the server info
+     * @throws SeafException the seaf exception
+     * @throws JSONException the json exception
+     */
     public ServerInfo getServerInfo() throws SeafException, JSONException {
         String json = sc.getServerInfo();
         return parseServerInfo(json);
@@ -159,6 +226,11 @@ public class DataManager {
         return ServerInfo.fromJson(object, account.getServer());
     }
 
+    /**
+     * Gets account.
+     *
+     * @return the account
+     */
     public Account getAccount() {
         return account;
     }
@@ -185,27 +257,29 @@ public class DataManager {
 
     /**
      * The account directory structure of Seafile is like this:
-     *
+     * <p>
      * StorageManager.getMediaDir()
-     *            |__ foo@gmail.com (cloud.seafile.com)
-     *                      |__ Photos
-     *                      |__ Musics
-     *                      |__ ...
-     *            |__ foo@mycompany.com (seafile.mycompany.com)
-     *                      |__ Documents
-     *                      |__ Manuals
-     *                      |__ ...
-     *            |__ ...
-     *
+     * |__ foo@gmail.com (cloud.seafile.com)
+     * |__ Photos
+     * |__ Musics
+     * |__ ...
+     * |__ foo@mycompany.com (seafile.mycompany.com)
+     * |__ Documents
+     * |__ Manuals
+     * |__ ...
+     * |__ ...
+     * <p>
      * In the above directory, the user has used two accounts.
-     *
+     * <p>
      * 1. One account has email "foo@gmail.com" and server
      * "cloud.seafile.com". Two repos, "Photos" and "Musics", has been
      * viewed.
-     *
+     * <p>
      * 2. Another account has email "foo@mycompany.com", and server
      * "seafile.mycompany.com". Two repos, "Documents" and "Manuals", has
      * been viewed.
+     *
+     * @return the account dir
      */
     public String getAccountDir() {
         String username = account.getEmail();
@@ -269,9 +343,12 @@ public class DataManager {
     /**
      * Each repo is placed under [account-dir]/[repo-name]. When a
      * file is downloaded, it's placed in its repo, with its full path.
-     * @param repoName
-     * @param repoID
-     * @param path
+     *
+     * @param repoName the repo name
+     * @param repoID   the repo id
+     * @param path     the path
+     * @return the local repo file
+     * @throws RuntimeException the runtime exception
      */
     public File getLocalRepoFile(String repoName, String repoID, String path) throws RuntimeException {
         String localPath = Utils.pathJoin(getRepoDir(repoName, repoID), path);
@@ -324,11 +401,23 @@ public class DataManager {
     }
 
 
+    /**
+     * Gets block path by id.
+     *
+     * @param blkId the blk id
+     * @return the block path by id
+     */
     public String getBlockPathById(String blkId) {
         final File block = getFileForBlockCache(blkId);
         return block.getAbsolutePath();
     }
 
+    /**
+     * Gets cached repo by id.
+     *
+     * @param id the id
+     * @return the cached repo by id
+     */
     public SeafRepo getCachedRepoByID(String id) {
         List<SeafRepo> cachedRepos = getReposFromCache();
         if (cachedRepos == null) {
@@ -344,6 +433,12 @@ public class DataManager {
         return null;
     }
 
+    /**
+     * Gets cached repo encrypt by id.
+     *
+     * @param id the id
+     * @return the cached repo encrypt by id
+     */
     public SeafRepoEncrypt getCachedRepoEncryptByID(String id) {
         File cache = getFile4RepoCache(id);
         if (cache.exists()) {
@@ -356,6 +451,11 @@ public class DataManager {
     }
 
 
+    /**
+     * Gets repos from cache.
+     *
+     * @return the repos from cache
+     */
     public List<SeafRepo> getReposFromCache() {
         if (reposCache != null)
             return reposCache;
@@ -372,6 +472,12 @@ public class DataManager {
         return null;
     }
 
+    /**
+     * Gets repos from server.
+     *
+     * @return the repos from server
+     * @throws SeafException the seaf exception
+     */
     public List<SeafRepo> getReposFromServer() throws SeafException {
         // First decide if use cache
         if (!Utils.isNetworkOn()) {
@@ -439,6 +545,16 @@ public class DataManager {
         dbHelper.removeCachedDirents(repoID, dir);
     }
 
+    /**
+     * Gets file.
+     *
+     * @param repoName the repo name
+     * @param repoID   the repo id
+     * @param path     the path
+     * @param monitor  the monitor
+     * @return the file
+     * @throws SeafException the seaf exception
+     */
     public synchronized File getFile(String repoName, String repoID, String path,
                                      ProgressMonitor monitor) throws SeafException {
 
@@ -465,6 +581,20 @@ public class DataManager {
         }
     }
 
+    /**
+     * Gets file by blocks.
+     *
+     * @param repoName the repo name
+     * @param repoID   the repo id
+     * @param path     the path
+     * @param fileSize the file size
+     * @param monitor  the monitor
+     * @return the file by blocks
+     * @throws SeafException            the seaf exception
+     * @throws IOException              the io exception
+     * @throws JSONException            the json exception
+     * @throws NoSuchAlgorithmException the no such algorithm exception
+     */
     public synchronized File getFileByBlocks(String repoName, String repoID, String path, long fileSize,
                         ProgressMonitor monitor) throws SeafException, IOException, JSONException, NoSuchAlgorithmException {
 
@@ -507,14 +637,34 @@ public class DataManager {
             addCachedFile(repoName, repoID, path, fileBlocks.fileID, localFile);
             return localFile;
         }
+        byte[] tag = new byte[1];
 
-        for (Block blk : fileBlocks.blocks) {
-            File tempBlock = new File(storageManager.getTempDir(), blk.blockId);
-            final Pair<String, File> block = sc.getBlock(repoID, fileBlocks, blk.blockId, tempBlock.getPath(), fileSize, monitor);
-            final byte[] bytes = FileUtils.readFileToByteArray(block.second);
-            final byte[] decryptedBlock = Crypto.decrypt(bytes, encKey, encIv);
-            FileUtils.writeByteArrayToFile(localFile, decryptedBlock, true);
+
+
+        try {
+            SecretStream.State state2 = null;
+            boolean first = true;
+
+            for (Block blk : fileBlocks.blocks) {
+                File tempBlock = new File(storageManager.getTempDir(), blk.blockId);
+                final Pair<String, File> block = sc.getBlock(repoID, fileBlocks, blk.blockId, tempBlock.getPath(), fileSize, monitor);
+                final byte[] bytes = FileUtils.readFileToByteArray(block.second);
+                if (first){
+                    byte[] header = bytes;
+                    state2 = lazySodium.cryptoSecretStreamInitPull(header, Key.fromBytes(encKey.getBytes()));
+                    first = false;
+                }else {
+                    String decryptedMessage = lazySodium.cryptoSecretStreamPull(state2, new String(bytes), tag);
+                    final byte[] decryptedBlock = Crypto.decrypt(bytes, encKey, encIv);
+                    FileUtils.writeByteArrayToFile(localFile, decryptedBlock, true);
+                }
+            }
+        } catch(SodiumException e){
+            e.printStackTrace();
         }
+
+
+
 
         Log.d(DEBUG_TAG, String.format("addCachedFile repoName %s, repoId %s, path %s, fileId %s", repoName, repoID, path, fileBlocks.fileID));
         addCachedFile(repoName, repoID, path, fileBlocks.fileID, localFile);
@@ -561,6 +711,13 @@ public class DataManager {
         }
     }
 
+    /**
+     * Gets cached dirents.
+     *
+     * @param repoID the repo id
+     * @param path   the path
+     * @return the cached dirents
+     */
     public List<SeafDirent> getCachedDirents(String repoID, String path) {
         String dirID = dbHelper.getCachedDirents(repoID, path);
         if (dirID == null) {
@@ -582,13 +739,18 @@ public class DataManager {
 
     /**
      * In four cases we need to visit the server for dirents
-     *
+     * <p>
      * 1. No cached dirents
      * 2. User clicks "refresh" button.
      * 3. Download all dirents within a folder
      * 4. View starred or searched files in gallery without available local cache
-     *
+     * <p>
      * In the second case, the local cache may still be valid.
+     *
+     * @param repoID the repo id
+     * @param path   the path
+     * @return the dirents from server
+     * @throws SeafException the seaf exception
      */
     public List<SeafDirent> getDirentsFromServer(String repoID, String path) throws SeafException {
 
@@ -620,6 +782,12 @@ public class DataManager {
         return parseDirents(content);
     }
 
+    /**
+     * Gets starred files.
+     *
+     * @return the starred files
+     * @throws SeafException the seaf exception
+     */
     public List<SeafStarredFile> getStarredFiles() throws SeafException {
         String starredFiles = sc.getStarredFiles();
         Log.v(DEBUG_TAG, "Save starred files: " + starredFiles);
@@ -630,6 +798,11 @@ public class DataManager {
         return parseStarredFiles(starredFiles);
     }
 
+    /**
+     * Gets cached starred files.
+     *
+     * @return the cached starred files
+     */
     public List<SeafStarredFile> getCachedStarredFiles() {
         String starredFiles = dbHelper.getCachedStarredFiles(account);
         Log.v(DEBUG_TAG, "Get cached starred files: " + starredFiles);
@@ -640,15 +813,37 @@ public class DataManager {
     }
 
 
+    /**
+     * Gets cached file.
+     *
+     * @param repoName the repo name
+     * @param repoID   the repo id
+     * @param path     the path
+     * @return the cached file
+     */
     public SeafCachedFile getCachedFile(String repoName, String repoID, String path) {
         SeafCachedFile cf = dbHelper.getFileCacheItem(repoID, path, this);
         return cf;
     }
 
+    /**
+     * Gets cached files.
+     *
+     * @return the cached files
+     */
     public List<SeafCachedFile> getCachedFiles() {
         return dbHelper.getFileCacheItems(this);
     }
 
+    /**
+     * Add cached file.
+     *
+     * @param repoName the repo name
+     * @param repoID   the repo id
+     * @param path     the path
+     * @param fileID   the file id
+     * @param file     the file
+     */
     public void addCachedFile(String repoName, String repoID, String path, String fileID, File file) {
         if (file == null) {
             return;
@@ -668,12 +863,24 @@ public class DataManager {
         dbHelper.saveFileCacheItem(item, this);
     }
 
+    /**
+     * Remove cached file.
+     *
+     * @param cf the cf
+     */
     public void removeCachedFile(SeafCachedFile cf) {
         // TODO should check if the file deletion succeeds
         cf.file.delete();
         dbHelper.deleteFileCacheItem(cf);
     }
 
+    /**
+     * Sets password.
+     *
+     * @param repoID the repo id
+     * @param passwd the passwd
+     * @throws SeafException the seaf exception
+     */
     public void setPassword(String repoID, String passwd) throws SeafException {
         boolean success = sc.setPassword(repoID, passwd);
         //if password is true, to get encrypt repo info
@@ -682,6 +889,19 @@ public class DataManager {
         }
     }
 
+    /**
+     * Upload file.
+     *
+     * @param repoName      the repo name
+     * @param repoID        the repo id
+     * @param dir           the dir
+     * @param filePath      the file path
+     * @param monitor       the monitor
+     * @param isUpdate      the is update
+     * @param isCopyToLocal the is copy to local
+     * @throws SeafException the seaf exception
+     * @throws IOException   the io exception
+     */
     public void uploadFile(String repoName, String repoID, String dir, String filePath,
                            ProgressMonitor monitor, boolean isUpdate, boolean isCopyToLocal) throws SeafException, IOException {
         uploadFileCommon(repoName, repoID, dir, filePath, monitor, isUpdate, isCopyToLocal);
@@ -719,10 +939,25 @@ public class DataManager {
         addCachedFile(repoName, repoID, path, newFileID, fileInRepo);
     }
 
+    /**
+     * Create new repo.
+     *
+     * @param repoName the repo name
+     * @param password the password
+     * @throws SeafException the seaf exception
+     */
     public void createNewRepo(String repoName, String password) throws SeafException {
         sc.createNewRepo(repoName, "", password);
     }
 
+    /**
+     * Create new dir.
+     *
+     * @param repoID    the repo id
+     * @param parentDir the parent dir
+     * @param dirName   the dir name
+     * @throws SeafException the seaf exception
+     */
     public void createNewDir(String repoID, String parentDir, String dirName) throws SeafException {
         Pair<String, String> ret = sc.createNewDir(repoID, parentDir, dirName);
         if (ret == null) {
@@ -737,6 +972,14 @@ public class DataManager {
         saveDirentContent(repoID, parentDir, newDirID, response);
     }
 
+    /**
+     * Create new file.
+     *
+     * @param repoID    the repo id
+     * @param parentDir the parent dir
+     * @param fileName  the file name
+     * @throws SeafException the seaf exception
+     */
     public void createNewFile(String repoID, String parentDir, String fileName) throws SeafException {
         Pair<String, String> ret = sc.createNewFile(repoID, parentDir, fileName);
         if (ret == null) {
@@ -751,6 +994,15 @@ public class DataManager {
         saveDirentContent(repoID, parentDir, newDirID, response);
     }
 
+    /**
+     * Gets local cached file.
+     *
+     * @param repoName the repo name
+     * @param repoID   the repo id
+     * @param filePath the file path
+     * @param fileID   the file id
+     * @return the local cached file
+     */
     public File getLocalCachedFile(String repoName, String repoID, String filePath, String fileID) {
         File localFile = getLocalRepoFile(repoName, repoID, filePath);
         if (!localFile.exists()) {
@@ -769,22 +1021,58 @@ public class DataManager {
         }
     }
 
+    /**
+     * Rename repo.
+     *
+     * @param repoID  the repo id
+     * @param newName the new name
+     * @throws SeafException the seaf exception
+     */
     public void renameRepo(String repoID, String newName) throws SeafException {
         sc.renameRepo(repoID, newName);
     }
 
+    /**
+     * Delete repo.
+     *
+     * @param repoID the repo id
+     * @throws SeafException the seaf exception
+     */
     public void deleteRepo(String repoID) throws SeafException {
         sc.deleteRepo(repoID);
     }
 
+    /**
+     * Star.
+     *
+     * @param repoID the repo id
+     * @param path   the path
+     * @throws SeafException the seaf exception
+     */
     public void star(String repoID, String path) throws SeafException {
         sc.star(repoID, path);
     }
 
+    /**
+     * Unstar.
+     *
+     * @param repoID the repo id
+     * @param path   the path
+     * @throws SeafException the seaf exception
+     */
     public void unstar(String repoID, String path) throws SeafException {
         sc.unstar(repoID, path);
     }
 
+    /**
+     * Rename.
+     *
+     * @param repoID  the repo id
+     * @param path    the path
+     * @param newName the new name
+     * @param isdir   the isdir
+     * @throws SeafException the seaf exception
+     */
     public void rename(String repoID, String path, String newName, boolean isdir) throws SeafException {
         Pair<String, String> ret = sc.rename(repoID, path, newName, isdir);
         if (ret == null) {
@@ -807,6 +1095,12 @@ public class DataManager {
          */
     }
 
+    /**
+     * Delete share link boolean.
+     *
+     * @param token the token
+     * @return the boolean
+     */
     public boolean deleteShareLink(String token) {
         try {
             return sc.deleteShareLink(token);
@@ -817,6 +1111,13 @@ public class DataManager {
     }
 
 
+    /**
+     * Gets share link.
+     *
+     * @param repoID the repo id
+     * @param path   the path
+     * @return the share link
+     */
     public ArrayList<SeafLink> getShareLink(String repoID, String path) {
         ArrayList<SeafLink> list = Lists.newArrayListWithCapacity(0);
         try {
@@ -837,6 +1138,14 @@ public class DataManager {
     }
 
 
+    /**
+     * Delete.
+     *
+     * @param repoID the repo id
+     * @param path   the path
+     * @param isdir  the isdir
+     * @throws SeafException the seaf exception
+     */
     public void delete(String repoID, String path, boolean isdir) throws SeafException{
         Pair<String, String> ret = sc.delete(repoID, path, isdir);
         if (ret == null){
@@ -860,6 +1169,16 @@ public class DataManager {
 
     }
 
+    /**
+     * Copy.
+     *
+     * @param srcRepoId the src repo id
+     * @param srcDir    the src dir
+     * @param srcFn     the src fn
+     * @param dstRepoId the dst repo id
+     * @param dstDir    the dst dir
+     * @throws SeafException the seaf exception
+     */
     public void copy(String srcRepoId, String srcDir, String srcFn,
                      String dstRepoId, String dstDir) throws SeafException {
         sc.copy(srcRepoId, srcDir, srcFn, dstRepoId, dstDir);
@@ -868,6 +1187,17 @@ public class DataManager {
         getDirentsFromServer(dstRepoId, dstDir);
     }
 
+    /**
+     * Move.
+     *
+     * @param srcRepoId the src repo id
+     * @param srcDir    the src dir
+     * @param srcFn     the src fn
+     * @param dstRepoId the dst repo id
+     * @param dstDir    the dst dir
+     * @param batch     the batch
+     * @throws SeafException the seaf exception
+     */
     public void move(String srcRepoId, String srcDir, String srcFn, String dstRepoId, String dstDir,
                      boolean batch) throws SeafException {
         Pair<String, String> ret = null;
@@ -897,6 +1227,14 @@ public class DataManager {
 
     }
 
+    /**
+     * Gets events.
+     *
+     * @param start          the start
+     * @param useNewActivity the use new activity
+     * @return the events
+     * @throws SeafException the seaf exception
+     */
     public SeafActivities getEvents(int start, boolean useNewActivity) throws SeafException {
         int moreOffset = 0;
         boolean more;
@@ -926,10 +1264,24 @@ public class DataManager {
 
     }
 
+    /**
+     * Gets history changes.
+     *
+     * @param repoId   the repo id
+     * @param commitId the commit id
+     * @return the history changes
+     * @throws SeafException the seaf exception
+     */
     public String getHistoryChanges(String repoId, String commitId) throws SeafException {
         return sc.getHistoryChanges(repoId, commitId);
     }
 
+    /**
+     * Parse events list.
+     *
+     * @param json the json
+     * @return the list
+     */
     public List<SeafEvent> parseEvents(String json) {
         try {
             // may throw ClassCastException
@@ -955,24 +1307,50 @@ public class DataManager {
         }
     }
 
+    /**
+     * Clear password.
+     */
     public static void clearPassword() {
         passwords.clear();
     }
 
+    /**
+     * Complete remote wipe.
+     *
+     * @throws SeafException the seaf exception
+     */
     public void completeRemoteWipe() throws SeafException {
         sc.completeRemoteWipe(account.token);
     }
 
     private static class PasswordInfo {
+        /**
+         * The Password.
+         */
         String password; // password or encKey
+        /**
+         * The Timestamp.
+         */
         long timestamp;
 
+        /**
+         * Instantiates a new Password info.
+         *
+         * @param password  the password
+         * @param timestamp the timestamp
+         */
         public PasswordInfo(String password, long timestamp) {
             this.password = password;
             this.timestamp = timestamp;
         }
     }
 
+    /**
+     * Gets repo password set.
+     *
+     * @param repoID the repo id
+     * @return the repo password set
+     */
     public boolean getRepoPasswordSet(String repoID) {
         final SeafRepoEncrypt seafRepo = getCachedRepoEncryptByID(repoID);
         if (seafRepo != null && seafRepo.canLocalDecrypt()) {
@@ -994,6 +1372,13 @@ public class DataManager {
         return true;
     }
 
+    /**
+     * Sets repo password set.
+     *
+     * @param repoID the repo id
+     * @param key    the key
+     * @param iv     the iv
+     */
     public void setRepoPasswordSet(String repoID, String key, String iv) {
         if (!TextUtils.isEmpty(repoID)
                 && !TextUtils.isEmpty(key)
@@ -1002,10 +1387,22 @@ public class DataManager {
         }
     }
 
+    /**
+     * Sets repo password set.
+     *
+     * @param repoID   the repo id
+     * @param password the password
+     */
     public void setRepoPasswordSet(String repoID, String password) {
         passwords.put(repoID, new PasswordInfo(password, Utils.now()));
     }
 
+    /**
+     * Gets repo password.
+     *
+     * @param repoID the repo id
+     * @return the repo password
+     */
     public String getRepoPassword(String repoID) {
         if (repoID == null) {
             return null;
@@ -1038,6 +1435,8 @@ public class DataManager {
 
     /**
      * calculate if refresh time is expired, the expiration is 10 mins
+     *
+     * @return the boolean
      */
     public boolean isReposRefreshTimeout() {
         if (Utils.now() < repoRefreshTimeStamp + REFRESH_EXPIRATION_MSECS) {
@@ -1047,6 +1446,13 @@ public class DataManager {
         return true;
     }
 
+    /**
+     * Is dirents refresh timeout boolean.
+     *
+     * @param repoID the repo id
+     * @param path   the path
+     * @return the boolean
+     */
     public boolean isDirentsRefreshTimeout(String repoID, String path) {
         if (!direntsRefreshTimeMap.containsKey(Utils.pathJoin(repoID, path))) {
             return true;
@@ -1059,6 +1465,11 @@ public class DataManager {
         return true;
     }
 
+    /**
+     * Is starred files refresh timeout boolean.
+     *
+     * @return the boolean
+     */
     public boolean isStarredFilesRefreshTimeout() {
         if (!direntsRefreshTimeMap.containsKey(PULL_TO_REFRESH_LAST_TIME_FOR_STARRED_FRAGMENT)) {
             return true;
@@ -1071,18 +1482,39 @@ public class DataManager {
         return true;
     }
 
+    /**
+     * Sets dirs refresh time stamp.
+     *
+     * @param repoID the repo id
+     * @param path   the path
+     */
     public void setDirsRefreshTimeStamp(String repoID, String path) {
         direntsRefreshTimeMap.put(Utils.pathJoin(repoID, path), Utils.now());
     }
 
+    /**
+     * Sets repos refresh time stamp.
+     */
     public void setReposRefreshTimeStamp() {
         repoRefreshTimeStamp = Utils.now();
     }
 
+    /**
+     * Save last pull to refresh time.
+     *
+     * @param lastUpdateTime the last update time
+     * @param whichFragment  the which fragment
+     */
     public void saveLastPullToRefreshTime(long lastUpdateTime, String whichFragment) {
         direntsRefreshTimeMap.put(whichFragment, lastUpdateTime);
     }
 
+    /**
+     * Gets last pull to refresh time.
+     *
+     * @param whichFragment the which fragment
+     * @return the last pull to refresh time
+     */
     public String getLastPullToRefreshTime(String whichFragment) {
 
         if (!direntsRefreshTimeMap.containsKey(whichFragment)) {
@@ -1129,17 +1561,21 @@ public class DataManager {
      * search on server
      *
      * @param query query text
-     * @param page pass 0 to disable page loading
-     *
+     * @param page  pass 0 to disable page loading
      * @return json format strings of searched result
-     *
-     * @throws SeafException
+     * @throws SeafException the seaf exception
      */
     public String search(String query, int page) throws SeafException {
         String json = sc.searchLibraries(query, page);
         return json;
     }
 
+    /**
+     * Parse search result array list.
+     *
+     * @param json the json
+     * @return the array list
+     */
     public ArrayList<SearchedFile> parseSearchResult(String json) {
         if (json == null)
             return null;
@@ -1163,7 +1599,56 @@ public class DataManager {
     }
 
     private FileBlocks chunkFile(String encKey, String enkIv, String filePath) throws IOException {
+
         File file = new File(filePath);
+        InputStream in = null;
+        DataInputStream dis = null;
+        OutputStream out = null;
+        byte[] buffer = new byte[BUFFER_SIZE];
+        int byteRead;
+        byte[] header = lazySodium.randomBytesBuf(SecretStream.HEADERBYTES);
+        SecretStream.State state = null;
+        String ciphertext = null;
+        FileBlocks seafBlock = new FileBlocks();
+        try {
+            final String hdid = Crypto.sha1(header);
+            File blk = new File(storageManager.getTempDir(), hdid);
+            out = new FileOutputStream(blk);
+            out.write(header);
+            out.close();
+            Block block = new Block(hdid, blk.getAbsolutePath(), blk.length(), 0L);
+            seafBlock.blocks.add(block);
+        }catch(NoSuchAlgorithmException e){
+            e.printStackTrace();
+            return null;
+        }
+
+
+        try {
+            state = lazySodium.cryptoSecretStreamInitPush(header, Key.fromPlainString(encKey));
+
+            while((byteRead = dis.read(buffer, 0, BUFFER_SIZE)) != -1){
+                if (byteRead < BUFFER_SIZE)
+                    ciphertext = lazySodium.cryptoSecretStreamPush(state, new String(buffer), SecretStream.TAG_MESSAGE);
+                else
+                    ciphertext = lazySodium.cryptoSecretStreamPush(state, new String(buffer), SecretStream.TAG_FINAL);
+                final String blkid = Crypto.sha1(ciphertext.getBytes());
+                File blk = new File(storageManager.getTempDir(), blkid);
+                Block block = new Block(blkid, blk.getAbsolutePath(), blk.length(), 0L);
+                seafBlock.blocks.add(block);
+                out = new FileOutputStream(blk);
+                out.write(ciphertext.getBytes());
+                out.close();
+            }
+        }catch(SodiumException e){
+            e.printStackTrace();
+        }catch (NoSuchAlgorithmException f){
+            f.printStackTrace();
+        }
+        return seafBlock;
+
+
+        /*File file = new File(filePath);
         InputStream in = null;
         DataInputStream dis;
         OutputStream out = null;
@@ -1206,9 +1691,23 @@ public class DataManager {
         } finally {
             if (out != null) out.close();
             if (in != null) in.close();
-        }
+        }*/
     }
 
+    /**
+     * Upload by blocks.
+     *
+     * @param repoName      the repo name
+     * @param repoId        the repo id
+     * @param dir           the dir
+     * @param filePath      the file path
+     * @param monitor       the monitor
+     * @param isUpdate      the is update
+     * @param isCopyToLocal the is copy to local
+     * @throws NoSuchAlgorithmException the no such algorithm exception
+     * @throws IOException              the io exception
+     * @throws SeafException            the seaf exception
+     */
     public void uploadByBlocks(String repoName, String repoId, String dir,
                                String filePath, ProgressMonitor monitor,
                                boolean isUpdate, boolean isCopyToLocal) throws NoSuchAlgorithmException, IOException, SeafException {

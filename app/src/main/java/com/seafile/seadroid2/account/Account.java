@@ -8,6 +8,9 @@ import com.google.common.base.Objects;
 import com.seafile.seadroid2.BuildConfig;
 import com.seafile.seadroid2.util.Utils;
 
+/**
+ * The type Account.
+ */
 public class Account implements Parcelable, Comparable<Account> {
     private static final String DEBUG_TAG = "Account";
 
@@ -16,17 +19,44 @@ public class Account implements Parcelable, Comparable<Account> {
      */
     public final static String ACCOUNT_TYPE = BuildConfig.ACCOUNT_TYPE;
 
-    // The full URL of the server, like 'http://gonggeng.org/seahub/' or 'http://gonggeng.org/'
+    /**
+     * The Server.
+     */
+// The full URL of the server, like 'http://gonggeng.org/seahub/' or 'http://gonggeng.org/'
     public final String server;
+    /**
+     * The Name.
+     */
     public final String name;
 
+    /**
+     * The Email.
+     */
     public final String email;
 
+    /**
+     * The Is shib.
+     */
     public final Boolean is_shib;
 
+    /**
+     * The Token.
+     */
     public String token;
+    /**
+     * The Session key.
+     */
     public String sessionKey;
 
+    /**
+     * Instantiates a new Account.
+     *
+     * @param server  the server
+     * @param email   the email
+     * @param name    the name
+     * @param token   the token
+     * @param is_shib the is shib
+     */
     public Account(String server, String email, String name, String token, Boolean is_shib) {
         this.name = name;
         this.server = server;
@@ -35,6 +65,16 @@ public class Account implements Parcelable, Comparable<Account> {
         this.is_shib = is_shib;
     }
 
+    /**
+     * Instantiates a new Account.
+     *
+     * @param name       the name
+     * @param server     the server
+     * @param email      the email
+     * @param token      the token
+     * @param is_shib    the is shib
+     * @param sessionKey the session key
+     */
     public Account(String name, String server, String email, String token, Boolean is_shib, String sessionKey) {
         this.server = server;
         this.name = name;
@@ -45,11 +85,21 @@ public class Account implements Parcelable, Comparable<Account> {
     }
 
 
+    /**
+     * Gets server host.
+     *
+     * @return the server host
+     */
     public String getServerHost() {
         String s = server.substring(server.indexOf("://") + 3);
         return s.substring(0, s.indexOf('/'));
     }
 
+    /**
+     * Gets server domain name.
+     *
+     * @return the server domain name
+     */
     public String getServerDomainName() {
         String dn = getServerHost();
         // strip port, like :8000 in 192.168.1.116:8000
@@ -58,17 +108,38 @@ public class Account implements Parcelable, Comparable<Account> {
         return dn;
     }
 
+    /**
+     * Gets email.
+     *
+     * @return the email
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Get name string.
+     *
+     * @return the string
+     */
     public String getName(){
         return name;
     }
+
+    /**
+     * Gets server.
+     *
+     * @return the server
+     */
     public String getServer() {
         return server;
     }
 
+    /**
+     * Gets server no protocol.
+     *
+     * @return the server no protocol
+     */
     public String getServerNoProtocol() {
         String result = server.substring(server.indexOf("://") + 3);
         if (result.endsWith("/"))
@@ -76,22 +147,47 @@ public class Account implements Parcelable, Comparable<Account> {
         return result;
     }
 
+    /**
+     * Gets token.
+     *
+     * @return the token
+     */
     public String getToken() {
         return token;
     }
 
+    /**
+     * Is https boolean.
+     *
+     * @return the boolean
+     */
     public boolean isHttps() {
         return server.startsWith("https");
     }
 
+    /**
+     * Is shib boolean.
+     *
+     * @return the boolean
+     */
     public boolean isShib() {
         return is_shib;
     }
 
+    /**
+     * Gets session key.
+     *
+     * @return the session key
+     */
     public String getSessionKey() {
         return sessionKey;
     }
 
+    /**
+     * Sets session key.
+     *
+     * @param sessionKey the session key
+     */
     public void setSessionKey(String sessionKey) {
         this.sessionKey = sessionKey;
     }
@@ -115,19 +211,39 @@ public class Account implements Parcelable, Comparable<Account> {
         return a.server.equals(this.server) && a.email.equals(this.email);
     }
 
+    /**
+     * Gets signature.
+     *
+     * @return the signature
+     */
     public String getSignature() {
         return String.format("%s (%s)", getServerNoProtocol(), email);
     }
 
+    /**
+     * Gets display name.
+     *
+     * @return the display name
+     */
     public String getDisplayName() {
         String server = Utils.stripSlashes(getServerHost());
         return Utils.assembleUserName(name, email, server);
     }
 
+    /**
+     * Gets android account.
+     *
+     * @return the android account
+     */
     public android.accounts.Account getAndroidAccount() {
         return new android.accounts.Account(getSignature(), ACCOUNT_TYPE);
     }
 
+    /**
+     * Has valid token boolean.
+     *
+     * @return the boolean
+     */
     public boolean hasValidToken() {
         return !TextUtils.isEmpty(token);
     }
@@ -147,6 +263,9 @@ public class Account implements Parcelable, Comparable<Account> {
         out.writeValue(this.is_shib);
     }
 
+    /**
+     * The constant CREATOR.
+     */
     public static final Parcelable.Creator<Account> CREATOR = new Parcelable.Creator<Account>() {
         @Override
         public Account createFromParcel(Parcel source) {
@@ -159,6 +278,11 @@ public class Account implements Parcelable, Comparable<Account> {
         }
     };
 
+    /**
+     * Instantiates a new Account.
+     *
+     * @param in the in
+     */
     protected Account(Parcel in) {
         this.server = in.readString();
         this.name = in.readString();

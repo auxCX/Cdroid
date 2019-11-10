@@ -17,18 +17,27 @@ import java.util.List;
 
 /**
  * Adapter for search list
- *
  */
 public class SearchAdapter extends BaseAdapter {
 
     private List<SearchedFile> items;
     private SearchActivity mActivity;
 
+    /**
+     * Instantiates a new Search adapter.
+     *
+     * @param activity the activity
+     */
     public SearchAdapter(SearchActivity activity) {
         this.mActivity = activity;
         items = Lists.newArrayList();
     }
 
+    /**
+     * Sets items.
+     *
+     * @param data the data
+     */
     public void setItems(List<SearchedFile> data) {
         this.items = data;
     }
@@ -84,14 +93,41 @@ public class SearchAdapter extends BaseAdapter {
             return parentPath;
     }
 
+    /**
+     * Notify changed.
+     */
     public void notifyChanged() {
         notifyDataSetChanged();
     }
 
     private class Viewholder {
-        TextView path, title, subtitle;
-        ImageView icon, action;
+        /**
+         * The Path.
+         */
+        TextView path, /**
+         * The Title.
+         */
+        title, /**
+         * The Subtitle.
+         */
+        subtitle;
+        /**
+         * The Icon.
+         */
+        ImageView icon, /**
+         * The Action.
+         */
+        action;
 
+        /**
+         * Instantiates a new Viewholder.
+         *
+         * @param path     the path
+         * @param title    the title
+         * @param subtitle the subtitle
+         * @param icon     the icon
+         * @param action   the action
+         */
         public Viewholder(TextView path, TextView title, TextView subtitle, ImageView icon, ImageView action) {
             super();
             this.icon = icon;

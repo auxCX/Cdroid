@@ -30,6 +30,9 @@ import com.seafile.seadroid2.util.Utils;
 
 import java.util.List;
 
+/**
+ * The type Starred fragment.
+ */
 public class StarredFragment extends ListFragment {
     private StarredItemAdapter adapter;
     private BrowserActivity mActivity = null;
@@ -52,11 +55,24 @@ public class StarredFragment extends ListFragment {
         return mActivity.getDataManager();
     }
 
+    /**
+     * Gets adapter.
+     *
+     * @return the adapter
+     */
     public StarredItemAdapter getAdapter() {
         return adapter;
     }
 
+    /**
+     * The interface On starred file selected listener.
+     */
     public interface OnStarredFileSelectedListener {
+        /**
+         * On starred file selected.
+         *
+         * @param starredFile the starred file
+         */
         void onStarredFileSelected(SeafStarredFile starredFile);
     }
 
@@ -136,11 +152,17 @@ public class StarredFragment extends ListFragment {
         super.onDetach();
     }
 
+    /**
+     * Refresh.
+     */
     public void refresh() {
         mRefreshType = REFRESH_ON_OVERFLOW_MENU;
         refreshView();
     }
-    
+
+    /**
+     * Refresh view.
+     */
     public void refreshView() {
 
         if (mActivity == null)
@@ -250,6 +272,13 @@ public class StarredFragment extends ListFragment {
 
     }
 
+    /**
+     * Do star file.
+     *
+     * @param repoID   the repo id
+     * @param path     the path
+     * @param filename the filename
+     */
     public void doStarFile(String repoID, String path, String filename) {
 
         if (!Utils.isNetworkOn()) {
@@ -263,10 +292,21 @@ public class StarredFragment extends ListFragment {
 
     private class LoadStarredFilesTask extends AsyncTask<Void, Void, List<SeafStarredFile> > {
 
+        /**
+         * The Err.
+         */
         SeafException err = null;
 
+        /**
+         * The Data manager.
+         */
         DataManager dataManager;
 
+        /**
+         * Instantiates a new Load starred files task.
+         *
+         * @param dataManager the data manager
+         */
         public LoadStarredFilesTask(DataManager dataManager) {
             this.dataManager = dataManager;
         }
@@ -325,11 +365,20 @@ public class StarredFragment extends ListFragment {
         }
     }
 
+    /**
+     * The type Star file task.
+     */
     class StarFileTask extends AsyncTask<Void, Void, Void> {
         private String repoId;
         private String path;
         private SeafException err;
 
+        /**
+         * Instantiates a new Star file task.
+         *
+         * @param repoId the repo id
+         * @param path   the path
+         */
         public StarFileTask(String repoId, String path) {
             this.repoId = repoId;
             this.path = path;
@@ -358,11 +407,20 @@ public class StarredFragment extends ListFragment {
         }
     }
 
+    /**
+     * The type Un star file task.
+     */
     class UnStarFileTask extends AsyncTask<Void, Void, Void> {
         private String repoId;
         private String path;
         private SeafException err;
 
+        /**
+         * Instantiates a new Un star file task.
+         *
+         * @param repoId the repo id
+         * @param path   the path
+         */
         public UnStarFileTask(String repoId, String path) {
             this.repoId = repoId;
             this.path = path;
@@ -402,15 +460,17 @@ public class StarredFragment extends ListFragment {
      * When a user enables this mode by selecting an item,
      * a contextual action bar appears at the top of the screen
      * to present actions the user can perform on the currently selected item(s).
-     *
+     * <p>
      * While this mode is enabled,
      * the user can select multiple items (if you allow it), deselect items,
      * and continue to navigate within the activity (as much as you're willing to allow).
-     *
+     * <p>
      * The action mode is disabled and the contextual action bar disappears
      * when the user deselects all items, presses the BACK button, or selects the Done action on the left side of the bar.
-     *
+     * <p>
      * see http://developer.android.com/guide/topics/ui/menus.html#CAB
+     *
+     * @param position the position
      */
     public void startContextualActionMode(int position) {
         startContextualActionMode();
@@ -422,6 +482,9 @@ public class StarredFragment extends ListFragment {
 
     }
 
+    /**
+     * Start contextual action mode.
+     */
     public void startContextualActionMode() {
         if (mActionMode == null) {
             // start the actionMode
@@ -431,7 +494,7 @@ public class StarredFragment extends ListFragment {
     }
 
     /**
-     *  update state of contextual action bar (CAB)
+     * update state of contextual action bar (CAB)
      */
     public void updateContextualActionBar() {
 
@@ -456,6 +519,9 @@ public class StarredFragment extends ListFragment {
     class ActionModeCallback implements ActionMode.Callback {
         private boolean allItemsSelected;
 
+        /**
+         * Instantiates a new Action mode callback.
+         */
         public ActionModeCallback() {
         }
 

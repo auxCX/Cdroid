@@ -72,15 +72,17 @@ import java.util.concurrent.Future;
 
 /**
  * DocumentProvider for the Storage Access Framework.
- *
+ * <p>
  * It depends on API level 19 and supports API level 21.
- *
+ * <p>
  * This Provider gives access to other Apps to browse, read and write all files
  * contained in Seafile repositories.
- *
  */
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class SeafileProvider extends DocumentsProvider {
+    /**
+     * The constant DEBUG_TAG.
+     */
     public static final String DEBUG_TAG = "SeafileProvider";
 
     private static final String[] SUPPORTED_ROOT_PROJECTION = new String[] {
@@ -113,6 +115,9 @@ public class SeafileProvider extends DocumentsProvider {
     private android.accounts.AccountManager androidAccountManager;
     private AccountManager accountManager;
 
+    /**
+     * The constant NOTIFICATION_URI.
+     */
     public static final Uri NOTIFICATION_URI = DocumentsContract.buildRootsUri(BuildConfig.APPLICATION_ID);
 
     private OnAccountsUpdateListener accountListener = new OnAccountsUpdateListener() {

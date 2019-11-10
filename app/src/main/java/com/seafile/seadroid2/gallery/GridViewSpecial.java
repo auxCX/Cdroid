@@ -27,38 +27,100 @@ import com.google.common.collect.Maps;
 import com.seafile.seadroid2.R;
 
 
+/**
+ * The type Grid view special.
+ */
 public class GridViewSpecial extends View {
     @SuppressWarnings("unused")
     private static final String TAG = "GridViewSpecial";
     private static final float MAX_FLING_VELOCITY = 2500;
 
+    /**
+     * The interface Listener.
+     */
     public static interface Listener {
+        /**
+         * On image clicked.
+         *
+         * @param index the index
+         */
         public void onImageClicked(int index);
+
+        /**
+         * On image tapped.
+         *
+         * @param index the index
+         */
         public void onImageTapped(int index);
+
+        /**
+         * On layout complete.
+         *
+         * @param changed the changed
+         */
         public void onLayoutComplete(boolean changed);
 
         /**
          * Invoked when the <code>GridViewSpecial</code> scrolls.
          *
-         * @param scrollPosition the position of the scroller in the range
-         *         [0, 1], when 0 means on the top and 1 means on the buttom
+         * @param scrollPosition the position of the scroller in the range         [0, 1], when 0 means on the top and 1 means on the buttom
          */
         public void onScroll(float scrollPosition);
     }
 
+    /**
+     * The interface Draw adapter.
+     */
     public static interface DrawAdapter {
+        /**
+         * Draw image.
+         *
+         * @param canvas the canvas
+         * @param image  the image
+         * @param b      the b
+         * @param xPos   the x pos
+         * @param yPos   the y pos
+         * @param w      the w
+         * @param h      the h
+         */
         public void drawImage(Canvas canvas, IImage image,
                 Bitmap b, int xPos, int yPos, int w, int h);
+
+        /**
+         * Draw decoration.
+         *
+         * @param canvas the canvas
+         * @param image  the image
+         * @param xPos   the x pos
+         * @param yPos   the y pos
+         * @param w      the w
+         * @param h      the h
+         */
         public void drawDecoration(Canvas canvas, IImage image,
                 int xPos, int yPos, int w, int h);
     }
 
+    /**
+     * The constant INDEX_NONE.
+     */
     public static final int INDEX_NONE = -1;
 
-    // There are two cell size we will use. It can be set by setSizeChoice().
+    /**
+     * The type Layout spec.
+     */
+// There are two cell size we will use. It can be set by setSizeChoice().
     // The mLeftEdgePadding fields is filled in onLayout(). See the comments
     // in onLayout() for details.
     static class LayoutSpec {
+        /**
+         * Instantiates a new Layout spec.
+         *
+         * @param w                the w
+         * @param h                the h
+         * @param intercellSpacing the intercell spacing
+         * @param leftEdgePadding  the left edge padding
+         * @param metrics          the metrics
+         */
         LayoutSpec(int w, int h, int intercellSpacing, int leftEdgePadding,
                 DisplayMetrics metrics) {
             mCellWidth = dpToPx(w, metrics);
@@ -66,8 +128,21 @@ public class GridViewSpecial extends View {
             mCellSpacing = dpToPx(intercellSpacing, metrics);
             mLeftEdgePadding = dpToPx(leftEdgePadding, metrics);
         }
-        int mCellWidth, mCellHeight;
+
+        /**
+         * The M cell width.
+         */
+        int mCellWidth, /**
+         * The M cell height.
+         */
+        mCellHeight;
+        /**
+         * The M cell spacing.
+         */
         int mCellSpacing;
+        /**
+         * The M left edge padding.
+         */
         int mLeftEdgePadding;
     }
 
@@ -122,6 +197,12 @@ public class GridViewSpecial extends View {
     private boolean mRunning = false;
     private Scroller mScroller = null;
 
+    /**
+     * Instantiates a new Grid view special.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public GridViewSpecial(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
@@ -143,27 +224,52 @@ public class GridViewSpecial extends View {
                 }
             };
 
+    /**
+     * Sets loader.
+     *
+     * @param loader the loader
+     */
     public void setLoader(ImageLoader loader) {
         assertTrue(!mRunning);
         mLoader = loader;
     }
 
+    /**
+     * Sets listener.
+     *
+     * @param listener the listener
+     */
     public void setListener(Listener listener) {
         assertTrue(!mRunning);
         mListener = listener;
     }
 
+    /**
+     * Sets draw adapter.
+     *
+     * @param adapter the adapter
+     */
     public void setDrawAdapter(DrawAdapter adapter) {
         assertTrue(!mRunning);
         mDrawAdapter = adapter;
     }
 
+    /**
+     * Sets image list.
+     *
+     * @param list the list
+     */
     public void setImageList(IImageList list) {
         assertTrue(!mRunning);
         mAllImages = list;
         mCount = mAllImages.getCount();
     }
 
+    /**
+     * Sets size choice.
+     *
+     * @param choice the choice
+     */
     public void setSizeChoice(int choice) {
         assertTrue(!mRunning);
         if (mSizeChoice == choice) return;
@@ -240,12 +346,24 @@ public class GridViewSpecial extends View {
         return mMaxScrollY + getHeight();
     }
 
-    // We cache the three outlines from NinePatch to Bitmap to speed up
+    /**
+     * The constant OUTLINE_EMPTY.
+     */
+// We cache the three outlines from NinePatch to Bitmap to speed up
     // drawing. The cache must be updated if the cell size is changed.
     public static final int OUTLINE_EMPTY = 0;
+    /**
+     * The constant OUTLINE_PRESSED.
+     */
     public static final int OUTLINE_PRESSED = 1;
+    /**
+     * The constant OUTLINE_SELECTED.
+     */
     public static final int OUTLINE_SELECTED = 2;
 
+    /**
+     * The M outline.
+     */
     public Bitmap mOutline[] = new Bitmap[3];
 
     private void generateOutlineBitmap() {
@@ -368,10 +486,20 @@ public class GridViewSpecial extends View {
         }
     }
 
+    /**
+     * Gets current selection.
+     *
+     * @return the current selection
+     */
     public int getCurrentSelection() {
         return mCurrentSelection;
     }
 
+    /**
+     * Invalidate image.
+     *
+     * @param index the index
+     */
     public void invalidateImage(int index) {
         if (index != INDEX_NONE) {
             mImageBlockManager.invalidateImage(index);
@@ -379,6 +507,7 @@ public class GridViewSpecial extends View {
     }
 
     /**
+     * Sets selected index.
      *
      * @param index <code>INDEX_NONE</code> (-1) means remove selection.
      */
@@ -403,11 +532,21 @@ public class GridViewSpecial extends View {
         invalidate();
     }
 
+    /**
+     * Scroll to image.
+     *
+     * @param index the index
+     */
     public void scrollToImage(int index) {
         Rect r = getRectForPosition(index);
         scrollTo(0, r.top);
     }
 
+    /**
+     * Scroll to visible.
+     *
+     * @param index the index
+     */
     public void scrollToVisible(int index) {
         Rect r = getRectForPosition(index);
         int top = getScrollY();
@@ -436,6 +575,9 @@ public class GridViewSpecial extends View {
         }
     }
 
+    /**
+     * Start.
+     */
     public void start() {
         // These must be set before start().
         assertTrue(mLoader != null);
@@ -445,7 +587,10 @@ public class GridViewSpecial extends View {
         requestLayout();
     }
 
-    // If the the underlying data is changed, for example,
+    /**
+     * Stop.
+     */
+// If the the underlying data is changed, for example,
     // an image is deleted, or the size choice is changed,
     // The following sequence is needed:
     //
@@ -491,7 +636,13 @@ public class GridViewSpecial extends View {
         }
     }
 
-    // Return the rectange for the thumbnail in the given position.
+    /**
+     * Gets rect for position.
+     *
+     * @param pos the pos
+     * @return the rect for position
+     */
+// Return the rectange for the thumbnail in the given position.
     Rect getRectForPosition(int pos) {
         int row = pos / mColumns;
         int col = pos - (row * mColumns);
@@ -505,7 +656,14 @@ public class GridViewSpecial extends View {
                 top + mSpec.mCellHeight + mSpec.mCellSpacing);
     }
 
-    // Inverse of getRectForPosition: from screen coordinate to image position.
+    /**
+     * Compute selected index int.
+     *
+     * @param xFloat the x float
+     * @param yFloat the y float
+     * @return the int
+     */
+// Inverse of getRectForPosition: from screen coordinate to image position.
     int computeSelectedIndex(float xFloat, float yFloat) {
         int x = (int) xFloat;
         int y = (int) yFloat;
@@ -544,6 +702,11 @@ public class GridViewSpecial extends View {
         scrollTo(getScrollX() + x, getScrollY() + y);
     }
 
+    /**
+     * Scroll to.
+     *
+     * @param scrollPosition the scroll position
+     */
     public void scrollTo(float scrollPosition) {
         scrollTo(0, Math.round(scrollPosition * mMaxScrollY));
     }
@@ -698,6 +861,9 @@ public class GridViewSpecial extends View {
     }
 }
 
+/**
+ * The type Image block manager.
+ */
 class ImageBlockManager {
     @SuppressWarnings("unused")
     private static final String TAG = "ImageBlockManager";
@@ -730,6 +896,19 @@ class ImageBlockManager {
     private int mStartRow = 0;
     private int mEndRow = 0;
 
+    /**
+     * Instantiates a new Image block manager.
+     *
+     * @param handler        the handler
+     * @param redrawCallback the redraw callback
+     * @param imageList      the image list
+     * @param loader         the loader
+     * @param adapter        the adapter
+     * @param spec           the spec
+     * @param columns        the columns
+     * @param blockWidth     the block width
+     * @param outline        the outline
+     */
     ImageBlockManager(Handler handler, Runnable redrawCallback,
             IImageList imageList, ImageLoader loader,
             GridViewSpecial.DrawAdapter adapter,
@@ -752,7 +931,13 @@ class ImageBlockManager {
         initGraphics();
     }
 
-    // Set the window of visible rows. Once set we will start to load them as
+    /**
+     * Sets visible rows.
+     *
+     * @param startRow the start row
+     * @param endRow   the end row
+     */
+// Set the window of visible rows. Once set we will start to load them as
     // soon as possible (if they are not already in cache).
     public void setVisibleRows(int startRow, int endRow) {
         if (startRow != mStartRow || endRow != mEndRow) {
@@ -762,10 +947,19 @@ class ImageBlockManager {
         }
     }
 
+    /**
+     * The M pending request.
+     */
     int mPendingRequest;  // Number of pending requests (sent to ImageLoader).
-    // We want to keep enough requests in ImageLoader's queue, but not too
+    /**
+     * The constant REQUESTS_LOW.
+     */
+// We want to keep enough requests in ImageLoader's queue, but not too
     // many.
     static final int REQUESTS_LOW = 3;
+    /**
+     * The Requests high.
+     */
     static final int REQUESTS_HIGH = 6;
 
     // After clear requests currently in queue, start loading the thumbnails.
@@ -865,6 +1059,11 @@ class ImageBlockManager {
         return mCache.remove(bestIndex);
     }
 
+    /**
+     * Invalidate image.
+     *
+     * @param index the index
+     */
     public void invalidateImage(int index) {
         int row = index / mColumns;
         int col = index - (row * mColumns);
@@ -876,7 +1075,10 @@ class ImageBlockManager {
         startLoading();
     }
 
-    // After calling recycle(), the instance should not be used anymore.
+    /**
+     * Recycle.
+     */
+// After calling recycle(), the instance should not be used anymore.
     public void recycle() {
         for (ImageBlock blk : mCache.values()) {
             blk.recycle();
@@ -885,7 +1087,15 @@ class ImageBlockManager {
         mEmptyBitmap.recycle();
     }
 
-    // Draw the images to the given canvas.
+    /**
+     * Do draw.
+     *
+     * @param canvas     the canvas
+     * @param thisWidth  the this width
+     * @param thisHeight the this height
+     * @param scrollPos  the scroll pos
+     */
+// Draw the images to the given canvas.
     public void doDraw(Canvas canvas, int thisWidth, int thisHeight,
             int scrollPos) {
         final int height = mBlockHeight;
@@ -935,7 +1145,10 @@ class ImageBlockManager {
         }
     }
 
-    // mEmptyBitmap is what we draw if we the wanted block hasn't been loaded.
+    /**
+     * The M background paint.
+     */
+// mEmptyBitmap is what we draw if we the wanted block hasn't been loaded.
     // (If the user scrolls too fast). It is a gray image with normal outline.
     // mBackgroundPaint is used to draw the (black) background outside
     // mEmptyBitmap.
@@ -968,6 +1181,9 @@ class ImageBlockManager {
         // The row number this block represents.
         private int mRow;
 
+        /**
+         * Instantiates a new Image block.
+         */
         public ImageBlock() {
             mBitmap = Bitmap.createBitmap(mBlockWidth, mBlockHeight,
                     Bitmap.Config.RGB_565);
@@ -975,10 +1191,18 @@ class ImageBlockManager {
             mRow = -1;
         }
 
+        /**
+         * Sets row.
+         *
+         * @param row the row
+         */
         public void setRow(int row) {
             mRow = row;
         }
 
+        /**
+         * Invalidate.
+         */
         public void invalidate() {
             // We do not change mRequestedMask or do cancelAllRequests()
             // because the data coming from pending requests are valid. (We only
@@ -986,7 +1210,10 @@ class ImageBlockManager {
             mCompletedMask = 0;
         }
 
-        // After recycle, the ImageBlock instance should not be accessed.
+        /**
+         * Recycle.
+         */
+// After recycle, the ImageBlock instance should not be accessed.
         public void recycle() {
             cancelAllRequests();
             mBitmap.recycle();
@@ -997,7 +1224,12 @@ class ImageBlockManager {
             return mRow >= mStartRow && mRow < mEndRow;
         }
 
-        // Returns number of requests submitted to ImageLoader.
+        /**
+         * Load images int.
+         *
+         * @return the int
+         */
+// Returns number of requests submitted to ImageLoader.
         public int loadImages() {
             assertTrue(mRow != -1);
 
@@ -1049,7 +1281,12 @@ class ImageBlockManager {
             return retVal;
         }
 
-        // Whether this block has pending requests.
+        /**
+         * Has pending requests boolean.
+         *
+         * @return the boolean
+         */
+// Whether this block has pending requests.
         public boolean hasPendingRequests() {
             return mRequestedMask != 0;
         }
@@ -1094,7 +1331,14 @@ class ImageBlockManager {
             mCanvas.drawBitmap(mOutline, xPos, yPos, null);
         }
 
-        // Draw the block bitmap to the specified canvas.
+        /**
+         * Do draw.
+         *
+         * @param canvas the canvas
+         * @param xPos   the x pos
+         * @param yPos   the y pos
+         */
+// Draw the block bitmap to the specified canvas.
         public void doDraw(Canvas canvas, int xPos, int yPos) {
             int cols = numColumns(mRow);
 
@@ -1131,7 +1375,12 @@ class ImageBlockManager {
             }
         }
 
-        // Mark a request as cancelled. The request has already been removed
+        /**
+         * Cancel request.
+         *
+         * @param col the col
+         */
+// Mark a request as cancelled. The request has already been removed
         // from the queue of ImageLoader, so we only need to mark the fact.
         public void cancelRequest(int col) {
             int mask = (1 << col);

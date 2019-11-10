@@ -39,6 +39,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.seafile.seadroid2.R;
 
+/**
+ * The type Multiple image selection activity.
+ */
 public class MultipleImageSelectionActivity extends NoSearchActivity implements
         GridViewSpecial.Listener, GridViewSpecial.DrawAdapter {
     private static final String STATE_SCROLL_POSITION = "scroll_position";
@@ -49,9 +52,15 @@ public class MultipleImageSelectionActivity extends NoSearchActivity implements
     private ImageManager.ImageListParam mParam;
     private IImageList mAllImages;
     private int mInclusion;
+    /**
+     * The M sort ascending.
+     */
     boolean mSortAscending = false;
     private View mNoImagesView;
     private TextView mSelectionStatus;
+    /**
+     * The constant CROP_MSG.
+     */
     public static final int CROP_MSG = 2;
 
     private Dialog mMediaScanningDialog;
@@ -250,6 +259,11 @@ public class MultipleImageSelectionActivity extends NoSearchActivity implements
         mConfigurationChanged = true;
     }
 
+    /**
+     * Can handle event boolean.
+     *
+     * @return the boolean
+     */
     boolean canHandleEvent() {
         // Don't process event in pause state.
         return (!mPausing) && (mLayoutComplete);
@@ -850,7 +864,13 @@ public class MultipleImageSelectionActivity extends NoSearchActivity implements
     private Bitmap mMissingImageThumbnailBitmap;
     private Bitmap mMissingVideoThumbnailBitmap;
 
-    // Create this bitmap lazily, and only once for all the ImageBlocks to
+    /**
+     * Gets error bitmap.
+     *
+     * @param image the image
+     * @return the error bitmap
+     */
+// Create this bitmap lazily, and only once for all the ImageBlocks to
     // use
     public Bitmap getErrorBitmap(IImage image) {
         if (ImageManager.isImage(image)) {

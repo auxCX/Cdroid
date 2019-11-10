@@ -23,6 +23,20 @@ public class Image extends BaseImage implements IImage {
 
     private int mRotation;
 
+    /**
+     * Instantiates a new Image.
+     *
+     * @param container the container
+     * @param cr        the cr
+     * @param id        the id
+     * @param index     the index
+     * @param uri       the uri
+     * @param dataPath  the data path
+     * @param mimeType  the mime type
+     * @param dateTaken the date taken
+     * @param title     the title
+     * @param rotation  the rotation
+     */
     public Image(BaseImageList container, ContentResolver cr,
             long id, int index, Uri uri, String dataPath,
             String mimeType, long dateTaken, String title,
@@ -37,6 +51,11 @@ public class Image extends BaseImage implements IImage {
         return mRotation;
     }
 
+    /**
+     * Sets degrees rotated.
+     *
+     * @param degrees the degrees
+     */
     protected void setDegreesRotated(int degrees) {
         if (mRotation == degrees) return;
         mRotation = degrees;
@@ -59,8 +78,9 @@ public class Image extends BaseImage implements IImage {
 
     /**
      * Replaces the tag if already there. Otherwise, adds to the exif tags.
-     * @param tag
-     * @param value
+     *
+     * @param tag   the tag
+     * @param value the value
      */
     public void replaceExifTag(String tag, String value) {
         if (mExif == null) {

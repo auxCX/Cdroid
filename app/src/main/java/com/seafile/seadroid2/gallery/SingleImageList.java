@@ -17,6 +17,12 @@ public class SingleImageList implements IImageList {
     private IImage mSingleImage;
     private Uri mUri;
 
+    /**
+     * Instantiates a new Single image list.
+     *
+     * @param resolver the resolver
+     * @param uri      the uri
+     */
     public SingleImageList(ContentResolver resolver, Uri uri) {
         mUri = uri;
         mSingleImage = new UriImage(this, resolver, uri);

@@ -13,12 +13,35 @@ import com.seafile.seadroid2.account.Account;
 import com.seafile.seadroid2.data.DataManager;
 import com.seafile.seadroid2.ui.dialog.TaskDialog.Task;
 
+/**
+ * The type New dir task.
+ */
 class NewDirTask extends TaskDialog.Task {
+    /**
+     * The Repo id.
+     */
     String repoID;
+    /**
+     * The Parent dir.
+     */
     String parentDir;
+    /**
+     * The Dir name.
+     */
     String dirName;
+    /**
+     * The Data manager.
+     */
     DataManager dataManager;
 
+    /**
+     * Instantiates a new New dir task.
+     *
+     * @param repoID      the repo id
+     * @param parentDir   the parent dir
+     * @param dirName     the dir name
+     * @param dataManager the data manager
+     */
     public NewDirTask(String repoID, String parentDir,
                       String dirName, DataManager dataManager) {
         this.repoID = repoID;
@@ -37,6 +60,9 @@ class NewDirTask extends TaskDialog.Task {
     }
 }
 
+/**
+ * The type New dir dialog.
+ */
 public class NewDirDialog extends TaskDialog {
 
     private static final String STATE_TASK_REPO_ID = "new_dir_task.repo_id";
@@ -50,10 +76,22 @@ public class NewDirDialog extends TaskDialog {
     private String repoID;
     private String parentDir;
 
+    /**
+     * Gets new dir name.
+     *
+     * @return the new dir name
+     */
     public String getNewDirName() {
         return dirNameText.getText().toString().trim();
     }
 
+    /**
+     * Init.
+     *
+     * @param repoID    the repo id
+     * @param parentDir the parent dir
+     * @param account   the account
+     */
     public void init(String repoID, String parentDir, Account account) {
         this.repoID = repoID;
         this.parentDir = parentDir;

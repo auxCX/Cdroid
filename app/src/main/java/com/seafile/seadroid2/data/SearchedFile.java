@@ -12,7 +12,18 @@ import org.json.JSONObject;
 public class SearchedFile implements SeafItem {
     private static final String DEBUG_TAG = "SearchedFile";
 
-    public enum FileType {DIR, FILE}
+    /**
+     * The enum File type.
+     */
+    public enum FileType {
+        /**
+         * Dir file type.
+         */
+        DIR,
+        /**
+         * File file type.
+         */
+        FILE}
     private String name;
     private String repoID;
     private long mtime;
@@ -21,6 +32,12 @@ public class SearchedFile implements SeafItem {
     private long size;    // size of file, 0 if type is dir
     private String oid;
 
+    /**
+     * From json searched file.
+     *
+     * @param obj the obj
+     * @return the searched file
+     */
     static SearchedFile fromJson(JSONObject obj) {
         SearchedFile searchedFile = new SearchedFile();
         try {
@@ -40,14 +57,29 @@ public class SearchedFile implements SeafItem {
         }
     }
 
+    /**
+     * Is dir boolean.
+     *
+     * @return the boolean
+     */
     public boolean isDir() {
         return (type == FileType.DIR);
     }
 
+    /**
+     * Gets repo id.
+     *
+     * @return the repo id
+     */
     public String getRepoID() {
         return repoID;
     }
 
+    /**
+     * Gets path.
+     *
+     * @return the path
+     */
     public String getPath() {
         return path;
     }

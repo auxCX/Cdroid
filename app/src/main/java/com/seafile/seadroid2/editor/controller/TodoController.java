@@ -8,13 +8,24 @@ import com.seafile.seadroid2.editor.Utils;
 import com.yydcdut.markdown.MarkdownEditText;
 
 
+/**
+ * The type Todo controller.
+ */
 public class TodoController {
     private MarkdownEditText mRxMDEditText;
 
+    /**
+     * Instantiates a new Todo controller.
+     *
+     * @param rxMDEditText the rx md edit text
+     */
     public TodoController(MarkdownEditText rxMDEditText) {
         mRxMDEditText = rxMDEditText;
     }
 
+    /**
+     * Do todo.
+     */
     public void doTodo() {
         int start = mRxMDEditText.getSelectionStart();
         int end = mRxMDEditText.getSelectionEnd();
@@ -37,6 +48,9 @@ public class TodoController {
         }
     }
 
+    /**
+     * Do todo done.
+     */
     public void doTodoDone() {
         int start = mRxMDEditText.getSelectionStart();
         int end = mRxMDEditText.getSelectionEnd();

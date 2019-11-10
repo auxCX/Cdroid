@@ -26,13 +26,35 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+/**
+ * The type Set password task.
+ */
 class SetPasswordTask extends TaskDialog.Task {
+    /**
+     * The constant DEBUG_TAG.
+     */
     public static final String DEBUG_TAG = SetPasswordTask.class.getSimpleName();
 
+    /**
+     * The Repo id.
+     */
     String repoID;
+    /**
+     * The Password.
+     */
     String password;
+    /**
+     * The Data manager.
+     */
     DataManager dataManager;
 
+    /**
+     * Instantiates a new Set password task.
+     *
+     * @param repoID      the repo id
+     * @param password    the password
+     * @param dataManager the data manager
+     */
     public SetPasswordTask(String repoID, String password,
                            DataManager dataManager) {
         this.repoID = repoID;
@@ -57,7 +79,13 @@ class SetPasswordTask extends TaskDialog.Task {
     }
 }
 
+/**
+ * The type Password dialog.
+ */
 public class PasswordDialog extends TaskDialog {
+    /**
+     * The constant DEBUG_TAG.
+     */
     public static final String DEBUG_TAG = PasswordDialog.class.getCanonicalName();
 
     private static final String STATE_TASK_REPO_NAME = "set_password_task.repo_name";
@@ -71,6 +99,13 @@ public class PasswordDialog extends TaskDialog {
     private Account account;
     private String password;
 
+    /**
+     * Sets repo.
+     *
+     * @param repoName the repo name
+     * @param repoID   the repo id
+     * @param account  the account
+     */
     public void setRepo(String repoName, String repoID, Account account) {
         this.repoName = repoName;
         this.repoID = repoID;
@@ -167,6 +202,11 @@ public class PasswordDialog extends TaskDialog {
         }
     }
 
+    /**
+     * Sets password.
+     *
+     * @param password the password
+     */
     public void setPassword(String password) {
         this.password = password;
     }
@@ -175,6 +215,7 @@ public class PasswordDialog extends TaskDialog {
     protected boolean executeTaskImmediately() {
         return password != null;
     }
+
 
     @Override
     public void onTaskSuccess() {

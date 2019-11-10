@@ -15,12 +15,22 @@ import com.seafile.seadroid2.SeafException;
 import com.seafile.seadroid2.account.Account;
 import com.seafile.seadroid2.data.DataManager;
 
+/**
+ * The type New repo task.
+ */
 class NewRepoTask extends TaskDialog.Task {
 
     private String mRepoName;
     private String mPassword;
     private DataManager mDataManager;
 
+    /**
+     * Instantiates a new New repo task.
+     *
+     * @param repoName    the repo name
+     * @param password    the password
+     * @param dataManager the data manager
+     */
     public NewRepoTask(String repoName, String password, DataManager dataManager) {
         mRepoName = repoName;
         mPassword = password;
@@ -37,6 +47,9 @@ class NewRepoTask extends TaskDialog.Task {
     }
 }
 
+/**
+ * The type New repo dialog.
+ */
 public class NewRepoDialog extends TaskDialog {
 
     private final static String STATE_ACCOUNT = "new_repo_dialog.account";
@@ -52,6 +65,11 @@ public class NewRepoDialog extends TaskDialog {
     private Account mAccount;
     private DataManager mDataManager;
 
+    /**
+     * Init.
+     *
+     * @param account the account
+     */
     public void init(Account account) {
         // The DataManager is not parcelable, so we save the intermediate Account instead
         mAccount = account;
@@ -65,6 +83,11 @@ public class NewRepoDialog extends TaskDialog {
         return mDataManager;
     }
 
+    /**
+     * Gets repo name.
+     *
+     * @return the repo name
+     */
     public String getRepoName() { return mRepoNameText.getText().toString().trim(); }
     private String getPassword() { return mPasswordText.getText().toString().trim(); }
     private String getPasswordConfirmation() { return mPasswordConfirmationText.getText().toString().trim(); }

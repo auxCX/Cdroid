@@ -18,15 +18,44 @@ import java.util.List;
  * * AsyncTask for deleting files
  */
 class DeleteTask extends TaskDialog.Task {
+    /**
+     * The constant DEBUG_TAG.
+     */
     public static final String DEBUG_TAG = "DeleteTask";
 
+    /**
+     * The Repo id.
+     */
     String repoID;
+    /**
+     * The Dirents.
+     */
     List<SeafDirent> dirents;
+    /**
+     * The Path.
+     */
     String path;
+    /**
+     * The Isdir.
+     */
     boolean isdir;
+    /**
+     * The Data manager.
+     */
     DataManager dataManager;
+    /**
+     * The Manager.
+     */
     DeleteTaskManager manager;
 
+    /**
+     * Instantiates a new Delete task.
+     *
+     * @param repoID      the repo id
+     * @param path        the path
+     * @param isdir       the isdir
+     * @param dataManager the data manager
+     */
     public DeleteTask(String repoID, String path, boolean isdir, DataManager dataManager) {
         this.repoID = repoID;
         this.path = path;
@@ -34,6 +63,14 @@ class DeleteTask extends TaskDialog.Task {
         this.dataManager = dataManager;
     }
 
+    /**
+     * Instantiates a new Delete task.
+     *
+     * @param repoID      the repo id
+     * @param path        the path
+     * @param dirents     the dirents
+     * @param dataManager the data manager
+     */
     public DeleteTask(String repoID, String path, List<SeafDirent> dirents, DataManager dataManager) {
         this.repoID = repoID;
         this.path = path;
@@ -64,6 +101,9 @@ class DeleteTask extends TaskDialog.Task {
      */
     class DeleteTaskManager {
 
+        /**
+         * The Waiting list.
+         */
         protected List<DeleteCell> waitingList = Lists.newArrayList();
 
         private synchronized boolean hasInQue(DeleteCell deleteTask) {
@@ -75,6 +115,11 @@ class DeleteTask extends TaskDialog.Task {
             return false;
         }
 
+        /**
+         * Add task to que.
+         *
+         * @param cell the cell
+         */
         public void addTaskToQue(DeleteCell cell) {
             if (!hasInQue(cell)) {
                 // remove the cancelled or failed cell if any
@@ -85,6 +130,9 @@ class DeleteTask extends TaskDialog.Task {
             }
         }
 
+        /**
+         * Do next.
+         */
         public synchronized void doNext() {
             if (!waitingList.isEmpty()) {
                 // Log.d(DEBUG_TAG, "--- do next!");
@@ -110,26 +158,51 @@ class DeleteTask extends TaskDialog.Task {
         private String path;
         private boolean isdir;
 
+        /**
+         * Instantiates a new Delete cell.
+         *
+         * @param repoID the repo id
+         * @param path   the path
+         * @param isdir  the isdir
+         */
         public DeleteCell(String repoID, String path, boolean isdir) {
             this.repoID = repoID;
             this.path = path;
             this.isdir = isdir;
         }
 
+        /**
+         * Gets repo id.
+         *
+         * @return the repo id
+         */
         public String getRepoID() {
             return repoID;
         }
 
+        /**
+         * Gets path.
+         *
+         * @return the path
+         */
         public String getPath() {
             return path;
         }
 
+        /**
+         * Isdir boolean.
+         *
+         * @return the boolean
+         */
         public boolean isdir() {
             return isdir;
         }
     }
 }
 
+/**
+ * The type Delete file dialog.
+ */
 public class DeleteFileDialog extends TaskDialog {
     private String repoID;
     private String path;
@@ -139,6 +212,14 @@ public class DeleteFileDialog extends TaskDialog {
     private DataManager dataManager;
     private Account account;
 
+    /**
+     * Init.
+     *
+     * @param repoID  the repo id
+     * @param path    the path
+     * @param isdir   the isdir
+     * @param account the account
+     */
     public void init(String repoID, String path, boolean isdir, Account account) {
         this.repoID = repoID;
         this.path = path;
@@ -146,6 +227,14 @@ public class DeleteFileDialog extends TaskDialog {
         this.account = account;
     }
 
+    /**
+     * Init.
+     *
+     * @param repoID  the repo id
+     * @param path    the path
+     * @param dirents the dirents
+     * @param account the account
+     */
     public void init(String repoID, String path, List<SeafDirent> dirents, Account account) {
         this.repoID = repoID;
         this.path = path;

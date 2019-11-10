@@ -15,13 +15,40 @@ import com.seafile.seadroid2.data.DataManager;
 import com.seafile.seadroid2.ui.dialog.TaskDialog.Task;
 import com.seafile.seadroid2.util.Utils;
 
+/**
+ * The type Rename task.
+ */
 class RenameTask extends TaskDialog.Task {
+    /**
+     * The Repo id.
+     */
     String repoID;
+    /**
+     * The Path.
+     */
     String path;
+    /**
+     * The New name.
+     */
     String newName;
+    /**
+     * The Isdir.
+     */
     boolean isdir;
+    /**
+     * The Data manager.
+     */
     DataManager dataManager;
 
+    /**
+     * Instantiates a new Rename task.
+     *
+     * @param repoID      the repo id
+     * @param path        the path
+     * @param newName     the new name
+     * @param isdir       the isdir
+     * @param dataManager the data manager
+     */
     public RenameTask(String repoID, String path,
                       String newName, boolean isdir, DataManager dataManager) {
         this.repoID = repoID;
@@ -44,6 +71,9 @@ class RenameTask extends TaskDialog.Task {
     }
 }
 
+/**
+ * The type Rename file dialog.
+ */
 public class RenameFileDialog extends TaskDialog {
     private EditText fileNameText;
     private String repoID;
@@ -58,6 +88,14 @@ public class RenameFileDialog extends TaskDialog {
     private static final String STATE_ISDIR = "rename_task.account";
     private static final String STATE_ACCOUNT = "rename_task.account";
 
+    /**
+     * Init.
+     *
+     * @param repoID  the repo id
+     * @param path    the path
+     * @param isdir   the isdir
+     * @param account the account
+     */
     public void init(String repoID, String path, boolean isdir, Account account) {
         this.repoID = repoID;
         this.path = path;
@@ -73,6 +111,11 @@ public class RenameFileDialog extends TaskDialog {
         return dataManager;
     }
 
+    /**
+     * Gets new file name.
+     *
+     * @return the new file name
+     */
     public String getNewFileName() {
         return fileNameText.getText().toString().trim();
     }

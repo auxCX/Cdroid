@@ -18,18 +18,33 @@ public class ServerInfo implements Parcelable{
     private String version;
     private String features;
 
+    /**
+     * Instantiates a new Server info.
+     *
+     * @param url      the url
+     * @param version  the version
+     * @param features the features
+     */
     public ServerInfo(String url, String version, String features) {
         this.url = url;
         this.version = version;
         this.features = features;
     }
 
+    /**
+     * Instantiates a new Server info.
+     *
+     * @param in the in
+     */
     protected ServerInfo(Parcel in) {
         url = in.readString();
         version = in.readString();
         features = in.readString();
     }
 
+    /**
+     * The constant CREATOR.
+     */
     public static final Creator<ServerInfo> CREATOR = new Creator<ServerInfo>() {
         @Override
         public ServerInfo createFromParcel(Parcel in) {
@@ -43,6 +58,7 @@ public class ServerInfo implements Parcelable{
     };
 
     /**
+     * Gets version.
      *
      * @return Server version. Might be null
      */
@@ -51,6 +67,7 @@ public class ServerInfo implements Parcelable{
     }
 
     /**
+     * Gets features.
      *
      * @return Server features. Might be null
      */
@@ -58,14 +75,29 @@ public class ServerInfo implements Parcelable{
         return features;
     }
 
+    /**
+     * Is pro edition boolean.
+     *
+     * @return the boolean
+     */
     public boolean isProEdition() {
         return features != null && features.contains("seafile-pro");
     }
 
+    /**
+     * Is search enabled boolean.
+     *
+     * @return the boolean
+     */
     public boolean isSearchEnabled() {
         return features != null && features.contains("file-search");
     }
 
+    /**
+     * Can local decrypt boolean.
+     *
+     * @return the boolean
+     */
     public boolean canLocalDecrypt() {
         if (TextUtils.isEmpty(version)
                 || version.length() != 5)
@@ -77,10 +109,23 @@ public class ServerInfo implements Parcelable{
         return versionCode >= 510;
     }
 
+    /**
+     * Gets url.
+     *
+     * @return the url
+     */
     public String getUrl() {
         return url;
     }
 
+    /**
+     * From json server info.
+     *
+     * @param obj    the obj
+     * @param server the server
+     * @return the server info
+     * @throws JSONException the json exception
+     */
     public static ServerInfo fromJson(JSONObject obj, String server) throws JSONException {
         String version = obj.optString("version");
         String features = obj.optString("features");

@@ -7,10 +7,18 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * The type Seaf group.
+ */
 public class SeafGroup implements SeafItem {
     private String name;
     private List<SeafRepo> repos = Lists.newArrayList();
 
+    /**
+     * Instantiates a new Seaf group.
+     *
+     * @param name the name
+     */
     public SeafGroup(String name) {
         this.name = name;
     }
@@ -30,10 +38,20 @@ public class SeafGroup implements SeafItem {
         return 0;
     }
 
+    /**
+     * Gets repos.
+     *
+     * @return the repos
+     */
     public List<SeafRepo> getRepos() {
         return repos;
     }
 
+    /**
+     * Add if absent.
+     *
+     * @param repo the repo
+     */
     public void addIfAbsent(SeafRepo repo) {
         if (!repos.contains(repo))
             this.repos.add(repo);
@@ -41,6 +59,9 @@ public class SeafGroup implements SeafItem {
 
     /**
      * sort collections by repository name or last modified time
+     *
+     * @param type  the type
+     * @param order the order
      */
     public void sortByType(int type, int order) {
         if (type == SeafItemAdapter.SORT_BY_NAME) {

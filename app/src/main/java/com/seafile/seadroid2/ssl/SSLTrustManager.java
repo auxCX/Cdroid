@@ -30,9 +30,21 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+/**
+ * The type Ssl trust manager.
+ */
 public final class SSLTrustManager {
+    /**
+     * The enum Ssl failure reason.
+     */
     public enum SslFailureReason {
+        /**
+         * Cert not trusted ssl failure reason.
+         */
         CERT_NOT_TRUSTED,
+        /**
+         * Cert changed ssl failure reason.
+         */
         CERT_CHANGED,
     }
 
@@ -51,6 +63,11 @@ public final class SSLTrustManager {
     private SSLTrustManager() {
     }
 
+    /**
+     * Instance ssl trust manager.
+     *
+     * @return the ssl trust manager
+     */
     public static synchronized SSLTrustManager instance() {
         if (instance == null) {
             instance = new SSLTrustManager();
@@ -82,6 +99,12 @@ public final class SSLTrustManager {
         }
     }
 
+    /**
+     * Get trust managers trust manager [ ].
+     *
+     * @param account the account
+     * @return the trust manager [ ]
+     */
     public synchronized TrustManager[] getTrustManagers(Account account) {
         SecureX509TrustManager mgr = managers.get(account);
         if (mgr == null) {
@@ -92,6 +115,12 @@ public final class SSLTrustManager {
         return new TrustManager[]{mgr};
     }
 
+    /**
+     * Gets ssl socket factory.
+     *
+     * @param account the account
+     * @return the ssl socket factory
+     */
     public synchronized SSLSocketFactory getSSLSocketFactory(Account account) {
         SSLSocketFactory factory = cachedFactories.get(account);
 
@@ -114,6 +143,12 @@ public final class SSLTrustManager {
         return factory;
     }
 
+    /**
+     * Gets certs chain for account.
+     *
+     * @param account the account
+     * @return the certs chain for account
+     */
     public List<X509Certificate> getCertsChainForAccount(Account account) {
         SecureX509TrustManager mgr = managers.get(account);
         if (mgr == null) {
@@ -123,6 +158,13 @@ public final class SSLTrustManager {
         return mgr.getServerCertsChain();
     }
 
+    /**
+     * Gets certificate info.
+     *
+     * @param account the account
+     * @return the certificate info
+     * @throws CertificateParsingException the certificate parsing exception
+     */
     public X509Certificate getCertificateInfo(Account account) throws CertificateParsingException {
         List<X509Certificate> certs = getCertsChainForAccount(account);
         if (certs == null || certs.size() == 0) {
@@ -132,6 +174,12 @@ public final class SSLTrustManager {
         return cert;
     }
 
+    /**
+     * Gets failure reason.
+     *
+     * @param account the account
+     * @return the failure reason
+     */
     public SslFailureReason getFailureReason(Account account) {
         SecureX509TrustManager mgr = managers.get(account);
         SslFailureReason reason = null;
@@ -145,6 +193,8 @@ public final class SSLTrustManager {
     /**
      * Reorder the certificates chain, since it may not be in the right order when passed to us
      *
+     * @param certificates the certificates
+     * @return the list
      * @see http://stackoverflow.com/questions/7822381/need-help-understanding-certificate-chains
      */
     public List<X509Certificate> orderCerts(X509Certificate[] certificates) {
@@ -195,15 +245,30 @@ public final class SSLTrustManager {
 
         private volatile List<X509Certificate> certsChain = ImmutableList.of();
 
+        /**
+         * Instantiates a new Secure x 509 trust manager.
+         *
+         * @param account the account
+         */
         public SecureX509TrustManager(Account account) {
             this.account = account;
             Log.d(DEBUG_TAG, "a SecureX509TrustManager is created:" + hashCode());
         }
 
+        /**
+         * Gets server certs chain.
+         *
+         * @return the server certs chain
+         */
         public List<X509Certificate> getServerCertsChain() {
             return certsChain;
         }
 
+        /**
+         * Gets reason.
+         *
+         * @return the reason
+         */
         public SslFailureReason getReason() {
             return reason;
         }
@@ -233,6 +298,12 @@ public final class SSLTrustManager {
             }
         }
 
+        /**
+         * Gets ceritificate info.
+         *
+         * @return the ceritificate info
+         * @throws CertificateParsingException the certificate parsing exception
+         */
         public String getCeritificateInfo() throws CertificateParsingException {
             X509Certificate cert = CertsManager.instance().getCertificate(account);
             return "sigalgName:" + cert.getSigAlgName() + " Type: "
@@ -293,6 +364,11 @@ public final class SSLTrustManager {
         }
     }
 
+    /**
+     * Gets cached factories.
+     *
+     * @return the cached factories
+     */
     public Map<Account, SSLSocketFactory> getCachedFactories() {
         return cachedFactories;
     }
@@ -302,6 +378,11 @@ public final class SSLTrustManager {
     }*/
 
 
+    /**
+     * Gets default trust manager.
+     *
+     * @return the default trust manager
+     */
     public X509TrustManager getDefaultTrustManager() {
         return defaultTrustManager;
     }

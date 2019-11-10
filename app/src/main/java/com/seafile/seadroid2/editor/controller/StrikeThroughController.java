@@ -8,14 +8,25 @@ import com.seafile.seadroid2.editor.Utils;
 import com.yydcdut.markdown.MarkdownEditText;
 
 
+/**
+ * The type Strike through controller.
+ */
 public class StrikeThroughController {
     private MarkdownEditText mRxMDEditText;
 
+    /**
+     * Instantiates a new Strike through controller.
+     *
+     * @param rxMDEditText the rx md edit text
+     */
     public StrikeThroughController(MarkdownEditText rxMDEditText) {
         mRxMDEditText = rxMDEditText;
     }
 
 
+    /**
+     * Do strike through.
+     */
     public void doStrikeThrough() {
         int start = mRxMDEditText.getSelectionStart();
         int end = mRxMDEditText.getSelectionEnd();

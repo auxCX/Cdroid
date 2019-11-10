@@ -15,10 +15,19 @@ import com.seafile.seadroid2.data.EventDetailsTree;
 
 import java.util.List;
 
+/**
+ * The type Bottom sheet adapter.
+ */
 public class BottomSheetAdapter extends BaseAdapter {
     private List<EventDetailsFileItem> items;
     private Context context;
 
+    /**
+     * Instantiates a new Bottom sheet adapter.
+     *
+     * @param context the context
+     * @param items   the items
+     */
     public BottomSheetAdapter(Context context, List<EventDetailsFileItem> items) {
         this.items = items;
         this.context = context;
@@ -79,8 +88,17 @@ public class BottomSheetAdapter extends BaseAdapter {
         return contentView;
     }
 
+    /**
+     * The type View holder.
+     */
     static class ViewHolder{
+        /**
+         * The File.
+         */
         public TextView file;
+        /**
+         * The Icon.
+         */
         public IconTextView icon;
     }
 }

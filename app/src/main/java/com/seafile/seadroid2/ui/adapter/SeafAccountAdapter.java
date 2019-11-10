@@ -8,6 +8,11 @@ import com.seafile.seadroid2.R;
  */
 public class SeafAccountAdapter extends AccountAdapter {
 
+    /**
+     * Instantiates a new Seaf account adapter.
+     *
+     * @param context the context
+     */
     public SeafAccountAdapter(Context context) {
         super(context);
     }

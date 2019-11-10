@@ -16,8 +16,17 @@ import com.seafile.seadroid2.R;
  */
 public class CustomNotificationBuilder extends NotificationCompat.Builder {
 
+    /**
+     * The constant CHANNEL_ID_ERROR.
+     */
     public static final String CHANNEL_ID_ERROR = "error";
+    /**
+     * The constant CHANNEL_ID_UPLOAD.
+     */
     public static final String CHANNEL_ID_UPLOAD = "upload";
+    /**
+     * The constant CHANNEL_ID_DOWNLOAD.
+     */
     public static final String CHANNEL_ID_DOWNLOAD = "download";
 
     /**
@@ -27,12 +36,12 @@ public class CustomNotificationBuilder extends NotificationCompat.Builder {
 
     /**
      * Fatory method.
-     *
+     * <p>
      * Instances of this class will be only returned in Android versions needing it.
      *
-     * @param context       Context that will use the builder to create notifications
-     * @return              An instance of this class, or of the regular
-     *                      {@link NotificationCompat.Builder}, when it is good enough.
+     * @param context   Context that will use the builder to create notifications
+     * @param channelId the channel id
+     * @return An instance of this class, or of the regular                      {@link NotificationCompat.Builder}, when it is good enough.
      */
     public static NotificationCompat.Builder getNotificationBuilder(Context context, String channelId) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {

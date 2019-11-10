@@ -14,10 +14,19 @@ import com.google.common.collect.Lists;
 import com.seafile.seadroid2.SeadroidApplication;
 import com.seafile.seadroid2.account.Account;
 
+/**
+ * The type Avatar db helper.
+ */
 public class AvatarDBHelper extends SQLiteOpenHelper {
     private static final String DEBUG_TAG = "AvatarDBHelper";
 
+    /**
+     * The constant DATABASE_VERSION.
+     */
     public static final int DATABASE_VERSION = 1;
+    /**
+     * The constant DATABASE_NAME.
+     */
     public static final String DATABASE_NAME = "avatar.db";
     private static final String AVATAR_TABLE_NAME = "Avatar";
     
@@ -42,6 +51,9 @@ public class AvatarDBHelper extends SQLiteOpenHelper {
             /*AVATAR_COLUMN_IS_DEFAULT*/
     };
 
+    /**
+     * The constant hasAvatarProjection.
+     */
     public static final String [] hasAvatarProjection = {
             AVATAR_COLUMN_SIGNATURE,
             AVATAR_COLUMN_URL,
@@ -50,7 +62,12 @@ public class AvatarDBHelper extends SQLiteOpenHelper {
 
     private static AvatarDBHelper dbHelper = null;
     private SQLiteDatabase database = null;
-    
+
+    /**
+     * Gets avatar db helper.
+     *
+     * @return the avatar db helper
+     */
     public static synchronized AvatarDBHelper getAvatarDbHelper() {
         if (dbHelper != null)
             return dbHelper;
@@ -63,6 +80,12 @@ public class AvatarDBHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * Has avatar boolean.
+     *
+     * @param account the account
+     * @return the boolean
+     */
     public boolean hasAvatar(Account account) {
 
         if (account == null)
@@ -92,6 +115,11 @@ public class AvatarDBHelper extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Gets avatar list.
+     *
+     * @return the avatar list
+     */
     public List<Avatar> getAvatarList() {
         Cursor cursor = database.query(
         AVATAR_TABLE_NAME,
@@ -121,6 +149,11 @@ public class AvatarDBHelper extends SQLiteOpenHelper {
         return avatars;
     }
 
+    /**
+     * Save avatars.
+     *
+     * @param avatars the avatars
+     */
     public void saveAvatars(List<Avatar> avatars) {
 
         List<Avatar> validAvatars = Lists.newArrayList();

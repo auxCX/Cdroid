@@ -31,6 +31,9 @@ public class MarkdownActivity extends BaseActivity implements Toolbar.OnMenuItem
 
     private MarkdownView markdownView;
 
+    /**
+     * The Path.
+     */
     String path;
 
     @Override

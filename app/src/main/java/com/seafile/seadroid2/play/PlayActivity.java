@@ -23,10 +23,12 @@ import java.io.File;
 
 
 /**
+ * The type Play activity.
+ *
  * @Description: [ video play online activity ]
  * @Author: [Saud]
- * @CreateDate: [2017/7/22 2:09]
- * @UpDate: [2017/7/22 2:09]
+ * @CreateDate: [2017 /7/22 2:09]
+ * @UpDate: [2017 /7/22 2:09]
  * @Version: [v1.0]
  */
 public class PlayActivity extends BaseActivity implements VideoLinkStateListener {

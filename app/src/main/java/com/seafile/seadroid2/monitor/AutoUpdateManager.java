@@ -33,6 +33,11 @@ public class AutoUpdateManager implements Runnable, CachedFileChangedListener {
     private Set<AutoUpdateInfo> infos = Sets.newHashSet();
     private MonitorDBHelper db = MonitorDBHelper.getInstance();
 
+    /**
+     * On transfer service connected.
+     *
+     * @param txService the tx service
+     */
     public void onTransferServiceConnected(TransferService txService) {
         this.txService = txService;
         running = true;
@@ -46,6 +51,9 @@ public class AutoUpdateManager implements Runnable, CachedFileChangedListener {
         thread.start();
     }
 
+    /**
+     * Stop.
+     */
     public void stop() {
         running = false;
     }
@@ -66,6 +74,13 @@ public class AutoUpdateManager implements Runnable, CachedFileChangedListener {
         addTask(account, cachedFile, localFile);
     }
 
+    /**
+     * Add task.
+     *
+     * @param account    the account
+     * @param cachedFile the cached file
+     * @param localFile  the local file
+     */
     public void addTask(Account account, SeafCachedFile cachedFile, File localFile) {
         AutoUpdateInfo info = new AutoUpdateInfo(account, cachedFile.repoID, cachedFile.repoName,
                 Utils.getParentPath(cachedFile.path), localFile.getPath());
@@ -107,6 +122,13 @@ public class AutoUpdateManager implements Runnable, CachedFileChangedListener {
 
     /**
      * This callback in called in the main thread when the transfer service broadcast is received
+     *
+     * @param account   the account
+     * @param repoID    the repo id
+     * @param repoName  the repo name
+     * @param parentDir the parent dir
+     * @param localPath the local path
+     * @param version   the version
      */
     public void onFileUpdateSuccess(Account account, String repoID, String repoName,
                                     String parentDir, String localPath, int version) {
@@ -131,6 +153,17 @@ public class AutoUpdateManager implements Runnable, CachedFileChangedListener {
         return false;
     }
 
+    /**
+     * On file update failure.
+     *
+     * @param account   the account
+     * @param repoID    the repo id
+     * @param repoName  the repo name
+     * @param parentDir the parent dir
+     * @param localPath the local path
+     * @param e         the e
+     * @param version   the version
+     */
     public void onFileUpdateFailure(Account account,
                                     String repoID,
                                     String repoName,

@@ -28,6 +28,9 @@ import com.seafile.seadroid2.util.Utils;
  * Check and download the latest version of a file and open it
  */
 public class FetchFileDialog extends DialogFragment {
+    /**
+     * The constant DEBUG_TAG.
+     */
     public static final String DEBUG_TAG = "FetchFileDialog";
 
     private String repoName;
@@ -46,9 +49,25 @@ public class FetchFileDialog extends DialogFragment {
 
     private final Handler mTimer = new Handler();
 
+    /**
+     * The interface Fetch file listener.
+     */
     public interface FetchFileListener {
+        /**
+         * On dismiss.
+         */
         void onDismiss();
+
+        /**
+         * On success.
+         */
         void onSuccess();
+
+        /**
+         * On failure.
+         *
+         * @param e the e
+         */
         void onFailure(SeafException e);
     }
 
@@ -56,6 +75,15 @@ public class FetchFileDialog extends DialogFragment {
         return (BrowserActivity)getActivity();
     }
 
+    /**
+     * Init.
+     *
+     * @param repoName the repo name
+     * @param repoID   the repo id
+     * @param path     the path
+     * @param fileSize the file size
+     * @param listener the listener
+     */
     public void init(String repoName, String repoID, String path, long fileSize, FetchFileListener listener) {
         this.repoName = repoName;
         this.repoID = repoID;
@@ -84,6 +112,9 @@ public class FetchFileDialog extends DialogFragment {
         super.onStop();
     }
 
+    /**
+     * Start timer.
+     */
     public void startTimer() {
         Log.d(DEBUG_TAG, "timer started");
         mTimer.postDelayed(new Runnable() {
@@ -98,15 +129,28 @@ public class FetchFileDialog extends DialogFragment {
         }, 1 * 1000);
     }
 
+    /**
+     * Stop timer.
+     */
     public void stopTimer() {
         Log.d(DEBUG_TAG, "timer stopped");
         mTimer.removeCallbacksAndMessages(null);
     }
 
+    /**
+     * Gets task id.
+     *
+     * @return the task id
+     */
     public int getTaskID() {
         return taskID;
     }
 
+    /**
+     * Handle download task info.
+     *
+     * @param info the info
+     */
     public void handleDownloadTaskInfo(DownloadTaskInfo info) {
         if (cancelled) {
             return;
@@ -165,6 +209,9 @@ public class FetchFileDialog extends DialogFragment {
         }
     }
 
+    /**
+     * On task finished.
+     */
     protected void onTaskFinished() {
         getDialog().dismiss();
         if (mListener != null) {

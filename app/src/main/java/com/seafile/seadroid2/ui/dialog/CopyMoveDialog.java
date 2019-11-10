@@ -15,12 +15,24 @@ import com.seafile.seadroid2.data.SeafRepo;
 import com.seafile.seadroid2.ui.CopyMoveContext;
 import com.seafile.seadroid2.util.Utils;
 
+/**
+ * The type Copy move dialog.
+ */
 public class CopyMoveDialog extends TaskDialog {
     private DataManager dataManager;
     private Account account;
     private TextView tvMessage;
+    /**
+     * The Ctx.
+     */
     CopyMoveContext ctx;
 
+    /**
+     * Init.
+     *
+     * @param account the account
+     * @param ctx     the ctx
+     */
     public void init(Account account, CopyMoveContext ctx) {
         this.account = account;
         this.ctx = ctx;

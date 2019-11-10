@@ -24,6 +24,9 @@ import okio.Okio;
 import okio.Source;
 
 
+/**
+ * The type Request manager.
+ */
 public class RequestManager {
 
     private OkHttpClient client;
@@ -44,11 +47,22 @@ public class RequestManager {
                 .build();
     }
 
+    /**
+     * Gets client.
+     *
+     * @return the client
+     */
     public OkHttpClient getClient() {
         return client;
     }
 
 
+    /**
+     * Gets instance.
+     *
+     * @param account the account
+     * @return the instance
+     */
     public static RequestManager getInstance(Account account) {
         if (mRequestManager == null) {
             synchronized (RequestManager.class) {
@@ -81,10 +95,10 @@ public class RequestManager {
     /**
      * Create progress RequestBody
      *
-     * @param monitor
-     * @param file
-     * @param <T>
-     * @return
+     * @param <T>     the type parameter
+     * @param monitor the monitor
+     * @param file    the file
+     * @return request body
      */
     public <T> RequestBody createProgressRequestBody(ProgressMonitor monitor, final File file) {
         return new RequestBody() {

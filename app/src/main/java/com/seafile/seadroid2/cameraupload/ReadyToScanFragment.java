@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import com.seafile.seadroid2.R;
 
+/**
+ * The type Ready to scan fragment.
+ */
 public class ReadyToScanFragment extends Fragment {
 
     private Button continueBtn;

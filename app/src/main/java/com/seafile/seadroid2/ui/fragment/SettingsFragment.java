@@ -55,13 +55,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Settings fragment.
+ */
 public class SettingsFragment extends CustomPreferenceFragment {
     private static final String DEBUG_TAG = "SettingsFragment";
 
+    /**
+     * The constant CAMERA_UPLOAD_BOTH_PAGES.
+     */
     public static final String CAMERA_UPLOAD_BOTH_PAGES = "com.seafile.seadroid2.camera.upload";
+    /**
+     * The constant CAMERA_UPLOAD_REMOTE_LIBRARY.
+     */
     public static final String CAMERA_UPLOAD_REMOTE_LIBRARY = "com.seafile.seadroid2.camera.upload.library";
+    /**
+     * The constant CAMERA_UPLOAD_LOCAL_DIRECTORIES.
+     */
     public static final String CAMERA_UPLOAD_LOCAL_DIRECTORIES = "com.seafile.seadroid2.camera.upload.directories";
+    /**
+     * The constant CONTACTS_UPLOAD_REMOTE_LIBRARY.
+     */
     public static final String CONTACTS_UPLOAD_REMOTE_LIBRARY = "com.seafile.seadroid2.contacts.upload.library";
+    /**
+     * The constant CHOOSE_CAMERA_UPLOAD_REQUEST.
+     */
     public static final int CHOOSE_CAMERA_UPLOAD_REQUEST = 2;
 //    public static final int CHOOSE_CONTACTS_UPLOAD_REQUEST = 3;
     // Account Info
@@ -80,6 +98,9 @@ public class SettingsFragment extends CustomPreferenceFragment {
 
     private SettingsActivity mActivity;
     private String appVersion;
+    /**
+     * The Settings mgr.
+     */
     public SettingsManager settingsMgr;
     private CameraUploadManager cameraManager;
 //    public ContactsUploadManager contactsManager;
@@ -771,6 +792,11 @@ public class SettingsFragment extends CustomPreferenceFragment {
         }
     }
 
+    /**
+     * Gets current user identifier.
+     *
+     * @return the current user identifier
+     */
     public String getCurrentUserIdentifier() {
         Account account = accountMgr.getCurrentAccount();
 
@@ -780,10 +806,22 @@ public class SettingsFragment extends CustomPreferenceFragment {
         return account.getDisplayName();
     }
 
+    /**
+     * Save account info.
+     *
+     * @param signature   the signature
+     * @param accountInfo the account info
+     */
     public void saveAccountInfo(String signature, AccountInfo accountInfo) {
         accountInfoMap.put(signature, accountInfo);
     }
 
+    /**
+     * Gets account info by signature.
+     *
+     * @param signature the signature
+     * @return the account info by signature
+     */
     public AccountInfo getAccountInfoBySignature(String signature) {
         if (accountInfoMap.containsKey(signature))
             return accountInfoMap.get(signature);
@@ -795,6 +833,9 @@ public class SettingsFragment extends CustomPreferenceFragment {
         ConcurrentAsyncTask.execute(new CalculateCacheTask());
     }
 
+    /**
+     * The type Calculate cache task.
+     */
     class CalculateCacheTask extends AsyncTask<String, Void, Long> {
 
         @Override
@@ -810,6 +851,9 @@ public class SettingsFragment extends CustomPreferenceFragment {
 
     }
 
+    /**
+     * The type Update storage s location summary task.
+     */
     class UpdateStorageSLocationSummaryTask extends AsyncTask<Void, Void, Void> {
 
         @Override

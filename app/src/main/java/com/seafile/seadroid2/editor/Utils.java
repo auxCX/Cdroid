@@ -4,6 +4,9 @@ import android.support.annotation.Nullable;
 import android.text.style.AlignmentSpan;
 import android.widget.EditText;
 
+/**
+ * The type Utils.
+ */
 public class Utils {
     /**
      * find '\n' from "start" position
@@ -37,6 +40,16 @@ public class Utils {
         return -1;
     }
 
+    /**
+     * Gets spans.
+     *
+     * @param <T>      the type parameter
+     * @param editText the edit text
+     * @param start    the start
+     * @param end      the end
+     * @param clazz    the clazz
+     * @return the spans
+     */
     @Nullable
     public static <T> T getSpans(EditText editText, int start, int end, Class<T> clazz) {
         T[] ts = editText.getText().getSpans(start, end, clazz);
@@ -46,6 +59,14 @@ public class Utils {
         return null;
     }
 
+    /**
+     * Has center span boolean.
+     *
+     * @param editText the edit text
+     * @param start    the start
+     * @param end      the end
+     * @return the boolean
+     */
     public static boolean hasCenterSpan(EditText editText, int start, int end) {
         AlignmentSpan.Standard centerSpan = Utils.getSpans(editText, start, end, AlignmentSpan.Standard.class);
         if (centerSpan == null) {
@@ -56,6 +77,13 @@ public class Utils {
     }
 
 
+    /**
+     * Safe position int.
+     *
+     * @param position the position
+     * @param s        the s
+     * @return the int
+     */
     public static int safePosition(int position, CharSequence s) {
         return position > s.length() ? s.length() : (position < 0 ? 0 : position);
     }

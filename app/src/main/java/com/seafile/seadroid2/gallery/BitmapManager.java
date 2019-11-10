@@ -12,19 +12,36 @@ import java.util.WeakHashMap;
 
 /**
  * This class provides several utilities to cancel bitmap decoding.
- *
+ * <p>
  * The function decodeFileDescriptor() is used to decode a bitmap. During
  * decoding if another thread wants to cancel it, it calls the function
  * cancelThreadDecoding() specifying the Thread which is in decoding.
- *
+ * <p>
  * cancelThreadDecoding() is sticky until allowThreadDecoding() is called.
  */
 public class BitmapManager {
     private static final String TAG = "BitmapManager";
-    private static enum State {CANCEL, ALLOW}
+    private static enum State {
+        /**
+         * Cancel state.
+         */
+        CANCEL,
+        /**
+         * Allow state.
+         */
+        ALLOW}
     private static class ThreadStatus {
+        /**
+         * The M state.
+         */
         public State mState = State.ALLOW;
+        /**
+         * The M options.
+         */
         public BitmapFactory.Options mOptions;
+        /**
+         * The M thumb requesting.
+         */
         public boolean mThumbRequesting;
         @Override
         public String toString() {
@@ -70,6 +87,11 @@ public class BitmapManager {
         getOrCreateThreadStatus(t).mOptions = options;
     }
 
+    /**
+     * Remove decoding options.
+     *
+     * @param t the t
+     */
     synchronized void removeDecodingOptions(Thread t) {
         ThreadStatus status = mThreadStatus.get(t);
         status.mOptions = null;
@@ -78,6 +100,9 @@ public class BitmapManager {
     /**
      * The following three methods are used to keep track of which thread
      * is being disabled for bitmap decoding.
+     *
+     * @param t the t
+     * @return the boolean
      */
     public synchronized boolean canThreadDecoding(Thread t) {
         ThreadStatus status = mThreadStatus.get(t);
@@ -90,10 +115,21 @@ public class BitmapManager {
         return result;
     }
 
+    /**
+     * Allow thread decoding.
+     *
+     * @param t the t
+     */
     public synchronized void allowThreadDecoding(Thread t) {
         getOrCreateThreadStatus(t).mState = State.ALLOW;
     }
 
+    /**
+     * Cancel thread decoding.
+     *
+     * @param t  the t
+     * @param cr the cr
+     */
     public synchronized void cancelThreadDecoding(Thread t, ContentResolver cr) {
         ThreadStatus status = getOrCreateThreadStatus(t);
         status.mState = State.CANCEL;
@@ -119,6 +155,16 @@ public class BitmapManager {
         }
     }
 
+    /**
+     * Gets thumbnail.
+     *
+     * @param cr      the cr
+     * @param origId  the orig id
+     * @param kind    the kind
+     * @param options the options
+     * @param isVideo the is video
+     * @return the thumbnail
+     */
     public Bitmap getThumbnail(ContentResolver cr, long origId, int kind,
             BitmapFactory.Options options, boolean isVideo) {
         Thread t = Thread.currentThread();
@@ -148,6 +194,11 @@ public class BitmapManager {
         }
     }
 
+    /**
+     * Instance bitmap manager.
+     *
+     * @return the bitmap manager
+     */
     public static synchronized BitmapManager instance() {
         if (sManager == null) {
             sManager = new BitmapManager();
@@ -157,6 +208,10 @@ public class BitmapManager {
 
     /**
      * The real place to delegate bitmap decoding to BitmapFactory.
+     *
+     * @param fd      the fd
+     * @param options the options
+     * @return the bitmap
      */
     public Bitmap decodeFileDescriptor(FileDescriptor fd,
                                        BitmapFactory.Options options) {

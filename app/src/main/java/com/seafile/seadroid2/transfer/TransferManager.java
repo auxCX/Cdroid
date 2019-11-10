@@ -25,6 +25,9 @@ import java.util.Map;
 public abstract class TransferManager {
     private static final String DEBUG_TAG = "TransferManager";
 
+    /**
+     * The constant BROADCAST_ACTION.
+     */
     public static final String BROADCAST_ACTION = "com.seafile.seadroid.TX_BROADCAST";
 
     /**
@@ -32,6 +35,9 @@ public abstract class TransferManager {
      */
     protected int notificationID;
 
+    /**
+     * The constant TRANSFER_MAX_COUNT.
+     */
     protected static final int TRANSFER_MAX_COUNT = 2;
     /**
      * contains all transfer tasks, including failed, cancelled, finished, transferring, waiting tasks.
@@ -46,10 +52,22 @@ public abstract class TransferManager {
      */
     protected List<TransferTask> waitingList = Lists.newArrayList();
 
+    /**
+     * Gets task.
+     *
+     * @param taskID the task id
+     * @return the task
+     */
     protected synchronized TransferTask getTask(int taskID) {
        return allTaskList.get(taskID);
     }
 
+    /**
+     * Gets task info.
+     *
+     * @param taskID the task id
+     * @return the task info
+     */
     public TransferTaskInfo getTaskInfo(int taskID) {
         TransferTask task = getTask(taskID);
         if (task != null) {
@@ -72,6 +90,11 @@ public abstract class TransferManager {
         return false;
     }
 
+    /**
+     * Add task to que.
+     *
+     * @param task the task
+     */
     protected void addTaskToQue(TransferTask task) {
         if (!hasInQue(task)) {
             // remove the cancelled or failed task if any
@@ -90,6 +113,9 @@ public abstract class TransferManager {
         }
     }
 
+    /**
+     * Do next.
+     */
     public synchronized void doNext() {
         if (!waitingList.isEmpty()
                 && transferringList.size() < TRANSFER_MAX_COUNT) {
@@ -104,6 +130,11 @@ public abstract class TransferManager {
         }
     }
 
+    /**
+     * Cancel.
+     *
+     * @param taskID the task id
+     */
     protected void cancel(int taskID) {
         TransferTask task = getTask(taskID);
         if (task != null) {
@@ -114,6 +145,11 @@ public abstract class TransferManager {
         remove(taskID);
     }
 
+    /**
+     * Remove.
+     *
+     * @param taskID the task id
+     */
     protected synchronized void remove(int taskID) {
 
         TransferTask toCancel = getTask(taskID);
@@ -129,10 +165,21 @@ public abstract class TransferManager {
         }
     }
 
+    /**
+     * Remove in all task list.
+     *
+     * @param taskID the task id
+     */
     public synchronized void removeInAllTaskList(int taskID) {
         allTaskList.remove(taskID);
     }
 
+    /**
+     * Gets tasks by state.
+     *
+     * @param taskState the task state
+     * @return the tasks by state
+     */
     public synchronized List<TransferTask> getTasksByState(TaskState taskState) {
         List<TransferTask> taskList = Lists.newArrayList();
         Collection<TransferTask> values = allTaskList.values();
@@ -148,8 +195,7 @@ public abstract class TransferManager {
      * remove tasks from {@link #allTaskList} by comparing the taskState,
      * all tasks with the same taskState will be removed.
      *
-     * @param taskState
-     *          taskState
+     * @param taskState taskState
      */
     public synchronized void removeByState(TaskState taskState) {
         Iterator<Map.Entry<Integer, TransferTask>> iterator = allTaskList.entrySet().iterator();
@@ -165,8 +211,7 @@ public abstract class TransferManager {
     /**
      * remove tasks from {@link #allTaskList} by traversing the taskId list
      *
-     * @param ids
-     *          taskId list
+     * @param ids taskId list
      */
     public synchronized void removeByIds(List<Integer> ids) {
         for (int taskID : ids) {
@@ -177,8 +222,7 @@ public abstract class TransferManager {
     /**
      * check if there are tasks under transferring state
      *
-     * @return true, if there are tasks whose {@link com.seafile.seadroid2.transfer.TaskState} is {@code TRANSFERRING}.
-     *          false, otherwise.
+     * @return true, if there are tasks whose {@link com.seafile.seadroid2.transfer.TaskState} is {@code TRANSFERRING}.          false, otherwise.
      */
     public boolean isTransferring() {
         List<? extends TransferTaskInfo> transferTaskInfos = getAllTaskInfoList();
@@ -189,6 +233,9 @@ public abstract class TransferManager {
         return false;
     }
 
+    /**
+     * Cancel all.
+     */
     public void cancelAll() {
         List<? extends TransferTaskInfo> transferTaskInfos = getAllTaskInfoList();
         for (TransferTaskInfo transferTaskInfo : transferTaskInfos) {
@@ -196,12 +243,22 @@ public abstract class TransferManager {
         }
     }
 
+    /**
+     * Cancel by ids.
+     *
+     * @param taskIds the task ids
+     */
     public void cancelByIds(List<Integer> taskIds) {
         for (int taskID : taskIds) {
             cancel(taskID);
         }
     }
 
+    /**
+     * Gets all task info list.
+     *
+     * @return the all task info list
+     */
     public synchronized List<? extends TransferTaskInfo> getAllTaskInfoList() {
         ArrayList<TransferTaskInfo> infos = Lists.newArrayList();
         Collection<TransferTask> values = allTaskList.values();

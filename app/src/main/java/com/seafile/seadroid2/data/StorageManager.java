@@ -23,60 +23,67 @@ import java.util.Collection;
 
 /**
  * This class decides where to store Seadroid's data in the file system.
- *
+ * <p>
  * Up till API 18, there was not much choice. Only CLASSIC_LOCATION did make any sense
  * to use. Starting with KitKat new options have appeared. API 19+ offers an API to get a list
  * of possible storage locations, which will include things like SD cards or USB connected flash
  * drives.
- *
+ * <p>
  * This StorageManager allows the user to make the choice where to store its data. It remembers
  * this choice in the SettingsManager.
- *
+ * <p>
  * This StorageManager also does an auto-selection of the best storage on first use of Seadroid.
- *
+ * <p>
  * The following data falls into the scope of this StorageManager:
- *
+ * <p>
  * - Downloaded repository files
- *     -> Indexed by Gallery
- *     -> synced server content, might be deleted locally
- *     -> persistent, as deletion would cause user inconvenience
- *
+ * -> Indexed by Gallery
+ * -> synced server content, might be deleted locally
+ * -> persistent, as deletion would cause user inconvenience
+ * <p>
  * - Temp files (e.g. pending for upload, download in progress)
- *     -> NOT indexed by Gallery
- *     -> important content, not to be deleted prematurely
- *     -> only temporary
- *     -> might be moved to "Downloaded repository files", so should be same mount point
- *
+ * -> NOT indexed by Gallery
+ * -> important content, not to be deleted prematurely
+ * -> only temporary
+ * -> might be moved to "Downloaded repository files", so should be same mount point
+ * <p>
  * - Image thumbnails
- *     -> NOT indexed by Gallery
- *     -> long term storage
- *     -> not important content, can be deleted if necessary
- *
+ * -> NOT indexed by Gallery
+ * -> long term storage
+ * -> not important content, can be deleted if necessary
+ * <p>
  * - JSON Cache files
- *     -> NOT indexed by Gallery
- *     -> long term storage
- *     -> not important content, can be deleted if necessary
- *
+ * -> NOT indexed by Gallery
+ * -> long term storage
+ * -> not important content, can be deleted if necessary
+ * <p>
  * This class offers a set of methods to retrieve the base dir for specific types of data.
- *
+ * <p>
  * Useful links:
  * - https://developer.android.com/guide/topics/data/data-storage.html
  */
 public abstract class StorageManager implements MediaScannerConnection.OnScanCompletedListener {
 
+    /**
+     * The constant DEBUG_TAG.
+     */
     protected static final String DEBUG_TAG = "StorageManager";
 
     private static StorageManager instance = null;
 
     private final Location CLASSIC_LOCATION;
 
+    /**
+     * Instantiates a new Storage manager.
+     */
     public StorageManager() {
         CLASSIC_LOCATION = buildClassicLocation();
     }
 
     /**
      * Fetch instance of the StorageManager
-     * @return
+     *
+     * @return instance
      */
     public final static StorageManager getInstance() {
         if (instance == null) {
@@ -124,36 +131,37 @@ public abstract class StorageManager implements MediaScannerConnection.OnScanCom
     /**
      * Get the media directories offered by Android.
      *
-     * @return
+     * @return file [ ]
      */
     protected abstract File[] getSystemMediaDirs();
 
     /**
      * Get the cache directories offered by Android.
      *
-     * @return
+     * @return file [ ]
      */
     protected abstract File[] getSystemCacheDirs();
 
     /**
      * Get partition size of the mount point containing dir
      *
-     * @param dir
-     * @return
+     * @param dir the dir
+     * @return storage size
      */
     protected abstract long getStorageSize(File dir);
 
     /**
      * Get free size of the mount point containing dir
      *
-     * @param dir
-     * @return
+     * @param dir the dir
+     * @return storage free space
      */
     protected abstract long getStorageFreeSpace(File dir);
 
     /**
      * Allows this device multiple storage locations?
-     * @return
+     *
+     * @return boolean
      */
     public abstract boolean supportsMultipleStorageLocations();
 
@@ -166,6 +174,11 @@ public abstract class StorageManager implements MediaScannerConnection.OnScanCom
     public void onScanCompleted(String path, Uri uri) {
     }
 
+    /**
+     * Gets storage locations.
+     *
+     * @return the storage locations
+     */
     public final ArrayList<Location> getStorageLocations() {
         ArrayList<Location> retList = new ArrayList<>();
 
@@ -207,7 +220,7 @@ public abstract class StorageManager implements MediaScannerConnection.OnScanCom
 
     /**
      * Set the new storage directory.
-     *
+     * <p>
      * This will change the settings and move files from the old to the new location.
      * Therefore, this method might take a while to finish.
      *
@@ -305,7 +318,7 @@ public abstract class StorageManager implements MediaScannerConnection.OnScanCom
 
     /**
      * Return the base directory for media storage to be used in Seadroid.
-     *
+     * <p>
      * It guaranties to always return a valid directory.
      * However, this directory might change at runtime, So it should never be cached.
      *
@@ -325,7 +338,7 @@ public abstract class StorageManager implements MediaScannerConnection.OnScanCom
 
     /**
      * Return the storage location to be used in Seadroid.
-     *
+     * <p>
      * It guaranties to always return a valid one.
      *
      * @return Location info
@@ -368,13 +381,18 @@ public abstract class StorageManager implements MediaScannerConnection.OnScanCom
         return dir;
     }
 
+    /**
+     * Gets context.
+     *
+     * @return the context
+     */
     protected final Context getContext() {
         return SeadroidApplication.getAppContext();
     }
 
     /**
      * Store temp files in a subdirectory below the media directory.
-     *
+     * <p>
      * This should be a subdirectory of getMediaDir() so that temp files
      * can be efficiently moved into the media storage.
      *
@@ -388,7 +406,7 @@ public abstract class StorageManager implements MediaScannerConnection.OnScanCom
 
     /**
      * Store JSON cache files in private internal cache.
-     *
+     * <p>
      * This cache directory will contain json files listing the repositories and directory listings.
      * this can be pretty private (especially the repository listing). So these should not be readable
      * by other apps. Therefore we save them in internal storage, where only Seadroid has access to.
@@ -414,7 +432,7 @@ public abstract class StorageManager implements MediaScannerConnection.OnScanCom
     /**
      * A file was added, changed or removed. Notify the gallery.
      *
-     * @param file
+     * @param file the file
      */
     public final void notifyAndroidGalleryFileChange(File file) {
         MediaScannerConnection.scanFile(getContext(),
@@ -458,6 +476,8 @@ public abstract class StorageManager implements MediaScannerConnection.OnScanCom
     /**
      * Deletes cache directory under a specific account<br>
      * remember to clear cache from database after called this method
+     *
+     * @param account the account
      */
     public final void clearAccount(Account account) {
         DataManager dataManager = new DataManager(account);
@@ -473,7 +493,7 @@ public abstract class StorageManager implements MediaScannerConnection.OnScanCom
     /**
      * Return space used by Seadroid
      *
-     * @return
+     * @return used space
      */
     public final long getUsedSpace() {
         File mediaDir = getMediaDir();
@@ -484,6 +504,9 @@ public abstract class StorageManager implements MediaScannerConnection.OnScanCom
         return FileUtils.sizeOfDirectory(mediaDir) + FileUtils.sizeOfDirectory(thumbDir);
     }
 
+    /**
+     * The type Location.
+     */
     public static class Location {
         /**
          * Our internal ID of this storage.

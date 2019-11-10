@@ -9,6 +9,11 @@ import com.seafile.seadroid2.ui.adapter.AccountAdapter;
  */
 public class CloudLibraryAccountAdapter extends AccountAdapter {
 
+    /**
+     * Instantiates a new Cloud library account adapter.
+     *
+     * @param context the context
+     */
     public CloudLibraryAccountAdapter(Context context) {
         super(context);
     }

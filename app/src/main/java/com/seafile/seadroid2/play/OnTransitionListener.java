@@ -6,9 +6,7 @@ import android.transition.Transition;
 
 /**
  * Override  the transition animation method
- *
  */
-
 @TargetApi(Build.VERSION_CODES.KITKAT)
 public class OnTransitionListener implements Transition.TransitionListener {
 

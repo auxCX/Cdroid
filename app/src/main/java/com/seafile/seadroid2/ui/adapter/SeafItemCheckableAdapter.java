@@ -23,9 +23,21 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Seaf item checkable adapter.
+ */
 public class SeafItemCheckableAdapter extends BaseAdapter {
 
+    /**
+     * The interface On checked change listener.
+     */
     public interface OnCheckedChangeListener {
+        /**
+         * On checked changed.
+         *
+         * @param item      the item
+         * @param isChecked the is checked
+         */
         void onCheckedChanged(SeafItem item, boolean isChecked);
     }
 
@@ -33,11 +45,21 @@ public class SeafItemCheckableAdapter extends BaseAdapter {
     private BrowserActivity mActivity;
     private OnCheckedChangeListener listener = null;
 
+    /**
+     * Instantiates a new Seaf item checkable adapter.
+     *
+     * @param mActivity the m activity
+     */
     public SeafItemCheckableAdapter(BrowserActivity mActivity) {
         this.mActivity = mActivity;
         items = Lists.newArrayList();
     }
 
+    /**
+     * Sets on checked change listener.
+     *
+     * @param listener the listener
+     */
     public void setOnCheckedChangeListener(OnCheckedChangeListener listener) {
         this.listener = listener;
     }
@@ -52,6 +74,11 @@ public class SeafItemCheckableAdapter extends BaseAdapter {
         return items.isEmpty();
     }
 
+    /**
+     * Add entry.
+     *
+     * @param entry the entry
+     */
     public void addEntry(SeafItem entry) {
         SeafItemWrap w = new SeafItemWrap(entry);
         items.add(w);
@@ -59,11 +86,19 @@ public class SeafItemCheckableAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * Add.
+     *
+     * @param entry the entry
+     */
     public void add(SeafItem entry) {
         SeafItemWrap w = new SeafItemWrap(entry);
         items.add(w);
     }
 
+    /**
+     * Notify changed.
+     */
     public void notifyChanged() {
         notifyDataSetChanged();
     }
@@ -73,6 +108,12 @@ public class SeafItemCheckableAdapter extends BaseAdapter {
         return items.get(position).item;
     }
 
+    /**
+     * Sets item.
+     *
+     * @param item             the item
+     * @param listviewPosition the listview position
+     */
     public void setItem(SeafItem item, int listviewPosition) {
         SeafItemWrap w = new SeafItemWrap(item);
         items.set(listviewPosition, w);
@@ -84,6 +125,11 @@ public class SeafItemCheckableAdapter extends BaseAdapter {
         return position;
     }
 
+    /**
+     * Gets num selected.
+     *
+     * @return the num selected
+     */
     public int getNumSelected() {
         int i = 0;
         for (SeafItemWrap w : items) {
@@ -94,6 +140,11 @@ public class SeafItemCheckableAdapter extends BaseAdapter {
     }
 
 
+    /**
+     * Gets selected items.
+     *
+     * @return the selected items
+     */
     public List<SeafItem> getSelectedItems() {
         List<SeafItem> r = Lists.newArrayList();
         for (SeafItemWrap w : items) {
@@ -103,6 +154,9 @@ public class SeafItemCheckableAdapter extends BaseAdapter {
         return r;
     }
 
+    /**
+     * Remove selected items.
+     */
     public void removeSelectedItems() {
         List<SeafItemWrap> tmp = Lists.newArrayList();
         for (SeafItemWrap w : items) {
@@ -113,6 +167,9 @@ public class SeafItemCheckableAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * Clear.
+     */
     public void clear() {
         items.clear();
     }
@@ -204,10 +261,30 @@ public class SeafItemCheckableAdapter extends BaseAdapter {
 
 
     private class Viewholder {
-        TextView title, subtitle;
+        /**
+         * The Title.
+         */
+        TextView title, /**
+         * The Subtitle.
+         */
+        subtitle;
+        /**
+         * The Icon.
+         */
         ImageView icon;
+        /**
+         * The Checkbox.
+         */
         CheckBox checkbox;
 
+        /**
+         * Instantiates a new Viewholder.
+         *
+         * @param title    the title
+         * @param subtitle the subtitle
+         * @param icon     the icon
+         * @param checkbox the checkbox
+         */
         public Viewholder(TextView title, TextView subtitle, ImageView icon, CheckBox checkbox) {
             this.icon = icon;
             this.title = title;
@@ -216,19 +293,43 @@ public class SeafItemCheckableAdapter extends BaseAdapter {
         }
     }
 
+    /**
+     * The type Seaf item wrap.
+     */
     public class SeafItemWrap {
+        /**
+         * The Item.
+         */
         SeafItem item;
+        /**
+         * The Seleted.
+         */
         boolean seleted;
 
+        /**
+         * Instantiates a new Seaf item wrap.
+         *
+         * @param item the item
+         */
         public SeafItemWrap(SeafItem item) {
             this.item = item;
             seleted = false;
         }
 
+        /**
+         * Sets seleted.
+         *
+         * @param selected the selected
+         */
         public void setSeleted(boolean selected) {
             this.seleted = selected;
         }
 
+        /**
+         * Is selected boolean.
+         *
+         * @return the boolean
+         */
         public boolean isSelected() {
             return seleted;
         }

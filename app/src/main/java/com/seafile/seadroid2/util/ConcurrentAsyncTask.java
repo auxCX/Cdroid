@@ -21,7 +21,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Make sure an AsyncTask is executed in parallel across different version of
  * Android
- * @see asynctask executing tasks serially or concurrently {@link http://www.jayway.com/2012/11/28/is-androids-asynctask-executing-tasks-serially-or-concurrently/}
+ *
+ * @see asynctaskexecuting tasks serially or concurrently {@link http://www.jayway.com/2012/11/28/is-androids-asynctask-executing-tasks-serially-or-concurrently/}
  */
 public class ConcurrentAsyncTask {
     private static final String DEBUG_TAG = "ConcurrentAsyncTask";
@@ -46,6 +47,9 @@ public class ConcurrentAsyncTask {
             }
         };
 
+        /**
+         * Instantiates a new Seadroid thread pool executor.
+         */
         public SeadroidThreadPoolExecutor() {
             super(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE,
                     TimeUnit.SECONDS, sPoolWorkQueue, sThreadFactory);
@@ -76,6 +80,13 @@ public class ConcurrentAsyncTask {
 
     private static final ThreadPoolExecutor threadPoolExecutor = new SeadroidThreadPoolExecutor();
 
+    /**
+     * Execute.
+     *
+     * @param <T>  the type parameter
+     * @param task the task
+     * @param args the args
+     */
     public static <T> void execute(AsyncTask<T, ?, ?> task, T...args) {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR1) {
             task.execute(args);
@@ -84,11 +95,24 @@ public class ConcurrentAsyncTask {
         }
     }
 
+    /**
+     * Submit future.
+     *
+     * @param runnable the runnable
+     * @return the future
+     */
     @NonNull
     public static Future<?> submit(Runnable runnable) {
         return threadPoolExecutor.submit(runnable);
     }
 
+    /**
+     * Submit future.
+     *
+     * @param <T>  the type parameter
+     * @param task the task
+     * @return the future
+     */
     @NonNull
     public static <T> Future<T> submit(Callable<T> task) {
         return threadPoolExecutor.submit(task);

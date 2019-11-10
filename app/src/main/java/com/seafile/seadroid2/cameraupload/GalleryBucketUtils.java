@@ -19,25 +19,40 @@ public class GalleryBucketUtils {
 
     /**
      * Per default we will upload images/videos from these buckets
-     *
+     * <p>
      * - https://en.wikipedia.org/wiki/Design_rule_for_Camera_File_system
      * - https://stackoverflow.com/questions/6248887/android-device-specific-camera-path-issue
      */
     public static final String[] CAMERA_BUCKET_NAMES = {"Camera", "100ANDRO", "100MEDIA"};
 
+    /**
+     * The type Bucket.
+     */
     public static class Bucket {
+        /**
+         * The Id.
+         */
         public String id;
+        /**
+         * The Name.
+         */
         public String name;
+        /**
+         * The Image id.
+         */
         public int image_id = -1;
+        /**
+         * The Is camera bucket.
+         */
         public boolean isCameraBucket;
     }
 
     /**
      * Fetch the list of buckets.
-     *
+     * <p>
      * Image and Video buckets are merged into one list. Duplicates are removed.
      *
-     * @param context
+     * @param context the context
      * @return the list of buckets.
      */
     public static List<Bucket> getMediaBuckets(Context context) {

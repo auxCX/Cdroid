@@ -62,6 +62,11 @@ public class DownloadTaskFragment extends TransferTaskFragment {
         }
     }
 
+    /**
+     * Restart tasks by ids.
+     *
+     * @param ids the ids
+     */
     public void restartTasksByIds(List<Integer> ids) {
         if (txService != null) {
             txService.restartDownloadTasksByIds(ids);
@@ -90,6 +95,8 @@ public class DownloadTaskFragment extends TransferTaskFragment {
 
     /**
      * remove cancelled download tasks by Ids
+     *
+     * @param ids the ids
      */
     public void removeDownloadTasksByIds(List<Integer> ids) {
         if (txService != null) {
@@ -117,6 +124,8 @@ public class DownloadTaskFragment extends TransferTaskFragment {
 
     /**
      * cancel download tasks by ids
+     *
+     * @param ids the ids
      */
     public void cancelDownloadTasksByIds(List<Integer> ids) {
         if (txService != null) {

@@ -16,6 +16,9 @@ import org.json.JSONException;
 
 import java.net.HttpURLConnection;
 
+/**
+ * The type Authenticator.
+ */
 /*
  * Seafile Authenticator.
  *
@@ -65,6 +68,11 @@ public class Authenticator extends AbstractAccountAuthenticator {
      */
     public final static String SESSION_KEY = "sessionKey";
 
+    /**
+     * Instantiates a new Authenticator.
+     *
+     * @param context the context
+     */
     public Authenticator(Context context) {
         super(context);
         Log.d(DEBUG_TAG, "SeafileAuthenticator created.");

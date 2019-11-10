@@ -16,21 +16,35 @@ import com.seafile.seadroid2.data.SeafDirent;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The type Dirents adapter.
+ */
 public class DirentsAdapter extends BaseAdapter {
 
     private List<SeafDirent> dirents;
 
+    /**
+     * Instantiates a new Dirents adapter.
+     */
     public DirentsAdapter() {
         dirents = Lists.newArrayList();
     }
 
-    /** sort files type */
+    /**
+     * sort files type
+     */
     public static final int SORT_BY_NAME = 9;
-    /** sort files type */
+    /**
+     * sort files type
+     */
     public static final int SORT_BY_LAST_MODIFIED_TIME = 10;
-    /** sort files order */
+    /**
+     * sort files order
+     */
     public static final int SORT_ORDER_ASCENDING = 11;
-    /** sort files order */
+    /**
+     * sort files order
+     */
     public static final int SORT_ORDER_DESCENDING = 12;
 
     @Override
@@ -43,6 +57,11 @@ public class DirentsAdapter extends BaseAdapter {
         return dirents.isEmpty();
     }
 
+    /**
+     * Add.
+     *
+     * @param entry the entry
+     */
     public void add(SeafDirent entry) {
         dirents.add(entry);
     }
@@ -58,10 +77,18 @@ public class DirentsAdapter extends BaseAdapter {
         return position;
     }
 
+    /**
+     * Clear dirents.
+     */
     public void clearDirents() {
         dirents.clear();
     }
 
+    /**
+     * Sets dirents.
+     *
+     * @param dirents the dirents
+     */
     public void setDirents(List<SeafDirent> dirents) {
         clearDirents();
         for (SeafDirent dirent : dirents) {
@@ -70,6 +97,12 @@ public class DirentsAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * Sort files.
+     *
+     * @param type  the type
+     * @param order the order
+     */
     public void sortFiles(int type, int order) {
         List<SeafDirent> folders = Lists.newArrayList();
         List<SeafDirent> files = Lists.newArrayList();
@@ -149,9 +182,25 @@ public class DirentsAdapter extends BaseAdapter {
     }
 
     private class Viewholder {
-        TextView title, subtitle;
+        /**
+         * The Title.
+         */
+        TextView title, /**
+         * The Subtitle.
+         */
+        subtitle;
+        /**
+         * The Icon.
+         */
         ImageView icon;
 
+        /**
+         * Instantiates a new Viewholder.
+         *
+         * @param title    the title
+         * @param subtitle the subtitle
+         * @param icon     the icon
+         */
         public Viewholder(TextView title, TextView subtitle, ImageView icon) {
             super();
             this.icon = icon;

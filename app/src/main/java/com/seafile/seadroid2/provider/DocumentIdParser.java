@@ -27,14 +27,13 @@ import java.io.FileNotFoundException;
 
 /**
  * Helper class to create and parse DocumentIds for the DocumentProvider
- *
+ * <p>
  * Format: FullServerServerSignature::RepoId::Path
  * Example:
  * email@adress.com@https://server.com/seafile/::::550e8400-e29b-11d4-a716-446655440000::::/dir/file.jpg
- *
+ * <p>
  * the separation using "::::" is arbitrary. Is has to be something, that is neither in an URL
  * nor in a repoId UUID.
- *
  */
 public class DocumentIdParser {
 
@@ -43,9 +42,20 @@ public class DocumentIdParser {
     private static final String STARRED_FILE_REPO_ID = "starred-file-magic-repo";
     private static final String ROOT_REPO_ID = "root-magic-repo";
 
+    /**
+     * The Context.
+     */
     Context context;
+    /**
+     * The Manager.
+     */
     AccountManager manager;
 
+    /**
+     * Instantiates a new Document id parser.
+     *
+     * @param context the context
+     */
     public DocumentIdParser(Context context) {
         this.context = context;
         this.manager = new AccountManager(context);
@@ -56,7 +66,7 @@ public class DocumentIdParser {
      *
      * @param documentId our documentId, as created by createDocumentId()
      * @return the corresponding Account
-     * @throws java.io.FileNotFoundException if the documentId is bogus or the account doesn't exist
+     * @throws FileNotFoundException the file not found exception
      */
     public Account getAccountFromId(String documentId) throws FileNotFoundException {
         String[] list = documentId.split(DOC_SEPERATOR, 2);
@@ -89,7 +99,7 @@ public class DocumentIdParser {
 
     /**
      * extract the file path from the given documentId.
-     *
+     * <p>
      * that might be a directory or a file
      *
      * @param documentId our documentId, as created by createDocumentId()
@@ -108,9 +118,10 @@ public class DocumentIdParser {
     /**
      * create a documentId based on an account, a repoId and a file path.
      *
-     * @param a the account object. must not be null.
+     * @param a      the account object. must not be null.
      * @param repoId the repoId. May be null.
-     * @param path The file path. May be null
+     * @param path   The file path. May be null
+     * @return the string
      * @returns a documentId
      */
     public static String buildId(Account a, String repoId, String path) {
@@ -126,20 +137,39 @@ public class DocumentIdParser {
      * create a documentId based on an account, a repoId and a file path.
      *
      * @param a the account object. must not be null.
+     * @return the string
      * @returns a documentId
      */
     public static String buildRootId(Account a) {
         return a.getSignature() + DOC_SEPERATOR + ROOT_REPO_ID;
     }
 
+    /**
+     * Build starred files id string.
+     *
+     * @param a the a
+     * @return the string
+     */
     public static String buildStarredFilesId(Account a) {
         return a.getSignature() + DOC_SEPERATOR + STARRED_FILE_REPO_ID;
     }
 
+    /**
+     * Is root boolean.
+     *
+     * @param documentId the document id
+     * @return the boolean
+     */
     public static boolean isRoot(String documentId) {
         return getRepoIdFromId(documentId).equals(ROOT_REPO_ID);
     }
 
+    /**
+     * Is starred files boolean.
+     *
+     * @param documentId the document id
+     * @return the boolean
+     */
     public static boolean isStarredFiles(String documentId) {
         return getRepoIdFromId(documentId).equals(STARRED_FILE_REPO_ID);
     }

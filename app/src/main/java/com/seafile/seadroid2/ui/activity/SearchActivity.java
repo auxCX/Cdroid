@@ -49,7 +49,6 @@ import java.util.List;
 
 /**
  * Search Activity
- *
  */
 public class SearchActivity extends BaseActivity implements View.OnClickListener, Toolbar.OnMenuItemClickListener {
     private static final String DEBUG_TAG = "SearchActivity";
@@ -71,6 +70,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private TransferService txService = null;
     private Account account;
 
+    /**
+     * The constant DOWNLOAD_FILE_REQUEST.
+     */
     public static final int DOWNLOAD_FILE_REQUEST = 0;
 
     @Override
@@ -243,6 +245,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         ConcurrentAsyncTask.execute(new SearchLibrariesTask(dataManager, content, page));
     }
 
+    /**
+     * The type Search libraries task.
+     */
     class SearchLibrariesTask extends AsyncTask<Void, Void, ArrayList<SearchedFile>> {
 
         private DataManager dataManager;
@@ -258,6 +263,13 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             mMessageContainer.setVisibility(View.GONE);
         }
 
+        /**
+         * Instantiates a new Search libraries task.
+         *
+         * @param dataManager the data manager
+         * @param query       the query
+         * @param page        the page
+         */
         public SearchLibrariesTask(DataManager dataManager, String query, int page) {
             this.dataManager = dataManager;
             this.query = query;
@@ -314,6 +326,11 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
+    /**
+     * Gets data manager.
+     *
+     * @return the data manager
+     */
     public DataManager getDataManager() {
         if (dataManager == null) {
             AccountManager accountManager = new AccountManager(this);
@@ -343,6 +360,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
+    /**
+     * The type Search list click listener.
+     */
     class SearchListClickListener implements AdapterView.OnItemClickListener {
 
         @Override
@@ -352,6 +372,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
+    /**
+     * The type Search text watcher.
+     */
     class SearchTextWatcher implements TextWatcher {
 
         @Override
@@ -373,6 +396,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         public void afterTextChanged(Editable s) {}
     }
 
+    /**
+     * The type Editor action listener.
+     */
     class EditorActionListener implements TextView.OnEditorActionListener {
 
         @Override
@@ -388,6 +414,11 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
+    /**
+     * On searched file selected.
+     *
+     * @param searchedFile the searched file
+     */
     public void onSearchedFileSelected(SearchedFile searchedFile) {
         final String repoID = searchedFile.getRepoID();
         final String fileName = searchedFile.getTitle();
@@ -456,6 +487,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         startActivity(intent );
     }
 
+    /**
+     * The M connection.
+     */
     ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {

@@ -15,12 +15,17 @@ import java.util.List;
  * Account Manager.<br>
  * note the differences between {@link Account} and {@link AccountInfo}<br>
  */
-
 public class AccountManager {
     @SuppressWarnings("unused")
     private static String DEBUG_TAG = "AccountManager";
 
+    /**
+     * The constant SHARED_PREF_NAME.
+     */
     public static final String SHARED_PREF_NAME = "latest_account";
+    /**
+     * The constant SHARED_PREF_ACCOUNT_NAME.
+     */
     public static final String SHARED_PREF_ACCOUNT_NAME = "com.seafile.seadroid.account_name";
 
     /** used to manage multi Accounts when user switch between different Accounts */
@@ -31,6 +36,11 @@ public class AccountManager {
 
     private Context ctx;
 
+    /**
+     * Instantiates a new Account manager.
+     *
+     * @param context the context
+     */
     public AccountManager(Context context) {
         this.ctx = context;
         accountManager = android.accounts.AccountManager.get(context);
@@ -42,6 +52,11 @@ public class AccountManager {
         AccountDBHelper.migrateAccounts(context);
     }
 
+    /**
+     * Gets account list.
+     *
+     * @return the account list
+     */
     public List<Account> getAccountList() {
         List<Account> list = new ArrayList<Account>();
         android.accounts.Account availableAccounts[] = accountManager.getAccountsByType(Account.ACCOUNT_TYPE);
@@ -52,6 +67,11 @@ public class AccountManager {
         return list;
     }
 
+    /**
+     * Gets signed in account list.
+     *
+     * @return the signed in account list
+     */
     public List<Account> getSignedInAccountList() {
         List<Account> list = new ArrayList<Account>();
         android.accounts.Account availableAccounts[] = accountManager.getAccountsByType(Account.ACCOUNT_TYPE);
@@ -63,6 +83,11 @@ public class AccountManager {
         return list;
     }
 
+    /**
+     * Gets current account.
+     *
+     * @return the current account
+     */
     public Account getCurrentAccount() {
         String name = actMangeSharedPref.getString(SHARED_PREF_ACCOUNT_NAME, null);
 
@@ -78,6 +103,12 @@ public class AccountManager {
         return null;
     }
 
+    /**
+     * Gets seafile account.
+     *
+     * @param androidAccount the android account
+     * @return the seafile account
+     */
     public Account getSeafileAccount(android.accounts.Account androidAccount) {
 
         String server = accountManager.getUserData(androidAccount, Authenticator.KEY_SERVER_URI);
@@ -89,6 +120,12 @@ public class AccountManager {
         return new Account(name, server, email, token, is_shib, session_key);
     }
 
+    /**
+     * Sets server info.
+     *
+     * @param account    the account
+     * @param serverInfo the server info
+     */
     public void setServerInfo(Account account, ServerInfo serverInfo) {
         accountManager.setUserData(account.getAndroidAccount(), Authenticator.KEY_SERVER_URI, serverInfo.getUrl());
         accountManager.setUserData(account.getAndroidAccount(), Authenticator.KEY_SERVER_VERSION, serverInfo.getVersion());
@@ -98,7 +135,7 @@ public class AccountManager {
     /**
      * Return cached ServerInfo
      *
-     * @param account
+     * @param account the account
      * @return ServerInfo. Will never be null.
      */
     public ServerInfo getServerInfo(Account account) {
@@ -113,7 +150,7 @@ public class AccountManager {
      * save current Account info to SharedPreference<br>
      * <strong>current</strong> means the Account is now in using at the foreground if has multiple accounts
      *
-     * @param accountName
+     * @param accountName the account name
      */
     public void saveCurrentAccount(String accountName) {
 
@@ -125,6 +162,7 @@ public class AccountManager {
      * when user sign out, delete authorized information of the current Account instance.<br>
      * If Camera Upload Service is running under the Account, stop the service.
      *
+     * @param account the account
      */
     public void signOutAccount(Account account) {
         if (account == null || TextUtils.isEmpty(account.getToken())) {
@@ -145,7 +183,7 @@ public class AccountManager {
     /**
      * get all email texts from database in order to auto complete email address
      *
-     * @return
+     * @return account auto complete texts
      */
     public ArrayList<String> getAccountAutoCompleteTexts() {
         ArrayList<String> autoCompleteTexts = Lists.newArrayList();

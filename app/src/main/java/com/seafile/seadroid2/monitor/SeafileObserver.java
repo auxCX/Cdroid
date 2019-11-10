@@ -16,6 +16,9 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Seafile observer.
+ */
 public class SeafileObserver implements FileAlterationListener {
     private static final String DEBUG_TAG = "SeafileObserver";
 
@@ -28,6 +31,12 @@ public class SeafileObserver implements FileAlterationListener {
     private final RecentDownloadedFilesWorkAround recentDownloadedFiles =
             new RecentDownloadedFilesWorkAround();
 
+    /**
+     * Instantiates a new Seafile observer.
+     *
+     * @param account  the account
+     * @param listener the listener
+     */
     public SeafileObserver(Account account, CachedFileChangedListener listener) {
         this.account = account;
         this.dataManager = new DataManager(account);
@@ -41,6 +50,11 @@ public class SeafileObserver implements FileAlterationListener {
         return dataManager.getAccountDir();
     }
 
+    /**
+     * Gets alteration observer.
+     *
+     * @return the alteration observer
+     */
     public FileAlterationObserver getAlterationObserver() {
         return alterationObserver;
     }
@@ -58,6 +72,14 @@ public class SeafileObserver implements FileAlterationListener {
         Log.d(DEBUG_TAG, "watching files, # total watched " + watchedFiles.size());
     }
 
+    /**
+     * Watch downloaded file.
+     *
+     * @param repoID     the repo id
+     * @param repoName   the repo name
+     * @param pathInRepo the path in repo
+     * @param localpath  the localpath
+     */
     public void watchDownloadedFile(String repoID, String repoName, String pathInRepo,
             String localpath) {
         recentDownloadedFiles.addRecentDownloadedFile(localpath);
@@ -71,14 +93,27 @@ public class SeafileObserver implements FileAlterationListener {
         Log.d(DEBUG_TAG, "start watch downloaded file " + pathInRepo + ", # total watched " + watchedFiles.size());
     }
 
+    /**
+     * Sets account.
+     *
+     * @param account the account
+     */
     public void setAccount(Account account) {
         this.account = account;
     }
 
+    /**
+     * Gets account.
+     *
+     * @return the account
+     */
     public Account getAccount() {
         return account;
     }
 
+    /**
+     * Start watching.
+     */
     public void startWatching() {
         try {
             alterationObserver.initialize();
@@ -88,6 +123,9 @@ public class SeafileObserver implements FileAlterationListener {
         alterationObserver.checkAndNotify();
     }
 
+    /**
+     * Stop watching.
+     */
     public void stopWatching() {
         try {
             alterationObserver.destroy();
@@ -174,6 +212,12 @@ public class SeafileObserver implements FileAlterationListener {
     private static class RecentDownloadedFilesWorkAround {
         private final Map<String, Long> recentDownloadedFiles = Maps.newConcurrentMap();
 
+        /**
+         * Is recent downloaded files boolean.
+         *
+         * @param filePath the file path
+         * @return the boolean
+         */
         public boolean isRecentDownloadedFiles(String filePath) {
             Long timestamp = recentDownloadedFiles.get(filePath);
             if (timestamp != null) {
@@ -188,10 +232,20 @@ public class SeafileObserver implements FileAlterationListener {
             return false;
         }
 
+        /**
+         * Add recent downloaded file.
+         *
+         * @param filePath the file path
+         */
         public void addRecentDownloadedFile(String filePath) {
             recentDownloadedFiles.put(filePath, Utils.now());
         }
 
+        /**
+         * Remove recent downloaded file.
+         *
+         * @param filePath the file path
+         */
         public void removeRecentDownloadedFile(String filePath) {
             recentDownloadedFiles.remove(filePath);
             Log.d(DEBUG_TAG, "remove recent file, # total watched " + recentDownloadedFiles.size());

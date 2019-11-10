@@ -12,6 +12,13 @@ import android.app.Application;
  */
 public abstract class AbstractAppLock implements Application.ActivityLifecycleCallbacks {
 
+    /**
+     * Enable.
+     */
     public abstract void enable();
+
+    /**
+     * Disable.
+     */
     public abstract void disable();
 }

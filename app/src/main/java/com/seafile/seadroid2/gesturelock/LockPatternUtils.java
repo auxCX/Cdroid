@@ -17,9 +17,8 @@ import android.util.Log;
 
 /**
  * Gesture Lock encrypt, decrypt utility
- * 
+ *
  * @author way
- * 
  */
 public class LockPatternUtils {
     private static final String TAG = "LockPatternUtils";
@@ -52,6 +51,12 @@ public class LockPatternUtils {
     private static FileObserver sPasswordObserver;
 
     private static class LockPatternFileObserver extends FileObserver {
+        /**
+         * Instantiates a new Lock pattern file observer.
+         *
+         * @param path the path
+         * @param mask the mask
+         */
         public LockPatternFileObserver(String path, int mask) {
             super(path, mask);
         }
@@ -66,6 +71,11 @@ public class LockPatternUtils {
         }
     }
 
+    /**
+     * Instantiates a new Lock pattern utils.
+     *
+     * @param context the context
+     */
     public LockPatternUtils(Context context) {
         if (sLockPatternFilename == null) {
             String dataSystemDirectory = context.getFilesDir()
@@ -84,22 +94,24 @@ public class LockPatternUtils {
 
     /**
      * Check to see if the user has stored a lock pattern.
-     * 
+     *
      * @return Whether a saved pattern exists.
      */
     public boolean savedPatternExists() {
         return sHaveNonZeroPatternFile.get();
     }
 
+    /**
+     * Clear lock.
+     */
     public void clearLock() {
         saveLockPattern(null);
     }
 
     /**
      * Deserialize a pattern.
-     * 
-     * @param string
-     *            The pattern serialized with {@link #patternToString}
+     *
+     * @param string The pattern serialized with {@link #patternToString}
      * @return The pattern.
      */
     public static List<LockPatternView.Cell> stringToPattern(String string) {
@@ -114,10 +126,9 @@ public class LockPatternUtils {
     }
 
     /**
-     * Serialize a pattern. 
-     * 
-     * @param pattern
-     *            The pattern.
+     * Serialize a pattern.
+     *
+     * @param pattern The pattern.
      * @return The pattern in string form.
      */
     public static String patternToString(List<LockPatternView.Cell> pattern) {
@@ -136,11 +147,8 @@ public class LockPatternUtils {
 
     /**
      * Save a lock pattern.
-     * 
-     * @param pattern
-     *            The new pattern to save.
-     * @param isFallback
-     *            Specifies if this is a fallback to biometric weak
+     *
+     * @param pattern The new pattern to save.
      */
     public void saveLockPattern(List<LockPatternView.Cell> pattern) {
         // Compute the hash
@@ -198,9 +206,8 @@ public class LockPatternUtils {
     /**
      * Check to see if a pattern matches the saved pattern. If no pattern
      * exists, always returns true.
-     * 
-     * @param pattern
-     *            The pattern to check.
+     *
+     * @param pattern The pattern to check.
      * @return Whether the pattern matches the stored one.
      */
     public boolean checkPattern(List<LockPatternView.Cell> pattern) {

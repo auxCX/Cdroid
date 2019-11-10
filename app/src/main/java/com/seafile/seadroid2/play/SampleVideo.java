@@ -24,7 +24,6 @@ import java.util.List;
  * This is simply a full-screen display, and if you need to do the size screen switch, remember to set up the custom configuration for
  * video full screen here
  */
-
 public class SampleVideo extends StandardGSYVideoPlayer {
 
     private TextView mMoreScale;
@@ -40,15 +39,29 @@ public class SampleVideo extends StandardGSYVideoPlayer {
 
     /**
      * 1.5.0 start to add. If you need different layout to distinguish functions, you need to override
+     *
+     * @param context  the context
+     * @param fullFlag the full flag
      */
     public SampleVideo(Context context, Boolean fullFlag) {
         super(context, fullFlag);
     }
 
+    /**
+     * Instantiates a new Sample video.
+     *
+     * @param context the context
+     */
     public SampleVideo(Context context) {
         super(context);
     }
 
+    /**
+     * Instantiates a new Sample video.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public SampleVideo(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -133,7 +146,7 @@ public class SampleVideo extends StandardGSYVideoPlayer {
      * @param url           play url
      * @param cacheWithPlay setting play and cache
      * @param title         title
-     * @return
+     * @return up
      */
     public boolean setUp(List<SwitchVideoModel> url, boolean cacheWithPlay, String title) {
         mUrlList = url;
@@ -147,7 +160,7 @@ public class SampleVideo extends StandardGSYVideoPlayer {
      * @param cacheWithPlay setting play and cache
      * @param cachePath     setting cachePatch， if  M3U8  or  HLS  to setting false
      * @param title         title
-     * @return
+     * @return up
      */
     public boolean setUp(List<SwitchVideoModel> url, boolean cacheWithPlay, File cachePath, String title) {
         mUrlList = url;

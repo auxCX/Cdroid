@@ -37,7 +37,12 @@ public abstract class AccountAdapter extends BaseAdapter {
     private ArrayList<Account> items;
     private ArrayList<Avatar> avatars;
     private Context context;
-    
+
+    /**
+     * Instantiates a new Account adapter.
+     *
+     * @param context the context
+     */
     public AccountAdapter(Context context) {
         this.context = context;
         items = Lists.newArrayList();
@@ -54,10 +59,18 @@ public abstract class AccountAdapter extends BaseAdapter {
         return items.isEmpty();
     }
 
+    /**
+     * Add.
+     *
+     * @param entry the entry
+     */
     public void add(Account entry) {
         items.add(entry);
     }
 
+    /**
+     * Notify changed.
+     */
     public void notifyChanged() {
         notifyDataSetChanged();
     }
@@ -67,12 +80,22 @@ public abstract class AccountAdapter extends BaseAdapter {
         return items.get(position);
     }
 
+    /**
+     * Sets items.
+     *
+     * @param items the items
+     */
     public void setItems(List<Account> items) {
         this.items = (ArrayList<Account>) items;
         notifyDataSetChanged();
         
     }
 
+    /**
+     * Sets avatars.
+     *
+     * @param avatars the avatars
+     */
     public void setAvatars(ArrayList<Avatar> avatars) {
         this.avatars = avatars;
     }
@@ -82,18 +105,41 @@ public abstract class AccountAdapter extends BaseAdapter {
         return position;
     }
 
+    /**
+     * Clear.
+     */
     public void clear() {
         items.clear();
     }
 
     private Viewholder viewHolder;
 
+    /**
+     * Gets child layout.
+     *
+     * @return the child layout
+     */
     protected abstract int getChildLayout();
 
+    /**
+     * Gets child title id.
+     *
+     * @return the child title id
+     */
     protected abstract int getChildTitleId();
 
+    /**
+     * Gets child sub title id.
+     *
+     * @return the child sub title id
+     */
     protected abstract int getChildSubTitleId();
 
+    /**
+     * Gets child icon id.
+     *
+     * @return the child icon id
+     */
     protected abstract int getChildIconId();
 
     @Override
@@ -151,6 +197,9 @@ public abstract class AccountAdapter extends BaseAdapter {
 
     private static class AnimateFirstDisplayListener extends SimpleImageLoadingListener {
 
+        /**
+         * The Displayed images.
+         */
         static final List<String> displayedImages = Collections.synchronizedList(new LinkedList<String>());
 
         @Override
@@ -167,9 +216,25 @@ public abstract class AccountAdapter extends BaseAdapter {
     }
 
     private class Viewholder {
-        TextView title, subtitle;
+        /**
+         * The Title.
+         */
+        TextView title, /**
+         * The Subtitle.
+         */
+        subtitle;
+        /**
+         * The Icon.
+         */
         ImageView icon;
 
+        /**
+         * Instantiates a new Viewholder.
+         *
+         * @param title    the title
+         * @param subtitle the subtitle
+         * @param icon     the icon
+         */
         public Viewholder(TextView title, TextView subtitle, ImageView icon) {
             super();
             this.icon = icon;

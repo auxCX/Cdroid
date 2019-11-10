@@ -10,11 +10,20 @@ import com.seafile.seadroid2.SeafException;
 import com.seafile.seadroid2.account.Account;
 import com.seafile.seadroid2.data.DataManager;
 
+/**
+ * The type Delete repo task.
+ */
 class DeleteRepoTask extends TaskDialog.Task {
 
     private String mRepoID;
     private DataManager mDataManager;
 
+    /**
+     * Instantiates a new Delete repo task.
+     *
+     * @param repoID      the repo id
+     * @param dataManager the data manager
+     */
     DeleteRepoTask(String repoID, DataManager dataManager) {
         mRepoID = repoID;
         mDataManager = dataManager;
@@ -30,6 +39,9 @@ class DeleteRepoTask extends TaskDialog.Task {
     }
 }
 
+/**
+ * The type Delete repo dialog.
+ */
 public class DeleteRepoDialog extends TaskDialog {
 
     private final static String STATE_REPO_ID = "delete_repo_dialog.repo_id";
@@ -39,6 +51,12 @@ public class DeleteRepoDialog extends TaskDialog {
     private Account mAccount;
     private DataManager mDataManager;
 
+    /**
+     * Init.
+     *
+     * @param repoID  the repo id
+     * @param account the account
+     */
     public void init(String repoID, Account account) {
         mRepoID = repoID;
         mAccount = account;

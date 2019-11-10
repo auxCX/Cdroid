@@ -12,6 +12,9 @@ import com.seafile.seadroid2.SeadroidApplication;
 import com.seafile.seadroid2.account.Account;
 import com.seafile.seadroid2.account.AccountManager;
 
+/**
+ * The type Seafile monitor.
+ */
 public class SeafileMonitor {
     private static final String DEBUG_TAG = "SeafileMonitor";
 
@@ -20,10 +23,20 @@ public class SeafileMonitor {
     private CachedFileChangedListener listener;
     private boolean started;
 
+    /**
+     * Instantiates a new Seafile monitor.
+     *
+     * @param listener the listener
+     */
     public SeafileMonitor(CachedFileChangedListener listener) {
         this.listener = listener;
     }
 
+    /**
+     * Is started boolean.
+     *
+     * @return the boolean
+     */
     public boolean isStarted() {
         return started;
     }
@@ -37,6 +50,11 @@ public class SeafileMonitor {
         observers.put(account, fileObserver);
     }
 
+    /**
+     * Stop monitor files for account.
+     *
+     * @param account the account
+     */
     public synchronized void stopMonitorFilesForAccount(Account account) {
         SeafileObserver fileObserver = observers.get(account);
         if (fileObserver != null)
@@ -53,6 +71,15 @@ public class SeafileMonitor {
         alterationMonitor.removeObserver(fileObserver.getAlterationObserver());
     }
 
+    /**
+     * On file downloaded.
+     *
+     * @param account    the account
+     * @param repoID     the repo id
+     * @param repoName   the repo name
+     * @param pathInRepo the path in repo
+     * @param localPath  the local path
+     */
     public synchronized void onFileDownloaded(Account account, String repoID, String repoName,
             String pathInRepo, String localPath) {
         SeafileObserver observer = observers.get(account);
@@ -68,6 +95,11 @@ public class SeafileMonitor {
         }
     }
 
+    /**
+     * Stop.
+     *
+     * @throws Exception the exception
+     */
     public void stop() throws Exception {
         alterationMonitor.stop();
     }

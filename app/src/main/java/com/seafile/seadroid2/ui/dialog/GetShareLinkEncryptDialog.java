@@ -11,10 +11,25 @@ import android.widget.EditText;
 
 import com.seafile.seadroid2.R;
 
+/**
+ * The type Get share link password task.
+ */
 class GetShareLinkPasswordTask extends TaskDialog.Task {
+    /**
+     * The Password.
+     */
     String password;
+    /**
+     * The Days.
+     */
     String days;
 
+    /**
+     * Instantiates a new Get share link password task.
+     *
+     * @param password the password
+     * @param days     the days
+     */
     public GetShareLinkPasswordTask(String password, String days) {
         this.password = password;
         this.days = days;
@@ -25,16 +40,29 @@ class GetShareLinkPasswordTask extends TaskDialog.Task {
 
     }
 
+    /**
+     * Gets password.
+     *
+     * @return the password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Gets days.
+     *
+     * @return the days
+     */
     public String getDays() {
         return days;
     }
 }
 
 
+/**
+ * The type Get share link encrypt dialog.
+ */
 public class GetShareLinkEncryptDialog extends TaskDialog implements CompoundButton.OnCheckedChangeListener {
     private EditText passwordText;
     private EditText days;
@@ -126,6 +154,11 @@ public class GetShareLinkEncryptDialog extends TaskDialog implements CompoundBut
         }
     }
 
+    /**
+     * Gets password.
+     *
+     * @return the password
+     */
     public String getPassword() {
         if (getTask() != null) {
             GetShareLinkPasswordTask task = (GetShareLinkPasswordTask) getTask();
@@ -134,6 +167,11 @@ public class GetShareLinkEncryptDialog extends TaskDialog implements CompoundBut
         return null;
     }
 
+    /**
+     * Gets days.
+     *
+     * @return the days
+     */
     public String getDays() {
         if (getTask() != null) {
             GetShareLinkPasswordTask task = (GetShareLinkPasswordTask) getTask();

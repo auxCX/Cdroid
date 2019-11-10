@@ -33,6 +33,17 @@ import java.util.List;
  */
 public class WidgetUtils {
 
+    /**
+     * Choose share app.
+     *
+     * @param activity the activity
+     * @param repoID   the repo id
+     * @param path     the path
+     * @param isdir    the isdir
+     * @param account  the account
+     * @param password the password
+     * @param days     the days
+     */
     public static void chooseShareApp(final BaseActivity activity,
                                       final String repoID,
                                       final String path,
@@ -94,6 +105,15 @@ public class WidgetUtils {
         dialog.show(activity.getSupportFragmentManager(), BrowserActivity.CHOOSE_APP_DIALOG_FRAGMENT_TAG);
     }
 
+    /**
+     * Input share password.
+     *
+     * @param activity the activity
+     * @param repoID   the repo id
+     * @param path     the path
+     * @param isdir    the isdir
+     * @param account  the account
+     */
     public static void inputSharePassword(final BaseActivity activity,
                                           final String repoID,
                                           final String path,
@@ -117,13 +137,13 @@ public class WidgetUtils {
      * if local file ,will share file to wachat app.
      * if server file , it will download file and share file.
      *
-     * @param activity
-     * @param account
-     * @param repoID
-     * @param path
-     * @param fileName
-     * @param fileSize
-     * @param isdir
+     * @param activity the activity
+     * @param account  the account
+     * @param repoID   the repo id
+     * @param path     the path
+     * @param fileName the file name
+     * @param fileSize the file size
+     * @param isdir    the isdir
      */
     public static void ShareWeChat(final BaseActivity activity, Account account, String repoID, String path,
                                    String fileName,
@@ -186,6 +206,12 @@ public class WidgetUtils {
         }
     }
 
+    /**
+     * Show file.
+     *
+     * @param activity the activity
+     * @param file     the file
+     */
     public static void showFile(final BaseActivity activity, File file) {
         showFile(activity, file, false);
     }
@@ -193,7 +219,9 @@ public class WidgetUtils {
     /**
      * display the file according to its file type
      *
-     * @param file
+     * @param activity   the activity
+     * @param file       the file
+     * @param isOpenWith the is open with
      */
     public static void showFile(final BaseActivity activity, File file, boolean isOpenWith) {
 
@@ -239,6 +267,15 @@ public class WidgetUtils {
         }
     }
 
+    /**
+     * Show repo.
+     *
+     * @param context  the context
+     * @param repoID   the repo id
+     * @param repoName the repo name
+     * @param path     the path
+     * @param dirID    the dir id
+     */
     public static void showRepo(Context context, String repoID, String repoName, String path, String dirID) {
         Intent intent = new Intent(context, BrowserActivity.class);
         intent.putExtra("repoID", repoID);
@@ -248,6 +285,12 @@ public class WidgetUtils {
         context.startActivity(intent);
     }
 
+    /**
+     * Start markdown activity.
+     *
+     * @param context the context
+     * @param path    the path
+     */
     public static void startMarkdownActivity(Context context, String path) {
         Intent intent = new Intent(context, MarkdownActivity.class);
         intent.putExtra("path", path);
@@ -257,10 +300,12 @@ public class WidgetUtils {
     /**
      * start and pass data to {@link GalleryActivity}
      *
-     * @param repoId
-     * @param path
-     * @param fileName
-     * @param account
+     * @param activity the activity
+     * @param repoName the repo name
+     * @param repoId   the repo id
+     * @param path     the path
+     * @param fileName the file name
+     * @param account  the account
      */
     public static void startGalleryActivity(Activity activity, String repoName, String repoId, String path, String fileName, Account account) {
         Intent intent = new Intent(activity, GalleryActivity.class);
@@ -272,10 +317,18 @@ public class WidgetUtils {
         activity.startActivity(intent);
     }
 
+    /**
+     * Gets thumbnail width.
+     *
+     * @return the thumbnail width
+     */
     public static int getThumbnailWidth() {
         return (int) SeadroidApplication.getAppContext().getResources().getDimension(R.dimen.lv_icon_width);
     }
 
+    /**
+     * The constant iconOptions.
+     */
     public static DisplayImageOptions iconOptions = new DisplayImageOptions.Builder()
             .delayBeforeLoading(0)
             .resetViewBeforeLoading(true)

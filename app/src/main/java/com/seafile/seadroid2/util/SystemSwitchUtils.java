@@ -9,11 +9,20 @@ import com.seafile.seadroid2.R;
 import java.text.SimpleDateFormat;
 
 
+/**
+ * The type System switch utils.
+ */
 public class SystemSwitchUtils {
     private Context context;
     private ConnectivityManager connManager;
     private static SystemSwitchUtils util;
 
+    /**
+     * Get instance system switch utils.
+     *
+     * @param context the context
+     * @return the system switch utils
+     */
     public static SystemSwitchUtils getInstance(Context context){
         if (util == null) {
             util = new SystemSwitchUtils(context);
@@ -30,7 +39,8 @@ public class SystemSwitchUtils {
 
     /**
      * Open Sync
-     * @return
+     *
+     * @return boolean
      */
     @SuppressWarnings("deprecation")
     public boolean isSyncSwitchOn() {
@@ -54,6 +64,13 @@ public class SystemSwitchUtils {
 
     }
 
+    /**
+     * Date 2 time stamp string.
+     *
+     * @param date_str the date str
+     * @param format   the format
+     * @return the string
+     */
     public static String date2TimeStamp(String date_str, String format) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(format);
@@ -64,6 +81,12 @@ public class SystemSwitchUtils {
         return "";
     }
 
+    /**
+     * Parse date time string.
+     *
+     * @param dateString the date string
+     * @return the string
+     */
     public static String parseDateTime(String dateString) {
         if (dateString == null) return null;
         if (dateString.contains("T")) dateString = dateString.replace('T', ' ');
@@ -71,6 +94,14 @@ public class SystemSwitchUtils {
         return Utils.translateCommitTime(Long.parseLong(date2TimeStamp(arr1[0], "yyyy-MM-dd HH:mm:ss")) * 1000);
     }
 
+    /**
+     * Obj type string.
+     *
+     * @param ct       the ct
+     * @param obj_type the obj type
+     * @param op_type  the op type
+     * @return the string
+     */
     public static String obj_type(Context ct, String obj_type, String op_type) {
         if (obj_type.equals("repo")) {
             if (op_type.equals("create")) {

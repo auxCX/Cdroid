@@ -42,9 +42,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * The type Accounts activity.
+ */
 public class AccountsActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener{
     private static final String DEBUG_TAG = "AccountsActivity";
 
+    /**
+     * The constant DETAIL_ACTIVITY_REQUEST.
+     */
     public static final int DETAIL_ACTIVITY_REQUEST = 1;
 
     private ListView accountsView;
@@ -232,6 +238,9 @@ public class AccountsActivity extends BaseActivity implements Toolbar.OnMenuItem
         finish();
     }
 
+    /**
+     * The Account callback.
+     */
     AccountManagerCallback<Bundle> accountCallback = new AccountManagerCallback<Bundle>() {
 
         @Override
@@ -358,6 +367,11 @@ public class AccountsActivity extends BaseActivity implements Toolbar.OnMenuItem
         private int avatarSize;
         private SeafConnection httpConnection;
 
+        /**
+         * Instantiates a new Load avatar urls task.
+         *
+         * @param avatarSize the avatar size
+         */
         public LoadAvatarUrlsTask(int avatarSize) {
             this.avatarSize = avatarSize;
             this.avatars = Lists.newArrayList();

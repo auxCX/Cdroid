@@ -20,6 +20,9 @@ import com.seafile.seadroid2.editor.controller.TodoController;
 import com.yydcdut.markdown.MarkdownConfiguration;
 import com.yydcdut.markdown.MarkdownEditText;
 
+/**
+ * The type Horizontal edit scroll view.
+ */
 public class HorizontalEditScrollView extends FrameLayout implements View.OnClickListener,
         View.OnLongClickListener {
     private MarkdownEditText mMarkdownEditText;
@@ -34,19 +37,43 @@ public class HorizontalEditScrollView extends FrameLayout implements View.OnClic
     private ListController mListController;
     private LinkController mLinkController;
 
+    /**
+     * Instantiates a new Horizontal edit scroll view.
+     *
+     * @param context the context
+     */
     public HorizontalEditScrollView(Context context) {
         this(context, null);
     }
 
+    /**
+     * Instantiates a new Horizontal edit scroll view.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public HorizontalEditScrollView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
+    /**
+     * Instantiates a new Horizontal edit scroll view.
+     *
+     * @param context      the context
+     * @param attrs        the attrs
+     * @param defStyleAttr the def style attr
+     */
     public HorizontalEditScrollView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         LayoutInflater.from(context).inflate(R.layout.layout_horizontal_scroll, this, true);
     }
 
+    /**
+     * Sets edit text and config.
+     *
+     * @param markdownEditText      the markdown edit text
+     * @param markdownConfiguration the markdown configuration
+     */
     public void setEditTextAndConfig(@NonNull MarkdownEditText markdownEditText, @NonNull MarkdownConfiguration markdownConfiguration) {
         mMarkdownEditText = markdownEditText;
         mHeaderController = new HeaderController(markdownEditText, markdownConfiguration);

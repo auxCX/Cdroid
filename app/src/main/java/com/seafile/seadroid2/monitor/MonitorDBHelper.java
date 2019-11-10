@@ -17,12 +17,21 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The type Monitor db helper.
+ */
 public class MonitorDBHelper extends SQLiteOpenHelper {
     private static final String DEBUG_TAG = "MonitorDBHelper";
 
-    // If you change the database schema, you must increment the database
+    /**
+     * The constant DATABASE_VERSION.
+     */
+// If you change the database schema, you must increment the database
     // version.
     public static final int DATABASE_VERSION = 2;
+    /**
+     * The constant DATABASE_NAME.
+     */
     public static final String DATABASE_NAME = "monitor.db";
 
     // FileCache table
@@ -68,6 +77,11 @@ public class MonitorDBHelper extends SQLiteOpenHelper {
     private SQLiteDatabase database = null;
 
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static MonitorDBHelper getInstance() {
         return SingletonHolder.SINGLETON;
     }
@@ -101,6 +115,11 @@ public class MonitorDBHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
+    /**
+     * Save auto update info.
+     *
+     * @param info the info
+     */
     public void saveAutoUpdateInfo(AutoUpdateInfo info) {
         removeAutoUpdateInfo(info);
 
@@ -114,6 +133,11 @@ public class MonitorDBHelper extends SQLiteOpenHelper {
         database.insert(AUTO_UPDATE_INFO_TABLE_NAME, null, values);
     }
 
+    /**
+     * Remove auto update info.
+     *
+     * @param info the info
+     */
     public void removeAutoUpdateInfo(AutoUpdateInfo info) {
         String whereClause = String.format(
                 "%s = ? and %s = ? and %s = ? and %s = ? and %s = ? and %s = ?",
@@ -128,6 +152,11 @@ public class MonitorDBHelper extends SQLiteOpenHelper {
         database.delete(AUTO_UPDATE_INFO_TABLE_NAME, whereClause, params);
     }
 
+    /**
+     * Gets auto upload infos.
+     *
+     * @return the auto upload infos
+     */
     public List<AutoUpdateInfo> getAutoUploadInfos() {
         List<AutoUpdateInfo> infos = Lists.newArrayList();
         List<AutoUpdateInfo> invalidInfos = Lists.newLinkedList();

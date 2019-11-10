@@ -37,7 +37,7 @@ public abstract class PinyinUtils {
      *
      * @param context Android Context
      * @param c       the chinese character
-     * @return pinyin
+     * @return pinyin string
      */
     public static String toPinyin(Context context, char c) {
         if (c >= 'A' && c <= 'Z') {
@@ -77,7 +77,7 @@ public abstract class PinyinUtils {
      *
      * @param context Android Context
      * @param hanzi   the chinese string
-     * @return pinyin
+     * @return pinyin string
      */
     public static String toPinyin(Context context, String hanzi) {
         StringBuffer sb = new StringBuffer("");

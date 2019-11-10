@@ -15,6 +15,12 @@ import java.util.List;
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class UtilsJellyBean {
 
+    /**
+     * Extract uri list from intent list.
+     *
+     * @param intent the intent
+     * @return the list
+     */
     public static List<Uri> extractUriListFromIntent(Intent intent) {
         List<Uri> list = new ArrayList<Uri>();
 

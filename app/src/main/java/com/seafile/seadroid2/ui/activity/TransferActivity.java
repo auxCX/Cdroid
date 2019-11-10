@@ -21,6 +21,9 @@ import com.seafile.seadroid2.ui.adapter.TransferTaskAdapter;
 import com.seafile.seadroid2.ui.fragment.DownloadTaskFragment;
 import com.seafile.seadroid2.ui.fragment.UploadTaskFragment;
 
+/**
+ * The type Transfer activity.
+ */
 public class TransferActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
     private static final String DEBUG_TAG = "TransferActivity";
 
@@ -115,6 +118,9 @@ public class TransferActivity extends BaseActivity implements Toolbar.OnMenuItem
         onNewIntent(getIntent());
     }
 
+    /**
+     * On item selected.
+     */
     public void onItemSelected() {
         // update CAB title
         if (whichTab == TransferTaskAdapter.TaskType.DOWNLOAD_TASK
@@ -181,14 +187,30 @@ public class TransferActivity extends BaseActivity implements Toolbar.OnMenuItem
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Gets download task fragment.
+     *
+     * @return the download task fragment
+     */
     public DownloadTaskFragment getDownloadTaskFragment() {
         return (DownloadTaskFragment)getFragment(0);
     }
 
+    /**
+     * Gets upload task fragment.
+     *
+     * @return the upload task fragment
+     */
     public UploadTaskFragment getUploadTaskFragment() {
         return (UploadTaskFragment)getFragment(1);
     }
 
+    /**
+     * Gets fragment.
+     *
+     * @param index the index
+     * @return the fragment
+     */
     public Fragment getFragment(int index) {
         return getSupportFragmentManager().findFragmentByTag(makeFragmentName(index));
     }
@@ -205,6 +227,11 @@ public class TransferActivity extends BaseActivity implements Toolbar.OnMenuItem
         private String downloadTabTitle;
         private String uploadTabTitle;
 
+        /**
+         * Instantiates a new Transfer tabs adapter.
+         *
+         * @param fm the fm
+         */
         public TransferTabsAdapter(FragmentManager fm) {
             super(fm);
             downloadTabTitle = getString(R.string.transfer_tabs_downloads);

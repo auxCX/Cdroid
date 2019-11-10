@@ -18,14 +18,40 @@ public abstract class BaseImageList implements IImageList {
     private final LruCache<Integer, BaseImage> mCache =
             new LruCache<Integer, BaseImage>(CACHE_CAPACITY);
 
+    /**
+     * The M content resolver.
+     */
     protected ContentResolver mContentResolver;
+    /**
+     * The M sort.
+     */
     protected int mSort;
 
+    /**
+     * The M base uri.
+     */
     protected Uri mBaseUri;
+    /**
+     * The M cursor.
+     */
     protected Cursor mCursor;
+    /**
+     * The M bucket id.
+     */
     protected String mBucketId;
+    /**
+     * The M cursor deactivated.
+     */
     protected boolean mCursorDeactivated = false;
 
+    /**
+     * Instantiates a new Base image list.
+     *
+     * @param resolver the resolver
+     * @param uri      the uri
+     * @param sort     the sort
+     * @param bucketId the bucket id
+     */
     public BaseImageList(ContentResolver resolver, Uri uri, int sort,
             String bucketId) {
         mSort = sort;
@@ -58,7 +84,13 @@ public abstract class BaseImageList implements IImageList {
         }
     }
 
-    // TODO: Change public to protected
+    /**
+     * Content uri uri.
+     *
+     * @param id the id
+     * @return the uri
+     */
+// TODO: Change public to protected
     public Uri contentUri(long id) {
         // TODO: avoid using exception for most cases
         try {
@@ -128,18 +160,41 @@ public abstract class BaseImageList implements IImageList {
         return removeImage(getImageAt(i));
     }
 
+    /**
+     * Create cursor cursor.
+     *
+     * @return the cursor
+     */
     protected abstract Cursor createCursor();
 
+    /**
+     * Load image from cursor base image.
+     *
+     * @param cursor the cursor
+     * @return the base image
+     */
     protected abstract BaseImage loadImageFromCursor(Cursor cursor);
 
+    /**
+     * Gets image id.
+     *
+     * @param cursor the cursor
+     * @return the image id
+     */
     protected abstract long getImageId(Cursor cursor);
 
+    /**
+     * Invalidate cursor.
+     */
     protected void invalidateCursor() {
         if (mCursor == null) return;
         mCursor.deactivate();
         mCursorDeactivated = true;
     }
 
+    /**
+     * Invalidate cache.
+     */
     protected void invalidateCache() {
         mCache.clear();
     }
@@ -197,7 +252,12 @@ public abstract class BaseImageList implements IImageList {
         return ((BaseImage) image).mIndex;
     }
 
-    // This provides a default sorting order string for subclasses.
+    /**
+     * Sort order string.
+     *
+     * @return the string
+     */
+// This provides a default sorting order string for subclasses.
     // The list is first sorted by date, then by id. The order can be ascending
     // or descending, depending on the mSort variable.
     // The date is obtained from the "datetaken" column. But if it is null,

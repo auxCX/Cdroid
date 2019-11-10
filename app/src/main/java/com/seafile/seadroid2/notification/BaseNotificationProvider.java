@@ -17,26 +17,60 @@ import java.util.TimerTask;
  */
 public abstract class BaseNotificationProvider {
 
+    /**
+     * The M notif builder.
+     */
     protected NotificationCompat.Builder mNotifBuilder;
 
+    /**
+     * The M notif mgr.
+     */
     protected NotificationManager mNotifMgr = (NotificationManager) SeadroidApplication.getAppContext().
             getSystemService(SeadroidApplication.getAppContext().NOTIFICATION_SERVICE);
 
+    /**
+     * The constant NOTIFICATION_MESSAGE_KEY.
+     */
     public static final String NOTIFICATION_MESSAGE_KEY = "notification message key";
-    /** Creates an explicit flag for opening @{link com.seafile.seadroid2.ui.fragment.DownloadTaskFragment}
-     * in @{link com.seafile.seadroid2.ui.activity.TransferActivity} */
+    /**
+     * Creates an explicit flag for opening @{link com.seafile.seadroid2.ui.fragment.DownloadTaskFragment}
+     * in @{link com.seafile.seadroid2.ui.activity.TransferActivity}
+     */
     public static final String NOTIFICATION_OPEN_DOWNLOAD_TAB = "open download tab notification";
-    /** Creates an explicit flag for opening @{link com.seafile.seadroid2.ui.fragment.UploadTaskFragment}
-     * in @{link com.seafile.seadroid2.ui.activity.TransferActivity} */
+    /**
+     * Creates an explicit flag for opening @{link com.seafile.seadroid2.ui.fragment.UploadTaskFragment}
+     * in @{link com.seafile.seadroid2.ui.activity.TransferActivity}
+     */
     public static final String NOTIFICATION_OPEN_UPLOAD_TAB = "open upload tab notification";
 
+    /**
+     * The constant NOTIFICATION_ID_DOWNLOAD.
+     */
     public static final int NOTIFICATION_ID_DOWNLOAD = 1;
+    /**
+     * The constant NOTIFICATION_ID_UPLOAD.
+     */
     public static final int NOTIFICATION_ID_UPLOAD = 2;
+    /**
+     * The constant NOTIFICATION_ID_MEDIA.
+     */
     public static final int NOTIFICATION_ID_MEDIA = 3;
 
+    /**
+     * The Tx mgr.
+     */
     protected TransferManager txMgr;
+    /**
+     * The Tx service.
+     */
     protected TransferService txService;
 
+    /**
+     * Instantiates a new Base notification provider.
+     *
+     * @param transferManager the transfer manager
+     * @param transferService the transfer service
+     */
     public BaseNotificationProvider(TransferManager transferManager,
                                     TransferService transferService) {
         this.txMgr = transferManager;
@@ -46,27 +80,21 @@ public abstract class BaseNotificationProvider {
     /**
      * calculate state
      *
-     * @return
-     *        {@code NotificationState.NOTIFICATION_STATE_FAILED}, when at least one task failed
-     *        {@code NotificationState.NOTIFICATION_STATE_CANCELLED}, when at least one task cancelled
-     *        {@code NotificationState.NOTIFICATION_STATE_PROGRESS}, when at least one task in progress
-     *        {@code NotificationState.NOTIFICATION_STATE_COMPLETED}, otherwise.
+     * @return {@code NotificationState.NOTIFICATION_STATE_FAILED}, when at least one task failed        {@code NotificationState.NOTIFICATION_STATE_CANCELLED}, when at least one task cancelled        {@code NotificationState.NOTIFICATION_STATE_PROGRESS}, when at least one task in progress        {@code NotificationState.NOTIFICATION_STATE_COMPLETED}, otherwise.
      */
     protected abstract NotificationState getState();
 
     /**
      * get notification id
      *
-     * @return
-     *          notificationID
+     * @return notificationID notification id
      */
     protected abstract int getNotificationID();
 
     /**
      * get notification title texts
      *
-     * @return
-     *          some descriptions shown in notification title
+     * @return some           descriptions shown in notification title
      */
     protected abstract String getNotificationTitle();
 
@@ -93,7 +121,6 @@ public abstract class BaseNotificationProvider {
 
     /**
      * start to show a notification
-     *
      */
     protected abstract void notifyStarted();
 
@@ -145,8 +172,8 @@ public abstract class BaseNotificationProvider {
     /**
      * Delay for a while before cancel notification in order user can see the result
      *
-     * @param transferService
-     * @param delayInMillis
+     * @param transferService the transfer service
+     * @param delayInMillis   the delay in millis
      */
     public static void cancelWithDelay(final TransferService transferService,
             long delayInMillis) {
@@ -164,15 +191,10 @@ public abstract class BaseNotificationProvider {
     /**
      * update notification when failed or cancelled
      *
-     * @param notificationID
-     *          use to update the notification later on
-     * @param title
-     *          some descriptions shown in notification title
-     * @param info
-     *          some descriptions to indicate the upload status
-     * @param progress
-     *          progress value to update build-in progressbar
-     *
+     * @param notificationID use to update the notification later on
+     * @param title          some descriptions shown in notification title
+     * @param info           some descriptions to indicate the upload status
+     * @param progress       progress value to update build-in progressbar
      */
     protected void notifyCompletedWithErrors(int notificationID, String title, String info, int progress) {
         mNotifBuilder.setSmallIcon(R.drawable.icon);
@@ -189,16 +211,14 @@ public abstract class BaseNotificationProvider {
     /**
      * get downloading or uploading status
      *
-     * @return
-     *         texts of downloading or uploading status
+     * @return texts          of downloading or uploading status
      */
     protected abstract String getProgressInfo();
 
     /**
      * get progress of transferred files
      *
-     * @return
-     *          progress
+     * @return progress progress
      */
     protected abstract int getProgress();
 
@@ -211,9 +231,21 @@ public abstract class BaseNotificationProvider {
         cancelWithDelay(txService, 2000);
     }
 
+    /**
+     * The enum Notification state.
+     */
     public enum NotificationState {
+        /**
+         * Notification state progress notification state.
+         */
         NOTIFICATION_STATE_PROGRESS,
+        /**
+         * Notification state completed notification state.
+         */
         NOTIFICATION_STATE_COMPLETED,
+        /**
+         * Notification state completed with errors notification state.
+         */
         NOTIFICATION_STATE_COMPLETED_WITH_ERRORS
     }
 

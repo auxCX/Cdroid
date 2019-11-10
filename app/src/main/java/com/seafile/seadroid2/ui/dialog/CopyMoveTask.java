@@ -9,10 +9,19 @@ import com.seafile.seadroid2.ui.CopyMoveContext;
  * AsyncTask for copying/moving files
  */
 public class CopyMoveTask extends TaskDialog.Task {
+    /**
+     * The constant DEBUG_TAG.
+     */
     public static final String DEBUG_TAG = "CopyMoveTask";
     private DataManager dataManager;
     private CopyMoveContext ctx;
 
+    /**
+     * Instantiates a new Copy move task.
+     *
+     * @param ctx         the ctx
+     * @param dataManager the data manager
+     */
     public CopyMoveTask(CopyMoveContext ctx, DataManager dataManager) {
         this.ctx = ctx;
         this.dataManager = dataManager;

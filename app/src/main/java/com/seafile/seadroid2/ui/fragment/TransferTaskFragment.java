@@ -33,18 +33,35 @@ import java.util.List;
 
 /**
  * Base class for transfer task fragments
- *
  */
 public abstract class TransferTaskFragment extends ListFragment {
     private String DEBUG_TAG = "TransferTaskFragment";
 
+    /**
+     * The Adapter.
+     */
     protected TransferTaskAdapter adapter;
+    /**
+     * The M activity.
+     */
     protected TransferActivity mActivity = null;
+    /**
+     * The M transfer task list view.
+     */
     protected ListView mTransferTaskListView;
+    /**
+     * The Empty view.
+     */
     protected TextView emptyView;
     private View mListContainer;
     private View mProgressContainer;
+    /**
+     * The M timer.
+     */
     protected final Handler mTimer = new Handler();
+    /**
+     * The Tx service.
+     */
     protected TransferService txService = null;
     private ActionMode mActionMode;
 
@@ -54,6 +71,11 @@ public abstract class TransferTaskFragment extends ListFragment {
         mActivity = (TransferActivity) activity;
     }
 
+    /**
+     * Gets action mode.
+     *
+     * @return the action mode
+     */
     public ActionMode getActionMode() {
         return mActionMode;
     }
@@ -99,8 +121,18 @@ public abstract class TransferTaskFragment extends ListFragment {
         updateContextualActionBar();
     }
 
+    /**
+     * Delete selected items.
+     *
+     * @param ids the ids
+     */
     protected abstract void deleteSelectedItems(List<Integer> ids);
 
+    /**
+     * Restart selected items.
+     *
+     * @param ids the ids
+     */
     protected abstract void restartSelectedItems(List<Integer> ids);
 
     @Override
@@ -133,8 +165,16 @@ public abstract class TransferTaskFragment extends ListFragment {
         }
     };
 
+    /**
+     * Gets transfer task infos.
+     *
+     * @return the transfer task infos
+     */
     protected abstract List<? extends TransferTaskInfo> getTransferTaskInfos();
 
+    /**
+     * Sets up transfer list.
+     */
     protected abstract void setUpTransferList();
 
     @Override
@@ -152,6 +192,11 @@ public abstract class TransferTaskFragment extends ListFragment {
         mActivity.bindService(bIntent, mConnection, Context.BIND_AUTO_CREATE);
     }
 
+    /**
+     * Is need update progress boolean.
+     *
+     * @return the boolean
+     */
     protected abstract boolean isNeedUpdateProgress();
 
     @Override
@@ -179,6 +224,9 @@ public abstract class TransferTaskFragment extends ListFragment {
         }, 1 * 1000);
     }
 
+    /**
+     * Stop timer.
+     */
     public void stopTimer() {
         mTimer.removeCallbacksAndMessages(null);
     }
@@ -218,7 +266,7 @@ public abstract class TransferTaskFragment extends ListFragment {
     }
 
     /**
-     *  update state of contextual action bar
+     * update state of contextual action bar
      */
     public void updateContextualActionBar() {
         boolean itemsChecked = adapter.getCheckedItemCount() > 0;
@@ -248,6 +296,9 @@ public abstract class TransferTaskFragment extends ListFragment {
     class ActionModeCallback implements ActionMode.Callback {
         private boolean allItemsSelected;
 
+        /**
+         * Instantiates a new Action mode callback.
+         */
         public ActionModeCallback() {
         }
 

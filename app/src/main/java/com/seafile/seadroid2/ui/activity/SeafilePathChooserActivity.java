@@ -47,6 +47,9 @@ import java.util.List;
 public class SeafilePathChooserActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
     private static final String DEBUG_TAG = "SeafilePathChooserActivity";
 
+    /**
+     * The constant PASSWORD_DIALOG_FRAGMENT_TAG.
+     */
     public static final String PASSWORD_DIALOG_FRAGMENT_TAG = "password_dialog_fragment_tag";
 
     private NavContext mNavContext;
@@ -80,14 +83,38 @@ public class SeafilePathChooserActivity extends BaseActivity implements Toolbar.
     private static final int STEP_CHOOSE_DIR = 3;
     private int mStep = 1;
 
+    /**
+     * The constant DATA_REPO_ID.
+     */
     public static final String DATA_REPO_ID = "repoID";
+    /**
+     * The constant DATA_REPO_NAME.
+     */
     public static final String DATA_REPO_NAME = "repoNAME";
+    /**
+     * The constant DATA_DIRECTORY_PATH.
+     */
     public static final String DATA_DIRECTORY_PATH = "dirPath";
+    /**
+     * The constant DATA_DIR.
+     */
     public static final String DATA_DIR = "dir";
+    /**
+     * The constant DATA_ACCOUNT.
+     */
     public static final String DATA_ACCOUNT = "account";
 
+    /**
+     * The constant ONLY_SHOW_WRITABLE_REPOS.
+     */
     public static final String ONLY_SHOW_WRITABLE_REPOS = "onlyShowWritableRepos";
+    /**
+     * The constant SHOW_ENCRYPTED_REPOS.
+     */
     public static final String SHOW_ENCRYPTED_REPOS = "showEncryptedRepos";
+    /**
+     * The constant ENCRYPTED_REPO_ID.
+     */
     public static final String ENCRYPTED_REPO_ID = "encryptedRepoId";
     private boolean showEncryptedRepos;
 
@@ -195,6 +222,13 @@ public class SeafilePathChooserActivity extends BaseActivity implements Toolbar.
         super.onDestroy();
     }
 
+    /**
+     * On list item click.
+     *
+     * @param v        the v
+     * @param position the position
+     * @param id       the id
+     */
     public void onListItemClick(final View v, final int position, final long id) {
         NavContext nav = getNavContext();
         SeafRepo repo = null;
@@ -541,6 +575,14 @@ public class SeafilePathChooserActivity extends BaseActivity implements Toolbar.
         }, null);
     }
 
+    /**
+     * Show password dialog.
+     *
+     * @param repoName the repo name
+     * @param repoID   the repo id
+     * @param listener the listener
+     * @param password the password
+     */
     public void showPasswordDialog(String repoName, String repoID,
                                    TaskDialog.TaskDialogListener listener, String password) {
         PasswordDialog passwordDialog = new PasswordDialog();
@@ -653,6 +695,12 @@ public class SeafilePathChooserActivity extends BaseActivity implements Toolbar.
         private AccountManager accountManager;
         private boolean forwardIfOnlyOneAccount;
 
+        /**
+         * Instantiates a new Load accounts task.
+         *
+         * @param accountManager          the account manager
+         * @param forwardIfOnlyOneAccount the forward if only one account
+         */
         public LoadAccountsTask(AccountManager accountManager, boolean forwardIfOnlyOneAccount) {
             this.accountManager = accountManager;
             this.forwardIfOnlyOneAccount = forwardIfOnlyOneAccount;
@@ -703,6 +751,11 @@ public class SeafilePathChooserActivity extends BaseActivity implements Toolbar.
         private SeafException err;
         private DataManager dataManager;
 
+        /**
+         * Instantiates a new Load repos task.
+         *
+         * @param dataManager the data manager
+         */
         public LoadReposTask(DataManager dataManager) {
             this.dataManager = dataManager;
         }
@@ -742,6 +795,13 @@ public class SeafilePathChooserActivity extends BaseActivity implements Toolbar.
         private DataManager dataManager;
         private List<SeafDirent> dirents;
 
+        /**
+         * Instantiates a new Load dir task.
+         *
+         * @param repoID      the repo id
+         * @param dirPath     the dir path
+         * @param dataManager the data manager
+         */
         public LoadDirTask(String repoID, String dirPath, DataManager dataManager) {
             this.repoID = repoID;
             this.dirPath = dirPath;

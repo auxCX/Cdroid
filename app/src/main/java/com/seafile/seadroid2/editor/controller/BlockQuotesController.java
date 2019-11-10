@@ -7,13 +7,24 @@ import com.seafile.seadroid2.R;
 import com.seafile.seadroid2.editor.Utils;
 import com.yydcdut.markdown.MarkdownEditText;
 
+/**
+ * The type Block quotes controller.
+ */
 public class BlockQuotesController {
     private MarkdownEditText mRxMDEditText;
 
+    /**
+     * Instantiates a new Block quotes controller.
+     *
+     * @param rxMDEditText the rx md edit text
+     */
     public BlockQuotesController(MarkdownEditText rxMDEditText) {
         mRxMDEditText = rxMDEditText;
     }
 
+    /**
+     * Do block quotes.
+     */
     public void doBlockQuotes() {
         int start = mRxMDEditText.getSelectionStart();
         int end = mRxMDEditText.getSelectionEnd();
@@ -65,6 +76,9 @@ public class BlockQuotesController {
 
     }
 
+    /**
+     * Add nested block quotes.
+     */
     public void addNestedBlockQuotes() {
         int start = mRxMDEditText.getSelectionStart();
         int end = mRxMDEditText.getSelectionEnd();

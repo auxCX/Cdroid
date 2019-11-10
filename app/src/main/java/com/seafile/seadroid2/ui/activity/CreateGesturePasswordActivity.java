@@ -21,6 +21,9 @@ import com.seafile.seadroid2.gesturelock.LockPatternView.DisplayMode;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Create gesture password activity.
+ */
 public class CreateGesturePasswordActivity extends BaseActivity implements
         OnClickListener, Toolbar.OnMenuItemClickListener {
     private static final int ID_EMPTY_MESSAGE = -1;
@@ -29,7 +32,13 @@ public class CreateGesturePasswordActivity extends BaseActivity implements
     private LockPatternView mLockPatternView;
     private Button mFooterRightButton;
     private Button mFooterLeftButton;
+    /**
+     * The M header text.
+     */
     protected TextView mHeaderText;
+    /**
+     * The M chosen pattern.
+     */
     protected List<LockPatternView.Cell> mChosenPattern = null;
     private Toast mToast;
     private Stage mUiStage = Stage.Introduction;
@@ -57,10 +66,29 @@ public class CreateGesturePasswordActivity extends BaseActivity implements
      * The states of the left footer button.
      */
     enum LeftButtonMode {
-        Cancel(android.R.string.cancel, true), CancelDisabled(
-                android.R.string.cancel, false), Retry(
-                R.string.lockpattern_retry_button_text, true), RetryDisabled(
-                R.string.lockpattern_retry_button_text, false), Gone(
+        /**
+         * Cancel left button mode.
+         */
+        Cancel(android.R.string.cancel, true),
+        /**
+         * Cancel disabled left button mode.
+         */
+        CancelDisabled(
+                android.R.string.cancel, false),
+        /**
+         * Retry left button mode.
+         */
+        Retry(
+                R.string.lockpattern_retry_button_text, true),
+        /**
+         * Retry disabled left button mode.
+         */
+        RetryDisabled(
+                R.string.lockpattern_retry_button_text, false),
+        /**
+         * Gone left button mode.
+         */
+        Gone(
                 ID_EMPTY_MESSAGE, false);
 
         /**
@@ -74,7 +102,13 @@ public class CreateGesturePasswordActivity extends BaseActivity implements
             this.enabled = enabled;
         }
 
+        /**
+         * The Text.
+         */
         final int text;
+        /**
+         * The Enabled.
+         */
         final boolean enabled;
     }
 
@@ -82,10 +116,29 @@ public class CreateGesturePasswordActivity extends BaseActivity implements
      * The states of the right button.
      */
     enum RightButtonMode {
-        Continue(R.string.lockpattern_continue_button_text, true), ContinueDisabled(
-                R.string.lockpattern_continue_button_text, false), Confirm(
-                R.string.lockpattern_confirm_button_text, true), ConfirmDisabled(
-                R.string.lockpattern_confirm_button_text, false), Ok(
+        /**
+         * Continue right button mode.
+         */
+        Continue(R.string.lockpattern_continue_button_text, true),
+        /**
+         * Continue disabled right button mode.
+         */
+        ContinueDisabled(
+                R.string.lockpattern_continue_button_text, false),
+        /**
+         * Confirm right button mode.
+         */
+        Confirm(
+                R.string.lockpattern_confirm_button_text, true),
+        /**
+         * Confirm disabled right button mode.
+         */
+        ConfirmDisabled(
+                R.string.lockpattern_confirm_button_text, false),
+        /**
+         * Ok right button mode.
+         */
+        Ok(
                 android.R.string.ok, true);
 
         /**
@@ -99,7 +152,13 @@ public class CreateGesturePasswordActivity extends BaseActivity implements
             this.enabled = enabled;
         }
 
+        /**
+         * The Text.
+         */
         final int text;
+        /**
+         * The Enabled.
+         */
         final boolean enabled;
     }
 
@@ -107,24 +166,51 @@ public class CreateGesturePasswordActivity extends BaseActivity implements
      * Keep track internally of where the user is in choosing a pattern.
      */
     protected enum Stage {
-        
+
+        /**
+         * Introduction stage.
+         */
         Introduction(R.string.lockpattern_recording_intro_header,
                 LeftButtonMode.Cancel, RightButtonMode.ContinueDisabled,
-                ID_EMPTY_MESSAGE, true), HelpScreen(
+                ID_EMPTY_MESSAGE, true),
+        /**
+         * Help screen stage.
+         */
+        HelpScreen(
                 R.string.lockpattern_settings_help_how_to_record,
                 LeftButtonMode.Gone, RightButtonMode.Ok, ID_EMPTY_MESSAGE,
-                false), ChoiceTooShort(
+                false),
+        /**
+         * Choice too short stage.
+         */
+        ChoiceTooShort(
                 R.string.lockpattern_recording_incorrect_too_short,
                 LeftButtonMode.Retry, RightButtonMode.ContinueDisabled,
-                ID_EMPTY_MESSAGE, true), FirstChoiceValid(
+                ID_EMPTY_MESSAGE, true),
+        /**
+         * First choice valid stage.
+         */
+        FirstChoiceValid(
                 R.string.lockpattern_pattern_entered_header,
                 LeftButtonMode.Retry, RightButtonMode.Continue,
-                ID_EMPTY_MESSAGE, false), NeedToConfirm(
+                ID_EMPTY_MESSAGE, false),
+        /**
+         * Need to confirm stage.
+         */
+        NeedToConfirm(
                 R.string.lockpattern_need_to_confirm, LeftButtonMode.Cancel,
-                RightButtonMode.ConfirmDisabled, ID_EMPTY_MESSAGE, true), ConfirmWrong(
+                RightButtonMode.ConfirmDisabled, ID_EMPTY_MESSAGE, true),
+        /**
+         * Confirm wrong stage.
+         */
+        ConfirmWrong(
                 R.string.lockpattern_need_to_unlock_wrong,
                 LeftButtonMode.Cancel, RightButtonMode.ConfirmDisabled,
-                ID_EMPTY_MESSAGE, true), ChoiceConfirmed(
+                ID_EMPTY_MESSAGE, true),
+        /**
+         * Choice confirmed stage.
+         */
+        ChoiceConfirmed(
                 R.string.lockpattern_pattern_confirmed_header,
                 LeftButtonMode.Cancel, RightButtonMode.Confirm,
                 ID_EMPTY_MESSAGE, false);
@@ -151,12 +237,31 @@ public class CreateGesturePasswordActivity extends BaseActivity implements
             this.patternEnabled = patternEnabled;
         }
 
+        /**
+         * The Header message.
+         */
         final int headerMessage;
+        /**
+         * The Left mode.
+         */
         final LeftButtonMode leftMode;
+        /**
+         * The Right mode.
+         */
         final RightButtonMode rightMode;
+        /**
+         * The Footer message.
+         */
         final int footerMessage;
+        /**
+         * The Pattern enabled.
+         */
         final boolean patternEnabled;
     }
+
+    /**
+     * The Settings mgr.
+     */
     SettingsManager settingsMgr = SettingsManager.instance();
     
     @Override
@@ -259,6 +364,9 @@ public class CreateGesturePasswordActivity extends BaseActivity implements
         }
     };
 
+    /**
+     * The M choose new lock pattern listener.
+     */
     protected LockPatternView.OnPatternListener mChooseNewLockPatternListener = new LockPatternView.OnPatternListener() {
 
         public void onPatternStart() {

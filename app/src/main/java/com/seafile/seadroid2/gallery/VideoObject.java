@@ -18,11 +18,19 @@ import java.io.InputStream;
  */
 public class VideoObject extends BaseImage implements IImage {
     private static final String TAG = "VideoObject";
+
     /**
      * Constructor.
      *
-     * @param id        the image id of the image
+     * @param container the container
      * @param cr        the content resolver
+     * @param id        the image id of the image
+     * @param index     the index
+     * @param uri       the uri
+     * @param dataPath  the data path
+     * @param mimeType  the mime type
+     * @param dateTaken the date taken
+     * @param title     the title
      */
     protected VideoObject(BaseImageList container, ContentResolver cr,
             long id, int index, Uri uri, String dataPath,

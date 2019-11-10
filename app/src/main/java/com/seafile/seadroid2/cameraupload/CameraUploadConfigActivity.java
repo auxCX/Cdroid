@@ -25,6 +25,9 @@ import java.util.List;
  * Camera upload configuration helper
  */
 public class CameraUploadConfigActivity extends BaseActivity {
+    /**
+     * The constant DEBUG_TAG.
+     */
     public static final String DEBUG_TAG = "CameraUploadConfigActivity";
 
     private ViewPager mViewPager;
@@ -90,11 +93,20 @@ public class CameraUploadConfigActivity extends BaseActivity {
         public void onPageSelected(int page){}
     };
 
+    /**
+     * Save camera upload info.
+     *
+     * @param account  the account
+     * @param seafRepo the seaf repo
+     */
     public void saveCameraUploadInfo(Account account, SeafRepo seafRepo) {
         mSeafRepo = seafRepo;
         mAccount = account;
     }
 
+    /**
+     * Save settings.
+     */
     public void saveSettings() {
         SystemSwitchUtils.getInstance(this).syncSwitchUtils();
         if (isChooseBothPages || isChooseDirPage) {
@@ -134,24 +146,52 @@ public class CameraUploadConfigActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Is choose lib page boolean.
+     *
+     * @return the boolean
+     */
     public boolean isChooseLibPage() {
         return isChooseLibPage;
     }
 
+    /**
+     * Is choose dir page boolean.
+     *
+     * @return the boolean
+     */
     public boolean isChooseDirPage() {
         return isChooseDirPage;
     }
 
+    /**
+     * Save data plan allowed.
+     *
+     * @param isAllowed the is allowed
+     */
     public void saveDataPlanAllowed(boolean isAllowed) {
         sm.saveDataPlanAllowed(isAllowed);
     }
 
+    /**
+     * Save videos allowed.
+     *
+     * @param isAllowed the is allowed
+     */
     public void saveVideosAllowed(boolean isAllowed) {
         sm.saveVideosAllowed(isAllowed);
     }
 
+    /**
+     * The type Camera upload config adapter.
+     */
     class CameraUploadConfigAdapter extends FragmentStatePagerAdapter {
 
+        /**
+         * Instantiates a new Camera upload config adapter.
+         *
+         * @param fm the fm
+         */
         public CameraUploadConfigAdapter(FragmentManager fm) {
             super(fm);
         }

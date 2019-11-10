@@ -16,6 +16,9 @@ import android.util.Base64;
 
 import com.seafile.seadroid2.SeadroidApplication;
 
+/**
+ * The type Certs db helper.
+ */
 public class CertsDBHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     private static final int DATABASE_VERSION = 1;
@@ -32,6 +35,11 @@ public class CertsDBHelper extends SQLiteOpenHelper {
     private static CertsDBHelper dbHelper = null;
     private SQLiteDatabase database = null;
 
+    /**
+     * Gets database helper.
+     *
+     * @return the database helper
+     */
     public static synchronized CertsDBHelper getDatabaseHelper() {
         if (dbHelper != null)
             return dbHelper;
@@ -55,6 +63,12 @@ public class CertsDBHelper extends SQLiteOpenHelper {
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 
+    /**
+     * Gets certificate.
+     *
+     * @param url the url
+     * @return the certificate
+     */
     public X509Certificate getCertificate(String url) {
         String[] projection = {COLUMN_CERT};
 
@@ -113,6 +127,12 @@ public class CertsDBHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Save certificate.
+     *
+     * @param url  the url
+     * @param cert the cert
+     */
     public void saveCertificate(String url, X509Certificate cert) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutputStream out = null;

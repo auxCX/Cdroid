@@ -34,11 +34,10 @@ import android.util.Log;
 
 /**
  * Unofficial PreferenceFragment compatibility layer for Android 1.6 and up.
- * @see Alternatives to PreferenceFragment with android-support-v4 {@link http://stackoverflow.com/a/20727515/3962551}
- * @see {@link https://github.com/kolavar/android-support-v4-preferencefragment}
- * 
- * @author kolavar
  *
+ * @author kolavar
+ * @see Alternativesto PreferenceFragment with android-support-v4 {@link http://stackoverflow.com/a/20727515/3962551}
+ * @see {@link https://github.com/kolavar/android-support-v4-preferencefragment}
  */
 public class CustomPreferenceManagerCompat {
 
@@ -53,15 +52,21 @@ public class CustomPreferenceManagerCompat {
         /**
          * Called when a preference in the tree rooted at this
          * {@link PreferenceScreen} has been clicked.
-         * 
-         * @param preferenceScreen The {@link PreferenceScreen} that the
-         *        preference is located in.
-         * @param preference The preference that was clicked.
+         *
+         * @param preferenceScreen The {@link PreferenceScreen} that the        preference is located in.
+         * @param preference       The preference that was clicked.
          * @return Whether the click was handled.
          */
         boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference);
     }
-    
+
+    /**
+     * New instance preference manager.
+     *
+     * @param activity         the activity
+     * @param firstRequestCode the first request code
+     * @return the preference manager
+     */
     public static PreferenceManager newInstance(Activity activity, int firstRequestCode) {
         try {
             Constructor<PreferenceManager> c = PreferenceManager.class.getDeclaredConstructor(Activity.class, int.class);
@@ -72,9 +77,12 @@ public class CustomPreferenceManagerCompat {
         }
         return null;
 }
-    
+
     /**
      * Sets the owning preference fragment
+     *
+     * @param manager  the manager
+     * @param fragment the fragment
      */
     public static void setFragment(PreferenceManager manager, CustomPreferenceFragment fragment) {
         // stub
@@ -83,7 +91,8 @@ public class CustomPreferenceManagerCompat {
     /**
      * Sets the callback to be invoked when a {@link Preference} in the
      * hierarchy rooted at this {@link PreferenceManager} is clicked.
-     * 
+     *
+     * @param manager  the manager
      * @param listener The callback to be invoked.
      */
     public static void setOnPreferenceTreeClickListener(
@@ -122,12 +131,11 @@ public class CustomPreferenceManagerCompat {
      * <p>
      * If a preference hierarchy is given, the new preference hierarchies will
      * be merged in.
-     * 
-     * @param queryIntent The intent to match activities.
-     * @param rootPreferences Optional existing hierarchy to merge the new
-     *            hierarchies into.
-     * @return The root hierarchy (if one was not provided, the new hierarchy's
-     *         root).
+     *
+     * @param manager the manager
+     * @param intent  the intent
+     * @param screen  the screen
+     * @return The root hierarchy (if one was not provided, the new hierarchy's         root).
      */
     public static PreferenceScreen inflateFromIntent(PreferenceManager manager, Intent intent, PreferenceScreen screen) {
         try {
@@ -144,13 +152,12 @@ public class CustomPreferenceManagerCompat {
     /**
      * Inflates a preference hierarchy from XML. If a preference hierarchy is
      * given, the new preference hierarchies will be merged in.
-     * 
-     * @param context The context of the resource.
-     * @param resId The resource ID of the XML to inflate.
-     * @param rootPreferences Optional existing hierarchy to merge the new
-     *            hierarchies into.
-     * @return The root hierarchy (if one was not provided, the new hierarchy's
-     *         root).
+     *
+     * @param manager  the manager
+     * @param activity the activity
+     * @param resId    The resource ID of the XML to inflate.
+     * @param screen   the screen
+     * @return The root hierarchy (if one was not provided, the new hierarchy's         root).
      * @hide
      */
     public static PreferenceScreen inflateFromResource(PreferenceManager manager, Activity activity, int resId, PreferenceScreen screen) {
@@ -167,7 +174,8 @@ public class CustomPreferenceManagerCompat {
 
     /**
      * Returns the root of the preference hierarchy managed by this class.
-     *  
+     *
+     * @param manager the manager
      * @return The {@link PreferenceScreen} object that is at the root of the hierarchy.
      */
     public static PreferenceScreen getPreferenceScreen(PreferenceManager manager) {
@@ -184,6 +192,11 @@ public class CustomPreferenceManagerCompat {
 
     /**
      * Called by the {@link PreferenceManager} to dispatch a subactivity result.
+     *
+     * @param manager     the manager
+     * @param requestCode the request code
+     * @param resultCode  the result code
+     * @param data        the data
      */
     public static void dispatchActivityResult(PreferenceManager manager,
             int requestCode, int resultCode, Intent data) {
@@ -199,6 +212,8 @@ public class CustomPreferenceManagerCompat {
     /**
      * Called by the {@link PreferenceManager} to dispatch the activity stop
      * event.
+     *
+     * @param manager the manager
      */
     public static void dispatchActivityStop(PreferenceManager manager) {
         try {
@@ -213,6 +228,8 @@ public class CustomPreferenceManagerCompat {
     /**
      * Called by the {@link PreferenceManager} to dispatch the activity destroy
      * event.
+     *
+     * @param manager the manager
      */
     public static void dispatchActivityDestroy(PreferenceManager manager) {
         try {
@@ -226,9 +243,10 @@ public class CustomPreferenceManagerCompat {
 
     /**
      * Sets the root of the preference hierarchy.
-     * 
-     * @param preferenceScreen The root {@link PreferenceScreen} of the preference hierarchy.
-     * @return Whether the {@link PreferenceScreen} given is different than the previous. 
+     *
+     * @param manager the manager
+     * @param screen  the screen
+     * @return Whether the {@link PreferenceScreen} given is different than the previous.
      */
     public static boolean setPreferences(PreferenceManager manager, PreferenceScreen screen) {
         try {

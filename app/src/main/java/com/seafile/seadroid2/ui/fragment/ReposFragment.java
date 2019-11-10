@@ -51,6 +51,9 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * The type Repos fragment.
+ */
 public class ReposFragment extends ListFragment {
 
     private static final String DEBUG_TAG = "ReposFragment";
@@ -72,9 +75,21 @@ public class ReposFragment extends ListFragment {
     private CopyMoveContext copyMoveContext;
     private Map<String, ScrollState> scrollPostions;
 
+    /**
+     * The constant FILE_ACTION_EXPORT.
+     */
     public static final int FILE_ACTION_EXPORT = 0;
+    /**
+     * The constant FILE_ACTION_COPY.
+     */
     public static final int FILE_ACTION_COPY = 1;
+    /**
+     * The constant FILE_ACTION_MOVE.
+     */
     public static final int FILE_ACTION_MOVE = 2;
+    /**
+     * The constant FILE_ACTION_STAR.
+     */
     public static final int FILE_ACTION_STAR = 3;
 
     private SwipeRefreshLayout refreshLayout;
@@ -95,15 +110,33 @@ public class ReposFragment extends ListFragment {
         return mActivity.getNavContext();
     }
 
+    /**
+     * Gets adapter.
+     *
+     * @return the adapter
+     */
     public SeafItemAdapter getAdapter() {
         return adapter;
     }
 
+    /**
+     * Gets empty view.
+     *
+     * @return the empty view
+     */
     public ImageView getEmptyView() {
         return mEmptyView;
     }
 
+    /**
+     * The interface On file selected listener.
+     */
     public interface OnFileSelectedListener {
+        /**
+         * On file selected.
+         *
+         * @param fileName the file name
+         */
         void onFileSelected(SeafDirent fileName);
     }
 
@@ -161,6 +194,8 @@ public class ReposFragment extends ListFragment {
      * when the user deselects all items, presses the BACK button, or selects the Done action on the left side of the bar.
      * <p>
      * see http://developer.android.com/guide/topics/ui/menus.html#CAB
+     *
+     * @param position the position
      */
     public void startContextualActionMode(int position) {
         startContextualActionMode();
@@ -173,6 +208,9 @@ public class ReposFragment extends ListFragment {
 
     }
 
+    /**
+     * Start contextual action mode.
+     */
     public void startContextualActionMode() {
         NavContext nav = getNavContext();
         if (!nav.inRepo()) return;
@@ -184,6 +222,11 @@ public class ReposFragment extends ListFragment {
 
     }
 
+    /**
+     * Show repo bottom sheet.
+     *
+     * @param repo the repo
+     */
     public void showRepoBottomSheet(final SeafRepo repo) {
         final BottomSheet.Builder builder = new BottomSheet.Builder(mActivity);
         builder.title(repo.getName()).sheet(R.menu.bottom_sheet_op_repo).listener(new DialogInterface.OnClickListener() {
@@ -201,6 +244,12 @@ public class ReposFragment extends ListFragment {
         }).show();
     }
 
+    /**
+     * Show file bottom sheet.
+     *
+     * @param title  the title
+     * @param dirent the dirent
+     */
     public void showFileBottomSheet(String title, final SeafDirent dirent) {
         final String repoName = getNavContext().getRepoName();
         final String repoID = getNavContext().getRepoID();
@@ -271,6 +320,12 @@ public class ReposFragment extends ListFragment {
 
     }
 
+    /**
+     * Show dir bottom sheet.
+     *
+     * @param title  the title
+     * @param dirent the dirent
+     */
     public void showDirBottomSheet(String title, final SeafDirent dirent) {
         final String repoName = getNavContext().getRepoName();
         final String repoID = getNavContext().getRepoID();
@@ -360,19 +415,36 @@ public class ReposFragment extends ListFragment {
         super.onDetach();
     }
 
+    /**
+     * Refresh.
+     */
     public void refresh() {
         mRefreshType = REFRESH_ON_OVERFLOW_MENU;
         refreshView(true, false);
     }
 
+    /**
+     * Refresh view.
+     */
     public void refreshView() {
         refreshView(false, false);
     }
 
+    /**
+     * Refresh view.
+     *
+     * @param restorePosition the restore position
+     */
     public void refreshView(boolean restorePosition) {
         refreshView(false, restorePosition);
     }
 
+    /**
+     * Refresh view.
+     *
+     * @param forceRefresh    the force refresh
+     * @param restorePosition the restore position
+     */
     public void refreshView(boolean forceRefresh, boolean restorePosition) {
         if (mActivity == null)
             return;
@@ -393,6 +465,12 @@ public class ReposFragment extends ListFragment {
         mActivity.supportInvalidateOptionsMenu();
     }
 
+    /**
+     * Nav to repos view.
+     *
+     * @param forceRefresh    the force refresh
+     * @param restorePosition the restore position
+     */
     public void navToReposView(boolean forceRefresh, boolean restorePosition) {
         //stopTimer();
 
@@ -420,6 +498,12 @@ public class ReposFragment extends ListFragment {
         ConcurrentAsyncTask.execute(new LoadTask(getDataManager()));
     }
 
+    /**
+     * Nav to directory.
+     *
+     * @param forceRefresh    the force refresh
+     * @param restorePosition the restore position
+     */
     public void navToDirectory(boolean forceRefresh, boolean restorePosition) {
         startTimer();
 
@@ -465,7 +549,10 @@ public class ReposFragment extends ListFragment {
                 nav.getDirPath());
     }
 
-    // refresh list by mTimer
+    /**
+     * Start timer.
+     */
+// refresh list by mTimer
     public void startTimer() {
         if (isTimerStarted)
             return;
@@ -491,6 +578,9 @@ public class ReposFragment extends ListFragment {
         }, 1 * 3500);
     }
 
+    /**
+     * Stop timer.
+     */
     public void stopTimer() {
         Log.d(DEBUG_TAG, "timer stopped");
         mTimer.removeCallbacksAndMessages(null);
@@ -524,6 +614,12 @@ public class ReposFragment extends ListFragment {
         return false;
     }
 
+    /**
+     * Sort files.
+     *
+     * @param type  the type
+     * @param order the order
+     */
     public void sortFiles(int type, int order) {
         adapter.sortFiles(type, order);
         adapter.notifyDataSetChanged();
@@ -667,9 +763,21 @@ public class ReposFragment extends ListFragment {
     }
 
     private class ScrollState {
+        /**
+         * The Index.
+         */
         public int index;
+        /**
+         * The Top.
+         */
         public int top;
 
+        /**
+         * Instantiates a new Scroll state.
+         *
+         * @param index the index
+         * @param top   the top
+         */
         public ScrollState(int index, int top) {
             this.index = index;
             this.top = top;
@@ -754,9 +862,20 @@ public class ReposFragment extends ListFragment {
     }
 
     private class LoadTask extends AsyncTask<Void, Void, List<SeafRepo>> {
+        /**
+         * The Err.
+         */
         SeafException err = null;
+        /**
+         * The Data manager.
+         */
         DataManager dataManager;
 
+        /**
+         * Instantiates a new Load task.
+         *
+         * @param dataManager the data manager
+         */
         public LoadTask(DataManager dataManager) {
             this.dataManager = dataManager;
         }
@@ -892,6 +1011,11 @@ public class ReposFragment extends ListFragment {
         });
     }
 
+    /**
+     * Show loading.
+     *
+     * @param show the show
+     */
     public void showLoading(boolean show) {
         mErrorText.setVisibility(View.GONE);
         if (show) {
@@ -915,13 +1039,33 @@ public class ReposFragment extends ListFragment {
 
     private class LoadDirTask extends AsyncTask<String, Void, List<SeafDirent>> {
 
+        /**
+         * The Err.
+         */
         SeafException err = null;
+        /**
+         * The My repo name.
+         */
         String myRepoName;
+        /**
+         * The My repo id.
+         */
         String myRepoID;
+        /**
+         * The My path.
+         */
         String myPath;
 
+        /**
+         * The Data manager.
+         */
         DataManager dataManager;
 
+        /**
+         * Instantiates a new Load dir task.
+         *
+         * @param dataManager the data manager
+         */
         public LoadDirTask(DataManager dataManager) {
             this.dataManager = dataManager;
         }
@@ -1072,6 +1216,9 @@ public class ReposFragment extends ListFragment {
     class ActionModeCallback implements ActionMode.Callback {
         private boolean allItemsSelected;
 
+        /**
+         * Instantiates a new Action mode callback.
+         */
         public ActionModeCallback() {
         }
 

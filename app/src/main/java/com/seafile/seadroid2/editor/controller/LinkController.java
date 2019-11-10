@@ -11,12 +11,20 @@ import com.seafile.seadroid2.editor.LinkDialogView;
 import com.yydcdut.markdown.MarkdownEditText;
 
 
+/**
+ * The type Link controller.
+ */
 public class LinkController {
     private final LinkDialogView mLinkDialogView;
     private MarkdownEditText mRxMDEditText;
 
     private AlertDialog mAlertDialog;
 
+    /**
+     * Instantiates a new Link controller.
+     *
+     * @param rxMDEditText the rx md edit text
+     */
     public LinkController(MarkdownEditText rxMDEditText) {
         mRxMDEditText = rxMDEditText;
         mLinkDialogView = new LinkDialogView(rxMDEditText.getContext());
@@ -26,6 +34,9 @@ public class LinkController {
     }
 
 
+    /**
+     * Do image.
+     */
     public void doImage() {
         if (mAlertDialog == null) {
             initDialog();

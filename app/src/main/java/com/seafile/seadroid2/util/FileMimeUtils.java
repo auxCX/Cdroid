@@ -46,10 +46,22 @@ public class FileMimeUtils {
     }
 
 
+    /**
+     * Is office or text file boolean.
+     *
+     * @param mime the mime
+     * @return the boolean
+     */
     public static boolean isOfficeOrTextFile(String mime) {
         return needUpdateFileMime.containsValue(mime);
     }
 
+    /**
+     * Gets mime type.
+     *
+     * @param file the file
+     * @return the mime type
+     */
     public static String getMimeType(File file) {
         String mime = "text/plain";
         String filePath = file.getAbsolutePath();

@@ -21,16 +21,34 @@ import java.util.Set;
  */
 public class EmailAutoCompleteTextView extends AppCompatAutoCompleteTextView {
 
+    /**
+     * Instantiates a new Email auto complete text view.
+     *
+     * @param context the context
+     */
     public EmailAutoCompleteTextView(Context context) {
         super(context);
         init();
     }
 
+    /**
+     * Instantiates a new Email auto complete text view.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public EmailAutoCompleteTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
+    /**
+     * Instantiates a new Email auto complete text view.
+     *
+     * @param context      the context
+     * @param attrs        the attrs
+     * @param defStyleAttr the def style attr
+     */
     public EmailAutoCompleteTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();

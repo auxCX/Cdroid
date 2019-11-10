@@ -27,6 +27,9 @@ import java.io.IOException;
 
 import ren.qinc.edit.PerformEdit;
 
+/**
+ * The type Editor activity.
+ */
 public class EditorActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
 
     private MarkdownEditText mMarkdownEditText;
@@ -100,6 +103,12 @@ public class EditorActivity extends BaseActivity implements Toolbar.OnMenuItemCl
     }
 
 
+    /**
+     * Read to string string.
+     *
+     * @param file the file
+     * @return the string
+     */
     public String readToString(File file) {
         try {
             if (file == null || !file.exists()) {

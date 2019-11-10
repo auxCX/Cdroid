@@ -14,6 +14,9 @@ import java.util.List;
  * Do a fancy fade-in of thumbnails.
  */
 public class AnimateFirstDisplayListener extends SimpleImageLoadingListener {
+    /**
+     * The Displayed images.
+     */
     static final List<String> displayedImages = Collections.synchronizedList(new LinkedList<String>());
 
     @Override

@@ -14,17 +14,31 @@ import java.util.List;
  */
 public class SeafReposAdapter extends ReposAdapter {
 
+    /**
+     * Instantiates a new Seaf repos adapter.
+     *
+     * @param onlyShowWritableRepos the only show writable repos
+     * @param encryptedRepoId       the encrypted repo id
+     */
     public SeafReposAdapter(boolean onlyShowWritableRepos, String encryptedRepoId) {
         super(onlyShowWritableRepos, encryptedRepoId);
     }
 
-    /** sort files type */
+    /**
+     * sort files type
+     */
     public static final int SORT_BY_NAME = 9;
-    /** sort files type */
+    /**
+     * sort files type
+     */
     public static final int SORT_BY_LAST_MODIFIED_TIME = 10;
-    /** sort files order */
+    /**
+     * sort files order
+     */
     public static final int SORT_ORDER_ASCENDING = 11;
-    /** sort files order */
+    /**
+     * sort files order
+     */
     public static final int SORT_ORDER_DESCENDING = 12;
 
 
@@ -38,6 +52,11 @@ public class SeafReposAdapter extends ReposAdapter {
         return repos.isEmpty();
     }
 
+    /**
+     * Add.
+     *
+     * @param repo the repo
+     */
     public void add(SeafRepo repo) {
         repos.add(repo);
     }
@@ -52,10 +71,19 @@ public class SeafReposAdapter extends ReposAdapter {
         return position;
     }
 
+    /**
+     * Clear repos.
+     */
     public void clearRepos() {
         repos.clear();
     }
 
+    /**
+     * Sort files.
+     *
+     * @param type  the type
+     * @param order the order
+     */
     public void sortFiles(int type, int order) {
         List<SeafRepo> folders = Lists.newArrayList();
 

@@ -38,6 +38,9 @@ import java.util.List;
  * Local cached images will be shown directly, while cloud images will be asynchronously downloaded first
  */
 public class GalleryActivity extends BaseActivity {
+    /**
+     * The constant DEBUG_TAG.
+     */
     public static final String DEBUG_TAG = "GalleryActivity";
 
     private HackyViewPager mViewPager;
@@ -61,6 +64,9 @@ public class GalleryActivity extends BaseActivity {
     private int mPageIndex;
     private GalleryAdapter mGalleryAdapter;
     private List<SeafPhoto> mPhotos = Lists.newArrayList();
+    /**
+     * The constant taskID.
+     */
     public static int taskID;
     private int count;
     private  static int TALLY=3;
@@ -224,6 +230,13 @@ public class GalleryActivity extends BaseActivity {
         private String repoName, repoID, dirPath;
         private SeafException err = null;
 
+        /**
+         * Instantiates a new Load photos task.
+         *
+         * @param repoName the repo name
+         * @param repoID   the repo id
+         * @param dirPath  the dir path
+         */
         public LoadPhotosTask(String repoName, String repoID, String dirPath) {
             this.repoName = repoName;
             this.repoID = repoID;
@@ -282,9 +295,9 @@ public class GalleryActivity extends BaseActivity {
      * Sorting type is one of {@link SeafItemAdapter#SORT_BY_NAME} or {@link SeafItemAdapter#SORT_BY_LAST_MODIFIED_TIME}.
      * Sorting order is one of {@link SeafItemAdapter#SORT_ORDER_ASCENDING} or {@link SeafItemAdapter#SORT_ORDER_DESCENDING}.
      *
-     * @param dirents
-     * @param type
-     * @param order
+     * @param dirents the dirents
+     * @param type    the type
+     * @param order   the order
      * @return sorted file list
      */
     public List<SeafDirent> sortFiles(List<SeafDirent> dirents, int type, int order) {
@@ -343,6 +356,9 @@ public class GalleryActivity extends BaseActivity {
 
     }
 
+    /**
+     * Hide or show tool bar download.
+     */
     public void hideOrShowToolBarDownload() {
         mDownloadBtn.setVisibility(View.GONE);
     }
@@ -384,11 +400,20 @@ public class GalleryActivity extends BaseActivity {
         }
     }
 
+    /**
+     * The type Star file task.
+     */
     class StarFileTask extends AsyncTask<Void, Void, Void> {
         private String repoId;
         private String path;
         private SeafException err;
 
+        /**
+         * Instantiates a new Star file task.
+         *
+         * @param repoId the repo id
+         * @param path   the path
+         */
         public StarFileTask(String repoId, String path) {
             this.repoId = repoId;
             this.path = path;

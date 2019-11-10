@@ -10,11 +10,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * The type Block info bean.
+ */
 public class BlockInfoBean {
+    /**
+     * The Blk ids.
+     */
     public List<String> blkIds;
+    /**
+     * The Rawblksurl.
+     */
     public String rawblksurl;
+    /**
+     * The Commiturl.
+     */
     public String commiturl;
 
+    /**
+     * From json block info bean.
+     *
+     * @param json the json
+     * @return the block info bean
+     * @throws JSONException the json exception
+     */
     public static BlockInfoBean fromJson(String json) throws JSONException {
         BlockInfoBean bean = new BlockInfoBean();
         JSONObject obj = Utils.parseJsonObject(json);
@@ -28,6 +47,9 @@ public class BlockInfoBean {
         return bean;
     }
 
+    /**
+     * Instantiates a new Block info bean.
+     */
     public BlockInfoBean() {
     }
 }

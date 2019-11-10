@@ -28,16 +28,23 @@ import java.util.HashMap;
  * The interface of all image collections used in gallery.
  */
 public interface IImageList {
+    /**
+     * Gets bucket ids.
+     *
+     * @return the bucket ids
+     */
     HashMap<String, String> getBucketIds();
 
     /**
      * Returns the count of image objects.
      *
-     * @return       the number of images
+     * @return the number of images
      */
     int getCount();
 
     /**
+     * Is empty boolean.
+     *
      * @return true if the count of image objects is zero.
      */
     boolean isEmpty();
@@ -45,32 +52,41 @@ public interface IImageList {
     /**
      * Returns the image at the ith position.
      *
-     * @param i     the position
-     * @return      the image at the ith position
+     * @param i the position
+     * @return the image at the ith position
      */
     IImage getImageAt(int i);
 
     /**
      * Returns the image with a particular Uri.
      *
-     * @param uri
-     * @return      the image with a particular Uri. null if not found.
+     * @param uri the uri
+     * @return the image with a particular Uri. null if not found.
      */
     IImage getImageForUri(Uri uri);
 
     /**
+     * Remove image boolean.
      *
-     * @param image
+     * @param image the image
      * @return true if the image was removed.
      */
     boolean removeImage(IImage image);
 
     /**
      * Removes the image at the ith position.
-     * @param i     the position
+     *
+     * @param i the position
+     * @return the boolean
      */
     boolean removeImageAt(int i);
 
+    /**
+     * Gets image index.
+     *
+     * @param image the image
+     * @return the image index
+     */
     int getImageIndex(IImage image);
 
     /**

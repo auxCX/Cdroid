@@ -11,12 +11,22 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+/**
+ * The type Uri image.
+ */
 class UriImage implements IImage {
     private static final String TAG = "UriImage";
     private final Uri mUri;
     private final IImageList mContainer;
     private final ContentResolver mContentResolver;
 
+    /**
+     * Instantiates a new Uri image.
+     *
+     * @param container the container
+     * @param cr        the cr
+     * @param uri       the uri
+     */
     UriImage(IImageList container, ContentResolver cr, Uri uri) {
         mContainer = container;
         mContentResolver = cr;
@@ -62,6 +72,14 @@ class UriImage implements IImage {
                 IImage.ROTATE_AS_NEEDED, IImage.NO_NATIVE);
     }
 
+    /**
+     * Full size bitmap bitmap.
+     *
+     * @param minSideLength     the min side length
+     * @param maxNumberOfPixels the max number of pixels
+     * @param rotateAsNeeded    the rotate as needed
+     * @return the bitmap
+     */
     public Bitmap fullSizeBitmap(int minSideLength, int maxNumberOfPixels,
             boolean rotateAsNeeded) {
         return fullSizeBitmap(minSideLength, maxNumberOfPixels,

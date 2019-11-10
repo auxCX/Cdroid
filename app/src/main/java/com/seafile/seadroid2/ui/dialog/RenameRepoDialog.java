@@ -12,6 +12,9 @@ import com.seafile.seadroid2.SeafException;
 import com.seafile.seadroid2.account.Account;
 import com.seafile.seadroid2.data.DataManager;
 
+/**
+ * The type Rename repo task.
+ */
 class RenameRepoTask extends TaskDialog.Task {
 
     private String mRepoID;
@@ -19,6 +22,14 @@ class RenameRepoTask extends TaskDialog.Task {
     private String mNewName;
     private DataManager mDataManager;
 
+    /**
+     * Instantiates a new Rename repo task.
+     *
+     * @param repoID      the repo id
+     * @param currentName the current name
+     * @param newName     the new name
+     * @param dataManager the data manager
+     */
     RenameRepoTask(String repoID, String currentName, String newName, DataManager dataManager) {
         mRepoID = repoID;
         mCurrentName = currentName;
@@ -38,6 +49,9 @@ class RenameRepoTask extends TaskDialog.Task {
     }
 }
 
+/**
+ * The type Rename repo dialog.
+ */
 public class RenameRepoDialog extends TaskDialog {
 
     private final static String STATE_REPO_ID = "rename_repo_dialog.repo_id";
@@ -51,6 +65,13 @@ public class RenameRepoDialog extends TaskDialog {
 
     private EditText mRepoNameText;
 
+    /**
+     * Init.
+     *
+     * @param repoID      the repo id
+     * @param currentName the current name
+     * @param account     the account
+     */
     public void init(String repoID, String currentName, Account account) {
         mRepoID = repoID;
         mCurrentName = currentName;

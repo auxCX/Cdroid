@@ -22,8 +22,16 @@ public class CameraUploadManager {
      */
     public static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".cameraupload.provider";
 
+    /**
+     * The Account manager.
+     */
     AccountManager accountManager;
 
+    /**
+     * Instantiates a new Camera upload manager.
+     *
+     * @param context the context
+     */
     public CameraUploadManager(Context context) {
         accountManager = new AccountManager(context);
     }

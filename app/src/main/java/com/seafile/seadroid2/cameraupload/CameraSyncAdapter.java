@@ -79,8 +79,14 @@ public class CameraSyncAdapter extends AbstractThreadedSyncAdapter {
      */
     private List<Integer> tasksInProgress = new ArrayList<>();
 
+    /**
+     * The Tx service.
+     */
     TransferService txService = null;
 
+    /**
+     * The M connection.
+     */
     ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -107,6 +113,8 @@ public class CameraSyncAdapter extends AbstractThreadedSyncAdapter {
 
     /**
      * Set up the sync adapter
+     *
+     * @param context the context
      */
     public CameraSyncAdapter(Context context) {
         /*

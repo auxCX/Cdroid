@@ -25,21 +25,42 @@ import com.google.common.collect.Lists;
  *}
 */
 
+/**
+ * The type Certificate info.
+ */
 public class CertificateInfo {
     private static final String DEBUG_TAG = "CertificateInfo";
 
+    /**
+     * The Certificate.
+     */
     X509Certificate certificate;
 
+    /**
+     * Instantiates a new Certificate info.
+     *
+     * @param certificate the certificate
+     */
     public CertificateInfo(X509Certificate certificate) {
         this.certificate = certificate;
     }
 
     // general info
 
+    /**
+     * Gets subject name.
+     *
+     * @return the subject name
+     */
     public String getSubjectName() {
         return certificate.getSubjectX500Principal().getName(X500Principal.RFC1779);
     }
 
+    /**
+     * Get subject alt names string [ ].
+     *
+     * @return the string [ ]
+     */
     public String[] getSubjectAltNames() {
         try {
             LinkedList<String> altNames = Lists.newLinkedList();
@@ -62,10 +83,21 @@ public class CertificateInfo {
         }
     }
 
+    /**
+     * Gets serial number.
+     *
+     * @return the serial number
+     */
     public String getSerialNumber() {
         return certificate.getSerialNumber().toString(16);
     }
 
+    /**
+     * Gets signature.
+     *
+     * @param algorithm the algorithm
+     * @return the signature
+     */
     public String getSignature(String algorithm) {
         try {
             MessageDigest digest = MessageDigest.getInstance(algorithm);
@@ -80,14 +112,29 @@ public class CertificateInfo {
         }
     }
 
+    /**
+     * Gets not before.
+     *
+     * @return the not before
+     */
     public Date getNotBefore() {
         return certificate.getNotBefore();
     }
 
+    /**
+     * Gets not after.
+     *
+     * @return the not after
+     */
     public Date getNotAfter() {
         return certificate.getNotAfter();
     }
 
+    /**
+     * Is currently valid boolean.
+     *
+     * @return the boolean
+     */
     public boolean isCurrentlyValid() {
         try {
             certificate.checkValidity();

@@ -20,22 +20,56 @@ import java.io.InputStream;
 public abstract class BaseImage implements IImage {
     private static final String TAG = "BaseImage";
     private static final int UNKNOWN_LENGTH = -1;
+    /**
+     * The M content resolver.
+     */
     protected ContentResolver mContentResolver;
 
-    // Database field
+    /**
+     * The M uri.
+     */
+// Database field
     protected Uri mUri;
+    /**
+     * The M id.
+     */
     protected long mId;
+    /**
+     * The M data path.
+     */
     protected String mDataPath;
+    /**
+     * The M index.
+     */
     protected final int mIndex;
+    /**
+     * The M mime type.
+     */
     protected String mMimeType;
     private final long mDateTaken;
     private String mTitle;
 
+    /**
+     * The M container.
+     */
     protected BaseImageList mContainer;
 
     private int mWidth = UNKNOWN_LENGTH;
     private int mHeight = UNKNOWN_LENGTH;
 
+    /**
+     * Instantiates a new Base image.
+     *
+     * @param container the container
+     * @param cr        the cr
+     * @param id        the id
+     * @param index     the index
+     * @param uri       the uri
+     * @param dataPath  the data path
+     * @param mimeType  the mime type
+     * @param dateTaken the date taken
+     * @param title     the title
+     */
     protected BaseImage(BaseImageList container, ContentResolver cr,
             long id, int index, Uri uri, String dataPath, String mimeType,
             long dateTaken, String title) {
@@ -162,6 +196,9 @@ public abstract class BaseImage implements IImage {
         return b;
     }
 
+    /**
+     * On remove.
+     */
     protected void onRemove() {
     }
 

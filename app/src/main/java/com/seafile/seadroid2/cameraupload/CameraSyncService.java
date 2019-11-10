@@ -6,7 +6,7 @@ import android.os.IBinder;
 
 /**
  * Camera Sync Service.
- *
+ * <p>
  * This service is started and stopped by the Android System.
  */
 public class CameraSyncService extends Service {

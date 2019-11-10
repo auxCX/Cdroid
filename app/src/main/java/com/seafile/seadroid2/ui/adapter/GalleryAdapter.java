@@ -27,9 +27,14 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  * Gallery Adapter
  */
 public class GalleryAdapter extends PagerAdapter {
+    /**
+     * The constant DEBUG_TAG.
+     */
     public static final String DEBUG_TAG = "GalleryAdapter";
 
-    /** unique task id */
+    /**
+     * unique task id
+     */
     public static int taskID;
 
     private GalleryActivity mActivity;
@@ -39,6 +44,14 @@ public class GalleryAdapter extends PagerAdapter {
     private Account mAccount;
     private DataManager dm;
 
+    /**
+     * Instantiates a new Gallery adapter.
+     *
+     * @param context     the context
+     * @param account     the account
+     * @param photos      the photos
+     * @param dataManager the data manager
+     */
     public GalleryAdapter(GalleryActivity context, Account account,
                           List<SeafPhoto> photos, DataManager dataManager) {
         mActivity = context;
@@ -61,10 +74,18 @@ public class GalleryAdapter extends PagerAdapter {
         return seafPhotos.size();
     }
 
+    /**
+     * Sets items.
+     *
+     * @param photos the photos
+     */
     public void setItems(List<SeafPhoto> photos) {
         seafPhotos = photos;
     }
 
+    /**
+     * Download photo.
+     */
     public void downloadPhoto() {
         notifyDataSetChanged();
     }

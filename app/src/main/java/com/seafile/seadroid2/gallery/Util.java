@@ -24,9 +24,21 @@ import android.view.View.OnClickListener;
  */
 public class Util {
     private static final String TAG = "Util";
+    /**
+     * The constant DIRECTION_LEFT.
+     */
     public static final int DIRECTION_LEFT = 0;
+    /**
+     * The constant DIRECTION_RIGHT.
+     */
     public static final int DIRECTION_RIGHT = 1;
+    /**
+     * The constant DIRECTION_UP.
+     */
     public static final int DIRECTION_UP = 2;
+    /**
+     * The constant DIRECTION_DOWN.
+     */
     public static final int DIRECTION_DOWN = 3;
 
     private static OnClickListener sNullOnClickListener;
@@ -34,7 +46,14 @@ public class Util {
     private Util() {
     }
 
-    // Rotates the bitmap by the specified degree.
+    /**
+     * Rotate bitmap.
+     *
+     * @param b       the b
+     * @param degrees the degrees
+     * @return the bitmap
+     */
+// Rotates the bitmap by the specified degree.
     // If a new bitmap is created, the original bitmap is recycled.
     public static Bitmap rotate(Bitmap b, int degrees) {
         if (degrees != 0 && b != null) {
@@ -55,6 +74,14 @@ public class Util {
         return b;
     }
 
+    /**
+     * Compute sample size int.
+     *
+     * @param options        the options
+     * @param minSideLength  the min side length
+     * @param maxNumOfPixels the max num of pixels
+     * @return the int
+     */
     /*
      * Compute the sample size as a function of minSideLength
      * and maxNumOfPixels.
@@ -118,10 +145,27 @@ public class Util {
         }
     }
 
-    // Whether we should recycle the input (unless the output is the input).
+    /**
+     * The constant RECYCLE_INPUT.
+     */
+// Whether we should recycle the input (unless the output is the input).
     public static final boolean RECYCLE_INPUT = true;
+    /**
+     * The constant NO_RECYCLE_INPUT.
+     */
     public static final boolean NO_RECYCLE_INPUT = false;
 
+    /**
+     * Transform bitmap.
+     *
+     * @param scaler       the scaler
+     * @param source       the source
+     * @param targetWidth  the target width
+     * @param targetHeight the target height
+     * @param scaleUp      the scale up
+     * @param recycle      the recycle
+     * @return the bitmap
+     */
     public static Bitmap transform(Matrix scaler,
                                    Bitmap source,
                                    int targetWidth,
@@ -215,6 +259,14 @@ public class Util {
         return b2;
     }
 
+    /**
+     * Index of int.
+     *
+     * @param <T>   the type parameter
+     * @param array the array
+     * @param s     the s
+     * @return the int
+     */
     public static <T>  int indexOf(T [] array, T s) {
         for (int i = 0; i < array.length; i++) {
             if (array[i].equals(s)) {
@@ -224,6 +276,11 @@ public class Util {
         return -1;
     }
 
+    /**
+     * Close silently.
+     *
+     * @param c the c
+     */
     public static void closeSilently(Closeable c) {
         if (c == null) return;
         try {
@@ -233,6 +290,11 @@ public class Util {
         }
     }
 
+    /**
+     * Close silently.
+     *
+     * @param c the c
+     */
     public static void closeSilently(ParcelFileDescriptor c) {
         if (c == null) return;
         try {
@@ -245,7 +307,12 @@ public class Util {
     /**
      * Make a bitmap from a given Uri.
      *
-     * @param uri
+     * @param minSideLength  the min side length
+     * @param maxNumOfPixels the max num of pixels
+     * @param uri            the uri
+     * @param cr             the cr
+     * @param useNative      the use native
+     * @return the bitmap
      */
     public static Bitmap makeBitmap(int minSideLength, int maxNumOfPixels,
             Uri uri, ContentResolver cr, boolean useNative) {
@@ -265,6 +332,15 @@ public class Util {
         }
     }
 
+    /**
+     * Make bitmap bitmap.
+     *
+     * @param minSideLength  the min side length
+     * @param maxNumOfPixels the max num of pixels
+     * @param pfd            the pfd
+     * @param useNative      the use native
+     * @return the bitmap
+     */
     public static Bitmap makeBitmap(int minSideLength, int maxNumOfPixels,
             ParcelFileDescriptor pfd, boolean useNative) {
         BitmapFactory.Options options = null;
@@ -275,6 +351,17 @@ public class Util {
                 options);
     }
 
+    /**
+     * Make bitmap bitmap.
+     *
+     * @param minSideLength  the min side length
+     * @param maxNumOfPixels the max num of pixels
+     * @param uri            the uri
+     * @param cr             the cr
+     * @param pfd            the pfd
+     * @param options        the options
+     * @return the bitmap
+     */
     public static Bitmap makeBitmap(int minSideLength, int maxNumOfPixels,
             Uri uri, ContentResolver cr, ParcelFileDescriptor pfd,
             BitmapFactory.Options options) {
@@ -314,6 +401,11 @@ public class Util {
         }
     }
 
+    /**
+     * Gets null on click listener.
+     *
+     * @return the null on click listener
+     */
     public static synchronized OnClickListener getNullOnClickListener() {
         if (sNullOnClickListener == null) {
             sNullOnClickListener = new OnClickListener() {
@@ -324,12 +416,24 @@ public class Util {
         return sNullOnClickListener;
     }
 
+    /**
+     * Assert true.
+     *
+     * @param cond the cond
+     */
     public static void assertTrue(boolean cond) {
         if (!cond) {
             throw new AssertionError();
         }
     }
 
+    /**
+     * Equals boolean.
+     *
+     * @param a the a
+     * @param b the b
+     * @return the boolean
+     */
     public static boolean equals(String a, String b) {
         // return true if both string are null or the content equals
         return a == b || a.equals(b);
@@ -349,6 +453,14 @@ public class Util {
             }
         };
 
+        /**
+         * Instantiates a new Background job.
+         *
+         * @param activity the activity
+         * @param job      the job
+         * @param dialog   the dialog
+         * @param handler  the handler
+         */
         public BackgroundJob(MonitoredActivity activity, Runnable job,
                 ProgressDialog dialog, Handler handler) {
             mActivity = activity;
@@ -386,6 +498,15 @@ public class Util {
         }
     }
 
+    /**
+     * Start background job.
+     *
+     * @param activity the activity
+     * @param title    the title
+     * @param message  the message
+     * @param job      the job
+     * @param handler  the handler
+     */
     public static void startBackgroundJob(MonitoredActivity activity,
             String title, String message, Runnable job, Handler handler) {
         // Make the progress dialog uncancelable, so that we can gurantee
@@ -395,7 +516,13 @@ public class Util {
         new Thread(new BackgroundJob(activity, job, dialog, handler)).start();
     }
 
-    // Returns an intent which is used for "set as" menu items.
+    /**
+     * Create set as intent intent.
+     *
+     * @param image the image
+     * @return the intent
+     */
+// Returns an intent which is used for "set as" menu items.
     public static Intent createSetAsIntent(IImage image) {
         Uri u = image.fullSizeImageUri();
         Intent intent = new Intent(Intent.ACTION_ATTACH_DATA);
@@ -404,11 +531,22 @@ public class Util {
         return intent;
     }
 
-    // Returns Options that set the puregeable flag for Bitmap decode.
+    /**
+     * Create native alloc options bitmap factory . options.
+     *
+     * @return the bitmap factory . options
+     */
+// Returns Options that set the puregeable flag for Bitmap decode.
     public static BitmapFactory.Options createNativeAllocOptions() {
         return new BitmapFactory.Options();
     }
 
+    /**
+     * Gets image file size.
+     *
+     * @param image the image
+     * @return the image file size
+     */
     public static long getImageFileSize(IImage image) {
         java.io.InputStream data = image.fullSizeImageData();
         if (data == null) return -1;

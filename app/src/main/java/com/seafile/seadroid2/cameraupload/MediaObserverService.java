@@ -12,9 +12,9 @@ import com.seafile.seadroid2.SettingsManager;
 
 /**
  * This service monitors the media provider content provider for new images/videos.
- *
+ * <p>
  * If new content appears, this service will get notified and send a syncRequest to the MediaSyncProvider.
- *
+ * <p>
  * This service is always running, even if camera upload is not active.
  * However, it will only register it's ContentObservers if Camera Upload is enabled in Seadroid.
  */
@@ -118,6 +118,9 @@ public class MediaObserverService extends Service {
     }
 
     private class MediaObserver extends ContentObserver {
+        /**
+         * Instantiates a new Media observer.
+         */
         public MediaObserver() {
             super(null);
         }

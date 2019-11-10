@@ -33,17 +33,45 @@ public class AppChoiceDialog extends DialogFragment {
 
     private List<CustomAction> customActions = Lists.newArrayList();
 
+    /**
+     * The interface On item selected listener.
+     */
     public interface OnItemSelectedListener {
+        /**
+         * On app selected.
+         *
+         * @param appInfo the app info
+         */
         void onAppSelected(ResolveInfo appInfo);
+
+        /**
+         * On custom action selected.
+         *
+         * @param action the action
+         */
         void onCustomActionSelected(CustomAction action);
     }
 
+    /**
+     * Init.
+     *
+     * @param title    the title
+     * @param appInfos the app infos
+     * @param listener the listener
+     */
     public void init(String title, List<ResolveInfo> appInfos, OnItemSelectedListener listener) {
         mAppInfos = appInfos;
         mListener = listener;
         mTitle = title;
     }
 
+    /**
+     * Add custom action.
+     *
+     * @param id          the id
+     * @param icon        the icon
+     * @param description the description
+     */
     public void addCustomAction(int id, Drawable icon, String description) {
         customActions.add(new CustomAction(id, icon, description));
     }
@@ -136,9 +164,21 @@ public class AppChoiceDialog extends DialogFragment {
         }
 
         private class Viewholder {
+            /**
+             * The Icon.
+             */
             ImageView icon;
+            /**
+             * The Desc.
+             */
             TextView desc;
 
+            /**
+             * Instantiates a new Viewholder.
+             *
+             * @param icon the icon
+             * @param desc the desc
+             */
             Viewholder(ImageView icon, TextView desc) {
                 this.icon = icon;
                 this.desc = desc;
@@ -147,11 +187,30 @@ public class AppChoiceDialog extends DialogFragment {
 
     }
 
+    /**
+     * The type Custom action.
+     */
     public static class CustomAction {
+        /**
+         * The Id.
+         */
         public final int id;
+        /**
+         * The Icon.
+         */
         public final Drawable icon;
+        /**
+         * The Description.
+         */
         public final String description;
 
+        /**
+         * Instantiates a new Custom action.
+         *
+         * @param id          the id
+         * @param icon        the icon
+         * @param description the description
+         */
         public CustomAction(int id, Drawable icon, String description) {
             this.id = id;
             this.icon = icon;

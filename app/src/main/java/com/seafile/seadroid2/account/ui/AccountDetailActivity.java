@@ -47,11 +47,17 @@ import org.json.JSONException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 
+/**
+ * The type Account detail activity.
+ */
 public class AccountDetailActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
     private static final String DEBUG_TAG = "AccountDetailActivity";
 
     private static final String HTTP_PREFIX = "http://";
     private static final String HTTPS_PREFIX = "https://";
+    /**
+     * The constant TWO_FACTOR_AUTH.
+     */
     public static final String TWO_FACTOR_AUTH = "two_factor_auth";
 
     private TextView statusView;
@@ -300,6 +306,11 @@ public class AccountDetailActivity extends BaseActivity implements Toolbar.OnMen
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * On https checkbox clicked.
+     *
+     * @param view the view
+     */
     public void onHttpsCheckboxClicked(View view) {
         refreshServerUrlPrefix();
     }
@@ -364,7 +375,9 @@ public class AccountDetailActivity extends BaseActivity implements Toolbar.OnMen
         });
     }
 
-    /** Called when the user clicks the Login button */
+    /**
+     * Called when the user clicks the Login button  @param view the view
+     */
     public void login(View view) {
         String serverURL = serverText.getText().toString().trim();
         String email = emailText.getText().toString().trim();
@@ -430,12 +443,35 @@ public class AccountDetailActivity extends BaseActivity implements Toolbar.OnMen
     }
 
     private class LoginTask extends AsyncTask<Void, Void, String> {
+        /**
+         * The Login account.
+         */
         Account loginAccount;
+        /**
+         * The Err.
+         */
         SeafException err = null;
+        /**
+         * The Passwd.
+         */
         String passwd;
+        /**
+         * The Auth token.
+         */
         String authToken;
+        /**
+         * The Remember device.
+         */
         boolean rememberDevice;
 
+        /**
+         * Instantiates a new Login task.
+         *
+         * @param loginAccount   the login account
+         * @param passwd         the passwd
+         * @param authToken      the auth token
+         * @param rememberDevice the remember device
+         */
         public LoginTask(Account loginAccount, String passwd, String authToken, boolean rememberDevice) {
             this.loginAccount = loginAccount;
             this.passwd = passwd;

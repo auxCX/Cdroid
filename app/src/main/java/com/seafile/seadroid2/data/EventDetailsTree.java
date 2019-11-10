@@ -12,11 +12,22 @@ public class EventDetailsTree {
     private List<EventDetailsFileItem> items;
     private SeafEvent event;
 
+    /**
+     * Instantiates a new Event details tree.
+     *
+     * @param event the event
+     */
     public EventDetailsTree(SeafEvent event) {
         this.items = Lists.newArrayList();
         this.event = event;
     }
 
+    /**
+     * Sets commit details.
+     *
+     * @param details the details
+     * @return the commit details
+     */
     public List<EventDetailsFileItem> setCommitDetails(CommitDetails details) {
 
         items.clear();

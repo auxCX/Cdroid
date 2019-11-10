@@ -38,11 +38,10 @@ import android.widget.ListView;
 
 /**
  * Unofficial PreferenceFragment compatibility layer for Android 1.6 and up.
- * @see Alternatives to PreferenceFragment with android-support-v4 {@link http://stackoverflow.com/a/20727515/3962551}
- * @see {@link https://github.com/kolavar/android-support-v4-preferencefragment}
  *
  * @author kolavar
- *
+ * @see Alternativesto PreferenceFragment with android-support-v4 {@link http://stackoverflow.com/a/20727515/3962551}
+ * @see {@link https://github.com/kolavar/android-support-v4-preferencefragment}
  */
 public abstract class CustomPreferenceFragment extends Fragment implements
         CustomPreferenceManagerCompat.OnPreferenceTreeClickListener {
@@ -89,6 +88,10 @@ public abstract class CustomPreferenceFragment extends Fragment implements
          * a fragment class name associated with it.  The implementation
          * to should instantiate and switch to an instance of the given
          * fragment.
+         *
+         * @param caller the caller
+         * @param pref   the pref
+         * @return the boolean
          */
         boolean onPreferenceStartFragment(CustomPreferenceFragment caller, Preference pref);
     }
@@ -176,6 +179,7 @@ public abstract class CustomPreferenceFragment extends Fragment implements
 
     /**
      * Returns the {@link PreferenceManager} used by this fragment.
+     *
      * @return The {@link PreferenceManager}.
      */
     public PreferenceManager getPreferenceManager() {
@@ -199,8 +203,7 @@ public abstract class CustomPreferenceFragment extends Fragment implements
     /**
      * Gets the root of the preference hierarchy that this fragment is showing.
      *
-     * @return The {@link PreferenceScreen} that is the root of the preference
-     *         hierarchy.
+     * @return The {@link PreferenceScreen} that is the root of the preference         hierarchy.
      */
     public PreferenceScreen getPreferenceScreen() {
         return CustomPreferenceManagerCompat.getPreferenceScreen(mPreferenceManager);
@@ -249,7 +252,7 @@ public abstract class CustomPreferenceFragment extends Fragment implements
      *
      * @param key The key of the preference to retrieve.
      * @return The {@link Preference} with the key, or null.
-     * @see PreferenceGroup#findPreference(CharSequence)
+     * @see PreferenceGroup#findPreference(CharSequence) PreferenceGroup#findPreference(CharSequence)
      */
     public Preference findPreference(CharSequence key) {
         if (mPreferenceManager == null) {
@@ -276,6 +279,11 @@ public abstract class CustomPreferenceFragment extends Fragment implements
         }
     }
 
+    /**
+     * Gets list view.
+     *
+     * @return the list view
+     */
     public ListView getListView() {
         ensureList();
         return mList;

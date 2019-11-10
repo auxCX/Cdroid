@@ -32,10 +32,22 @@ import java.util.regex.Pattern;
  * Adapter for Activities tab
  */
 public class ActivitiesItemAdapter extends BaseAdapter {
+    /**
+     * The constant DEBUG_TAG.
+     */
     public static final String DEBUG_TAG = ActivitiesItemAdapter.class.getSimpleName();
 
+    /**
+     * The constant REFRESH_ON_NONE.
+     */
     public static final int REFRESH_ON_NONE = 0;
+    /**
+     * The constant REFRESH_ON_PULL_DOWN.
+     */
     public static final int REFRESH_ON_PULL_DOWN = 1;
+    /**
+     * The constant REFRESH_ON_PULL_UP.
+     */
     public static final int REFRESH_ON_PULL_UP = 2;
     private int state = REFRESH_ON_NONE;
 
@@ -45,6 +57,11 @@ public class ActivitiesItemAdapter extends BaseAdapter {
     private DisplayImageOptions options;
     private boolean useNewActivity;
 
+    /**
+     * Instantiates a new Activities item adapter.
+     *
+     * @param activity the activity
+     */
     public ActivitiesItemAdapter(BrowserActivity activity) {
         this.mActivity = activity;
         items = Lists.newArrayList();
@@ -67,14 +84,25 @@ public class ActivitiesItemAdapter extends BaseAdapter {
         return items.size() + 1;
     }
 
+    /**
+     * Clear.
+     */
     public void clear() {
         items.clear();
     }
 
+    /**
+     * Add.
+     *
+     * @param entry the entry
+     */
     public void add(SeafEvent entry) {
         items.add(entry);
     }
 
+    /**
+     * Notify changed.
+     */
     public void notifyChanged() {
         notifyDataSetChanged();
     }
@@ -89,6 +117,12 @@ public class ActivitiesItemAdapter extends BaseAdapter {
         return position;
     }
 
+    /**
+     * Sets items.
+     *
+     * @param events         the events
+     * @param useNewActivity the use new activity
+     */
     public void setItems(List<SeafEvent> events, boolean useNewActivity) {
         this.useNewActivity = useNewActivity;
         items.clear();
@@ -97,6 +131,11 @@ public class ActivitiesItemAdapter extends BaseAdapter {
 
     private LinearLayout mFooterView;
 
+    /**
+     * Sets footer view loading.
+     *
+     * @param more the more
+     */
     public void setFooterViewLoading(boolean more) {
         ProgressBar progress = (ProgressBar) mFooterView.findViewById(R.id.progressbar);
         TextView text = (TextView) mFooterView.findViewById(R.id.text);
@@ -111,10 +150,20 @@ public class ActivitiesItemAdapter extends BaseAdapter {
         }
     }
 
+    /**
+     * Sets state.
+     *
+     * @param state the state
+     */
     public void setState(int state) {
         this.state = state;
     }
 
+    /**
+     * Gets footer view.
+     *
+     * @return the footer view
+     */
     public View getFooterView() {
         return this.mFooterView;
     }
@@ -222,10 +271,67 @@ public class ActivitiesItemAdapter extends BaseAdapter {
     }
 
     private class ViewHolder {
-        TextView title, nick, date, repoName;
-        ImageView icon, icon_url;
-        TextView tv_name, tv_state, tv_desc, tv_mod, tv_time;
-        RelativeLayout rl_old, rl_new;
+        /**
+         * The Title.
+         */
+        TextView title, /**
+         * The Nick.
+         */
+        nick, /**
+         * The Date.
+         */
+        date, /**
+         * The Repo name.
+         */
+        repoName;
+        /**
+         * The Icon.
+         */
+        ImageView icon, /**
+         * The Icon url.
+         */
+        icon_url;
+        /**
+         * The Tv name.
+         */
+        TextView tv_name, /**
+         * The Tv state.
+         */
+        tv_state, /**
+         * The Tv desc.
+         */
+        tv_desc, /**
+         * The Tv mod.
+         */
+        tv_mod, /**
+         * The Tv time.
+         */
+        tv_time;
+        /**
+         * The Rl old.
+         */
+        RelativeLayout rl_old, /**
+         * The Rl new.
+         */
+        rl_new;
+
+        /**
+         * Instantiates a new View holder.
+         *
+         * @param title    the title
+         * @param nick     the nick
+         * @param date     the date
+         * @param repoName the repo name
+         * @param icon     the icon
+         * @param tv_name  the tv name
+         * @param tv_state the tv state
+         * @param tv_desc  the tv desc
+         * @param tv_time  the tv time
+         * @param tv_mod   the tv mod
+         * @param icon_url the icon url
+         * @param rl_old   the rl old
+         * @param rl_new   the rl new
+         */
         public ViewHolder(TextView title, TextView nick, TextView date, TextView repoName, ImageView icon, TextView tv_name,
                           TextView tv_state, TextView tv_desc, TextView tv_time, TextView tv_mod, ImageView icon_url, RelativeLayout rl_old, RelativeLayout rl_new) {
             super();

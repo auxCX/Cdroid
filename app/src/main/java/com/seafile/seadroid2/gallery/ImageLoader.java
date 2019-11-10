@@ -24,10 +24,25 @@ public class ImageLoader {
     private Thread mDecodeThread;
     private ContentResolver mCr;
 
+    /**
+     * The interface Loaded callback.
+     */
     public interface LoadedCallback {
+        /**
+         * Run.
+         *
+         * @param result the result
+         */
         void run(Bitmap result);
     }
 
+    /**
+     * Gets bitmap.
+     *
+     * @param image               the image
+     * @param imageLoadedRunnable the image loaded runnable
+     * @param tag                 the tag
+     */
     public void getBitmap(IImage image,
                           LoadedCallback imageLoadedRunnable,
                           int tag) {
@@ -41,6 +56,12 @@ public class ImageLoader {
         }
     }
 
+    /**
+     * Cancel boolean.
+     *
+     * @param image the image
+     * @return the boolean
+     */
     public boolean cancel(final IImage image) {
         synchronized (mQueue) {
             int index = findItem(image);
@@ -63,7 +84,12 @@ public class ImageLoader {
         return -1;
     }
 
-    // Clear the queue. Returns an array of tags that were in the queue.
+    /**
+     * Clear queue int [ ].
+     *
+     * @return the int [ ]
+     */
+// Clear the queue. Returns an array of tags that were in the queue.
     public int[] clearQueue() {
         synchronized (mQueue) {
             int n = mQueue.size();
@@ -77,10 +103,26 @@ public class ImageLoader {
     }
 
     private static class WorkItem {
+        /**
+         * The M image.
+         */
         IImage mImage;
+        /**
+         * The M on loaded runnable.
+         */
         LoadedCallback mOnLoadedRunnable;
+        /**
+         * The M tag.
+         */
         int mTag;
 
+        /**
+         * Instantiates a new Work item.
+         *
+         * @param image            the image
+         * @param onLoadedRunnable the on loaded runnable
+         * @param tag              the tag
+         */
         WorkItem(IImage image, LoadedCallback onLoadedRunnable, int tag) {
             mImage = image;
             mOnLoadedRunnable = onLoadedRunnable;
@@ -88,6 +130,12 @@ public class ImageLoader {
         }
     }
 
+    /**
+     * Instantiates a new Image loader.
+     *
+     * @param cr      the cr
+     * @param handler the handler
+     */
     public ImageLoader(ContentResolver cr, Handler handler) {
         mCr = cr;
         start();
@@ -144,6 +192,9 @@ public class ImageLoader {
         t.start();
     }
 
+    /**
+     * Stop.
+     */
     public void stop() {
         synchronized (mQueue) {
             mDone = true;

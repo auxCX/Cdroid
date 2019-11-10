@@ -14,15 +14,27 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * Download task
- *
  */
 public class DownloadTask extends TransferTask {
+    /**
+     * The constant DEBUG_TAG.
+     */
     public static final String DEBUG_TAG = "DownloadTask";
 
     private String localPath;
     private DownloadStateListener downloadStateListener;
     private boolean updateTotal;
 
+    /**
+     * Instantiates a new Download task.
+     *
+     * @param taskID                the task id
+     * @param account               the account
+     * @param repoName              the repo name
+     * @param repoID                the repo id
+     * @param path                  the path
+     * @param downloadStateListener the download state listener
+     */
     public DownloadTask(int taskID, Account account, String repoName, String repoID, String path,
                         DownloadStateListener downloadStateListener) {
         super(taskID, account, repoName, repoID, path);
@@ -126,6 +138,11 @@ public class DownloadTask extends TransferTask {
         return info;
     }
 
+    /**
+     * Gets local path.
+     *
+     * @return the local path
+     */
     public String getLocalPath() {
         return localPath;
     }

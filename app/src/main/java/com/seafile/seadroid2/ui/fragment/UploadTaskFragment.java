@@ -11,7 +11,6 @@ import java.util.List;
 
 /**
  * Upload tasks fragments
- *
  */
 public class UploadTaskFragment extends TransferTaskFragment {
     private static final String DEBUG_TAG = "UploadTaskFragment";
@@ -61,6 +60,11 @@ public class UploadTaskFragment extends TransferTaskFragment {
         }
     }
 
+    /**
+     * Restart tasks by ids.
+     *
+     * @param ids the ids
+     */
     public void restartTasksByIds(List<Integer> ids) {
         if (txService != null) {
             txService.restartUploadTasksByIds(ids);
@@ -97,10 +101,10 @@ public class UploadTaskFragment extends TransferTaskFragment {
     }
 
     /**
-     *  cancel upload tasks
-     *  Note that, this method <strong>only</strong> use to cancel file upload tasks rather than Camera Upload tasks.
-     *  Because Camera Upload tasks will restarted again by Camera Upload Service.
-     *  If want to persistently turn off Camera Upload tasks, should turn off the Camera upload service in Settings Menu.
+     * cancel upload tasks
+     * Note that, this method <strong>only</strong> use to cancel file upload tasks rather than Camera Upload tasks.
+     * Because Camera Upload tasks will restarted again by Camera Upload Service.
+     * If want to persistently turn off Camera Upload tasks, should turn off the Camera upload service in Settings Menu.
      */
     public void cancelUploadTasks() {
         if (txService != null) {

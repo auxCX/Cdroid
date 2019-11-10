@@ -28,12 +28,23 @@ import android.view.MotionEvent;
 public class HackyViewPager extends ViewPager {
 
 	private boolean isLocked;
-	
+
+    /**
+     * Instantiates a new Hacky view pager.
+     *
+     * @param context the context
+     */
     public HackyViewPager(Context context) {
         super(context);
         isLocked = false;
     }
 
+    /**
+     * Instantiates a new Hacky view pager.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public HackyViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
         isLocked = false;
@@ -57,15 +68,28 @@ public class HackyViewPager extends ViewPager {
         return !isLocked && super.onTouchEvent(event);
     }
 
-	public void toggleLock() {
+    /**
+     * Toggle lock.
+     */
+    public void toggleLock() {
 		isLocked = !isLocked;
 	}
 
-	public void setLocked(boolean isLocked) {
+    /**
+     * Sets locked.
+     *
+     * @param isLocked the is locked
+     */
+    public void setLocked(boolean isLocked) {
 		this.isLocked = isLocked;
 	}
 
-	public boolean isLocked() {
+    /**
+     * Is locked boolean.
+     *
+     * @return the boolean
+     */
+    public boolean isLocked() {
 		return isLocked;
 	}
 

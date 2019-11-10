@@ -13,6 +13,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
+/**
+ * The type File list fragment.
+ */
 public class FileListFragment extends ListFragment implements
 LoaderManager.LoaderCallbacks<List<SelectableFile>> {
 
@@ -22,6 +25,12 @@ LoaderManager.LoaderCallbacks<List<SelectableFile>> {
     private FileListAdapter mFileListAdapter;
     private String mPath;
 
+    /**
+     * New instance file list fragment.
+     *
+     * @param path the path
+     * @return the file list fragment
+     */
     public static FileListFragment newInstance(String path) {
         FileListFragment fragment = new FileListFragment();
         Bundle args = new Bundle();

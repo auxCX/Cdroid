@@ -8,17 +8,31 @@ import com.seafile.seadroid2.editor.Utils;
 import com.yydcdut.markdown.MarkdownConfiguration;
 import com.yydcdut.markdown.MarkdownEditText;
 
+/**
+ * The type Header controller.
+ */
 public class HeaderController {
 
     private MarkdownEditText mRxMDEditText;
     private MarkdownConfiguration mRxMDConfiguration;
 
+    /**
+     * Instantiates a new Header controller.
+     *
+     * @param rxMDEditText      the rx md edit text
+     * @param rxMDConfiguration the rx md configuration
+     */
     public HeaderController(MarkdownEditText rxMDEditText, MarkdownConfiguration rxMDConfiguration) {
         mRxMDEditText = rxMDEditText;
         mRxMDConfiguration = rxMDConfiguration;
     }
 
 
+    /**
+     * Do header.
+     *
+     * @param headerNumber the header number
+     */
     public void doHeader(int headerNumber) {
         int start = mRxMDEditText.getSelectionStart();
         int end = mRxMDEditText.getSelectionEnd();

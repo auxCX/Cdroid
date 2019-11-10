@@ -23,6 +23,9 @@ import com.seafile.seadroid2.util.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Starred item adapter.
+ */
 public class StarredItemAdapter extends BaseAdapter {
 
     private ArrayList<SeafItem> items;
@@ -33,6 +36,11 @@ public class StarredItemAdapter extends BaseAdapter {
     private List<Integer> mSelectedItemsPositions = Lists.newArrayList();
     private List<SeafStarredFile> mSelectedItemsValues = Lists.newArrayList();
 
+    /**
+     * Instantiates a new Starred item adapter.
+     *
+     * @param activity the activity
+     */
     public StarredItemAdapter(BrowserActivity activity) {
         this.mActivity = activity;
         items = Lists.newArrayList();
@@ -44,14 +52,25 @@ public class StarredItemAdapter extends BaseAdapter {
         return items.size();
     }
 
+    /**
+     * Clear.
+     */
     public void clear() {
         items.clear();
     }
 
+    /**
+     * Add.
+     *
+     * @param entry the entry
+     */
     public void add(SeafItem entry) {
         items.add(entry);
     }
 
+    /**
+     * Notify changed.
+     */
     public void notifyChanged() {
         notifyDataSetChanged();
     }
@@ -66,10 +85,20 @@ public class StarredItemAdapter extends BaseAdapter {
         return position;
     }
 
+    /**
+     * Sets action mode on.
+     *
+     * @param actionModeOn the action mode on
+     */
     public void setActionModeOn(boolean actionModeOn) {
         this.actionModeOn = actionModeOn;
     }
 
+    /**
+     * Toggle selection.
+     *
+     * @param position the position
+     */
     public void toggleSelection(int position) {
         if (mSelectedItemsIds.get(position)) {
             // unselected
@@ -86,14 +115,29 @@ public class StarredItemAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * Gets checked item count.
+     *
+     * @return the checked item count
+     */
     public int getCheckedItemCount() {
         return mSelectedItemsIds.size();
     }
 
+    /**
+     * Gets selected items values.
+     *
+     * @return the selected items values
+     */
     public List<SeafStarredFile> getSelectedItemsValues() {
         return mSelectedItemsValues;
     }
 
+    /**
+     * Sets items.
+     *
+     * @param starredFiles the starred files
+     */
     public void setItems(List<SeafStarredFile> starredFiles) {
         items.clear();
         items.addAll(starredFiles);
@@ -102,6 +146,9 @@ public class StarredItemAdapter extends BaseAdapter {
         this.mSelectedItemsValues.clear();
     }
 
+    /**
+     * Deselect all items.
+     */
     public void deselectAllItems() {
         mSelectedItemsIds.clear();
         mSelectedItemsPositions.clear();
@@ -109,6 +156,9 @@ public class StarredItemAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * Select all items.
+     */
     public void selectAllItems() {
         mSelectedItemsIds.clear();
         mSelectedItemsPositions.clear();
@@ -199,9 +249,33 @@ public class StarredItemAdapter extends BaseAdapter {
     }
 
     private class Viewholder {
-        TextView title, subtitle;
-        ImageView multiSelect, icon, action;
+        /**
+         * The Title.
+         */
+        TextView title, /**
+         * The Subtitle.
+         */
+        subtitle;
+        /**
+         * The Multi select.
+         */
+        ImageView multiSelect, /**
+         * The Icon.
+         */
+        icon, /**
+         * The Action.
+         */
+        action;
 
+        /**
+         * Instantiates a new Viewholder.
+         *
+         * @param title       the title
+         * @param subtitle    the subtitle
+         * @param multiSelect the multi select
+         * @param icon        the icon
+         * @param action      the action
+         */
         public Viewholder(TextView title, TextView subtitle, ImageView multiSelect, ImageView icon, ImageView action) {
             super();
             this.multiSelect = multiSelect;

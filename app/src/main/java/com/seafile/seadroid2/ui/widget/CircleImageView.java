@@ -20,7 +20,7 @@ import com.seafile.seadroid2.R;
 
 /**
  * A fast circular ImageView perfect for profile images
- *
+ * <p>
  * styleable attr are border_width and border_color
  */
 public class CircleImageView extends ImageView {
@@ -54,14 +54,32 @@ public class CircleImageView extends ImageView {
     private boolean mReady;
     private boolean mSetupPending;
 
+    /**
+     * Instantiates a new Circle image view.
+     *
+     * @param context the context
+     */
     public CircleImageView(Context context) {
         super(context);
     }
 
+    /**
+     * Instantiates a new Circle image view.
+     *
+     * @param context the context
+     * @param attrs   the attrs
+     */
     public CircleImageView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
+    /**
+     * Instantiates a new Circle image view.
+     *
+     * @param context  the context
+     * @param attrs    the attrs
+     * @param defStyle the def style
+     */
     public CircleImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         super.setScaleType(SCALE_TYPE);
@@ -111,10 +129,20 @@ public class CircleImageView extends ImageView {
         setup();
     }
 
+    /**
+     * Gets border color.
+     *
+     * @return the border color
+     */
     public int getBorderColor() {
         return mBorderColor;
     }
 
+    /**
+     * Sets border color.
+     *
+     * @param borderColor the border color
+     */
     public void setBorderColor(int borderColor) {
         if (borderColor == mBorderColor) {
             return;
@@ -125,10 +153,20 @@ public class CircleImageView extends ImageView {
         invalidate();
     }
 
+    /**
+     * Gets border width.
+     *
+     * @return the border width
+     */
     public int getBorderWidth() {
         return mBorderWidth;
     }
 
+    /**
+     * Sets border width.
+     *
+     * @param borderWidth the border width
+     */
     public void setBorderWidth(int borderWidth) {
         if (borderWidth == mBorderWidth) {
             return;

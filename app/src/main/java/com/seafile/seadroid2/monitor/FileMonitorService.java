@@ -45,7 +45,15 @@ public class FileMonitorService extends Service {
         return START_STICKY;
     }
 
+    /**
+     * The type Monitor binder.
+     */
     public class MonitorBinder extends Binder {
+        /**
+         * Gets service.
+         *
+         * @return the service
+         */
         public FileMonitorService getService() {
             return FileMonitorService.this;
         }
@@ -90,6 +98,11 @@ public class FileMonitorService extends Service {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(transferReceiver);
     }
 
+    /**
+     * Remove account.
+     *
+     * @param account the account
+     */
     public void removeAccount(Account account) {
         Log.d(DEBUG_TAG, account.email);
         if (monitor != null)

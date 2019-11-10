@@ -7,15 +7,26 @@ import com.seafile.seadroid2.editor.Utils;
 import com.yydcdut.markdown.MarkdownEditText;
 import com.yydcdut.markdown.syntax.SyntaxKey;
 
+/**
+ * The type Style controller.
+ */
 public class StyleController {
 
     private MarkdownEditText mRxMDEditText;
 
+    /**
+     * Instantiates a new Style controller.
+     *
+     * @param rxMDEditText the rx md edit text
+     */
     public StyleController(MarkdownEditText rxMDEditText) {
         mRxMDEditText = rxMDEditText;
     }
 
 
+    /**
+     * Do bold.
+     */
     public void doBold() {
         int start = mRxMDEditText.getSelectionStart();
         int end = mRxMDEditText.getSelectionEnd();
@@ -55,6 +66,9 @@ public class StyleController {
     }
 
 
+    /**
+     * Do italic.
+     */
     public void doItalic() {
         int start = mRxMDEditText.getSelectionStart();
         int end = mRxMDEditText.getSelectionEnd();

@@ -23,12 +23,24 @@ import com.seafile.seadroid2.util.Utils;
 
 import java.util.List;
 
+/**
+ * The type Settings activity.
+ */
 public class SettingsActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
     private static final String DEBUG_TAG = "SettingsActivity";
     private View mLayout;
+    /**
+     * The Tx service.
+     */
     public TransferService txService;
     private SettingsFragment mSettingsFragment;
+    /**
+     * The constant REQUEST_PERMISSIONS_READ_CONTACTS.
+     */
     public static final int REQUEST_PERMISSIONS_READ_CONTACTS = 2;
+    /**
+     * The constant BASE_DIR.
+     */
     public static String BASE_DIR = "Contacts Backup";
 
     public void onCreate(Bundle savedInstanceState) {

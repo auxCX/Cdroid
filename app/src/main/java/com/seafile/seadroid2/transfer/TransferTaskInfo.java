@@ -9,12 +9,33 @@ import com.seafile.seadroid2.account.Account;
  * reference for override equals and hashcode, http://www.javaranch.com/journal/2002/10/equalhash.html
  */
 public class TransferTaskInfo {
+    /**
+     * The Account.
+     */
     public final Account account;
+    /**
+     * The Task id.
+     */
     public final int taskID;
+    /**
+     * The State.
+     */
     public final TaskState state;
+    /**
+     * The Repo id.
+     */
     public final String repoID;
+    /**
+     * The Repo name.
+     */
     public final String repoName;
+    /**
+     * The Local file path.
+     */
     public final String localFilePath;
+    /**
+     * The Err.
+     */
     public final SeafException err;
 
     /**

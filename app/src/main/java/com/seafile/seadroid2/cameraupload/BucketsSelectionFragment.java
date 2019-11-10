@@ -73,6 +73,11 @@ public class BucketsSelectionFragment extends Fragment {
         getActivity().finish();
     }
 
+    /**
+     * Gets selected buckets.
+     *
+     * @return the selected buckets
+     */
     public List<String> getSelectedBuckets() {
         List<String> ret = new ArrayList<>();
         for (int i = 0; i < buckets.size(); i++) {
@@ -84,9 +89,15 @@ public class BucketsSelectionFragment extends Fragment {
         return ret;
     }
 
+    /**
+     * The type Image adapter.
+     */
     public class ImageAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
 
+        /**
+         * Instantiates a new Image adapter.
+         */
         public ImageAdapter() {
             mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
@@ -140,10 +151,25 @@ public class BucketsSelectionFragment extends Fragment {
         }
     }
 
+    /**
+     * The type View holder.
+     */
     static class ViewHolder {
+        /**
+         * The Imageview.
+         */
         ImageView imageview;
+        /**
+         * The Marking.
+         */
         ImageView marking;
+        /**
+         * The Text.
+         */
         TextView text;
+        /**
+         * The Id.
+         */
         int id;
     }
 }

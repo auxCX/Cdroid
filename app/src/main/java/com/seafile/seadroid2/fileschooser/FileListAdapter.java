@@ -14,11 +14,19 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * The type File list adapter.
+ */
 public class FileListAdapter extends BaseAdapter {
 
     private Activity mActivity;
     private List<SelectableFile> mFiles;
 
+    /**
+     * Instantiates a new File list adapter.
+     *
+     * @param activity the activity
+     */
     public FileListAdapter(Activity activity) {
         this.mActivity = activity;
         mFiles = Lists.newArrayList();
@@ -34,10 +42,18 @@ public class FileListAdapter extends BaseAdapter {
         return mFiles.get(position);
     }
 
+    /**
+     * Add item.
+     *
+     * @param file the file
+     */
     public void addItem(SelectableFile file) {
         mFiles.add(file);
     }
 
+    /**
+     * Clear.
+     */
     public void clear() {
         mFiles.clear();
     }
@@ -47,11 +63,21 @@ public class FileListAdapter extends BaseAdapter {
         return position;
     }
 
+    /**
+     * Sets list items.
+     *
+     * @param files the files
+     */
     public void setListItems(List<SelectableFile> files) {
         this.mFiles = files;
         notifyDataSetChanged();
     }
 
+    /**
+     * Gets list items.
+     *
+     * @return the list items
+     */
     public List<SelectableFile> getListItems() {
         return mFiles;
     }
@@ -109,11 +135,34 @@ public class FileListAdapter extends BaseAdapter {
     }
 
 
+    /**
+     * The type Viewholder.
+     */
     public class Viewholder {
-        TextView title, subtitle;
+        /**
+         * The Title.
+         */
+        TextView title, /**
+         * The Subtitle.
+         */
+        subtitle;
+        /**
+         * The Icon.
+         */
         ImageView icon;
+        /**
+         * The Check box.
+         */
         CheckBox checkBox;
 
+        /**
+         * Instantiates a new Viewholder.
+         *
+         * @param title    the title
+         * @param subtitle the subtitle
+         * @param icon     the icon
+         * @param checkBox the check box
+         */
         public Viewholder(TextView title, TextView subtitle, ImageView icon, CheckBox checkBox) {
             super();
             this.icon = icon;

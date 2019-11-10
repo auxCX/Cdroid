@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import com.seafile.seadroid2.R;
+
 /**
  * Cloud Library fragment
  */
@@ -48,6 +49,8 @@ public class CloudLibraryFragment extends Fragment {
     /**
      * Instantiates a new fragment if mSelectionFragment is null.
      * Returns the current fragment, otherwise.
+     *
+     * @return the account or repos selection fragment
      */
     public CloudLibrarySelectionFragment getAccountOrReposSelectionFragment() {
         if (mSelectionFragment == null) {

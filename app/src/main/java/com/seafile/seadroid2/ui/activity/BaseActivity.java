@@ -41,6 +41,9 @@ public class BaseActivity extends AppCompatActivity {
 
     private boolean mActionBarShown = true;
 
+    /**
+     * The Screen width.
+     */
     protected int screenWidth;
 
     @Override
@@ -52,6 +55,11 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Gets action bar toolbar.
+     *
+     * @return the action bar toolbar
+     */
     protected Toolbar getActionBarToolbar() {
         if (mActionBarToolbar == null) {
             mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
@@ -83,6 +91,11 @@ public class BaseActivity extends AppCompatActivity {
                 R.dimen.action_bar_auto_hide_sensivity);
     }
 
+    /**
+     * Enable action bar auto hide.
+     *
+     * @param listView the list view
+     */
     protected void enableActionBarAutoHide(final ListView listView) {
         initActionBarAutoHide();
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -152,6 +165,11 @@ public class BaseActivity extends AppCompatActivity {
         autoShowOrHideActionBar(shouldShow);
     }
 
+    /**
+     * Auto show or hide action bar.
+     *
+     * @param show the show
+     */
     protected void autoShowOrHideActionBar(boolean show) {
         if (show == mActionBarShown) {
             return;
@@ -169,11 +187,11 @@ public class BaseActivity extends AppCompatActivity {
      * activity then don't define one and this method will use back button functionality. If "Up"
      * functionality is still desired for activities without parents then use
      * {@code syntheticParentActivity} to define one dynamically.
-     *
+     * <p>
      * Note: Up navigation intents are represented by a back arrow in the top left of the Toolbar
-     *       in Material Design guidelines.
+     * in Material Design guidelines.
      *
-     * @param currentActivity Activity in use when navigate Up action occurred.
+     * @param currentActivity         Activity in use when navigate Up action occurred.
      * @param syntheticParentActivity Parent activity to use when one is not already configured.
      */
     public static void navigateUpOrBack(Activity currentActivity,
@@ -212,13 +230,14 @@ public class BaseActivity extends AppCompatActivity {
             }
         }
     }
+
     /**
      * Show the given message in a {@link Toast} for a short period of time
      * <p>
      * This method may be called from any thread
      *
-     * @param activity
-     * @param message
+     * @param activity the activity
+     * @param message  the message
      */
     public void showShortToast(final Activity activity, final String message) {
         if (activity == null)
@@ -231,8 +250,8 @@ public class BaseActivity extends AppCompatActivity {
      * <p>
      * This method may be called from any thread
      *
-     * @param activity
-     * @param resId
+     * @param activity the activity
+     * @param resId    the res id
      */
     public void showShortToast(final Activity activity, final int resId) {
         if (activity == null)
@@ -246,8 +265,8 @@ public class BaseActivity extends AppCompatActivity {
      * <p>
      * This method may be called from any thread
      *
-     * @param activity
-     * @param message
+     * @param activity the activity
+     * @param message  the message
      */
     public void showLongToast(final Activity activity, final String message) {
         if (activity == null)
@@ -260,8 +279,8 @@ public class BaseActivity extends AppCompatActivity {
      * <p>
      * This method may be called from any thread
      *
-     * @param activity
-     * @param resId
+     * @param activity the activity
+     * @param resId    the res id
      */
     public void showLongToast(final Activity activity, final int resId) {
         if (activity == null)

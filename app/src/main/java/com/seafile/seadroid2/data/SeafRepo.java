@@ -13,24 +13,71 @@ import java.util.Comparator;
 
 /**
  * SeafRepo: A Seafile library
+ *
  * @author plt
  */
 public class SeafRepo implements SeafItem {
+    /**
+     * The Id.
+     */
     public String id;     // repo id
+    /**
+     * The Name.
+     */
     public String name;
+    /**
+     * The Owner.
+     */
     public String owner;
+    /**
+     * The Mtime.
+     */
     public long mtime;    // the last modification time
 
+    /**
+     * The Is group repo.
+     */
     public boolean isGroupRepo;
+    /**
+     * The Is personal repo.
+     */
     public boolean isPersonalRepo;
+    /**
+     * The Is shared repo.
+     */
     public boolean isSharedRepo;
+    /**
+     * The Encrypted.
+     */
     public boolean encrypted;
+    /**
+     * The Permission.
+     */
     public String permission;
+    /**
+     * The Magic.
+     */
     public String magic;
+    /**
+     * The Enc key.
+     */
     public String encKey;
+    /**
+     * The Size.
+     */
     public long    size;
+    /**
+     * The Root.
+     */
     public String  root; // the id of root directory
 
+    /**
+     * From json seaf repo.
+     *
+     * @param obj the obj
+     * @return the seaf repo
+     * @throws JSONException the json exception
+     */
     static SeafRepo fromJson(JSONObject obj) throws JSONException{
         SeafRepo repo = new SeafRepo();
         repo.id = obj.getString("id");
@@ -49,17 +96,35 @@ public class SeafRepo implements SeafItem {
         return repo;
     }
 
+    /**
+     * Instantiates a new Seaf repo.
+     */
     public SeafRepo() {
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public String getID() {
         return id;
     }
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets root dir id.
+     *
+     * @return the root dir id
+     */
     public String getRootDirID() {
         return root;
     }
@@ -84,10 +149,20 @@ public class SeafRepo implements SeafItem {
         return R.drawable.repo;
     }
 
+    /**
+     * Can local decrypt boolean.
+     *
+     * @return the boolean
+     */
     public boolean canLocalDecrypt() {
         return encrypted && SettingsManager.instance().isEncryptEnabled();
     }
 
+    /**
+     * Has write permission boolean.
+     *
+     * @return the boolean
+     */
     public boolean hasWritePermission() {
         return permission.indexOf('w') != -1;
     }

@@ -14,16 +14,54 @@ import com.seafile.seadroid2.data.SeafLink;
 
 import java.util.ArrayList;
 
+/**
+ * The type Get share link task.
+ */
 class GetShareLinkTask extends TaskDialog.Task {
+    /**
+     * The Repo id.
+     */
     String repoID;
+    /**
+     * The Path.
+     */
     String path;
+    /**
+     * The Isdir.
+     */
     boolean isdir;
+    /**
+     * The Conn.
+     */
     SeafConnection conn;
+    /**
+     * The Link.
+     */
     String link;
+    /**
+     * The Account.
+     */
     Account account;
+    /**
+     * The Password.
+     */
     String password;
+    /**
+     * The Days.
+     */
     String days;
 
+    /**
+     * Instantiates a new Get share link task.
+     *
+     * @param repoID   the repo id
+     * @param path     the path
+     * @param isdir    the isdir
+     * @param conn     the conn
+     * @param account  the account
+     * @param password the password
+     * @param days     the days
+     */
     public GetShareLinkTask(String repoID, String path, boolean isdir, SeafConnection conn, Account account, String password, String days) {
         this.repoID = repoID;
         this.path = path;
@@ -52,20 +90,41 @@ class GetShareLinkTask extends TaskDialog.Task {
         }
     }
 
+    /**
+     * Gets result.
+     *
+     * @return the result
+     */
     public String getResult() {
         return link;
     }
 }
 
+/**
+ * The type Get share link dialog.
+ */
 public class GetShareLinkDialog extends TaskDialog {
     private String repoID;
     private String path;
     private boolean isdir;
     private SeafConnection conn;
+    /**
+     * The Account.
+     */
     Account account;
     private String password;
     private String days;
 
+    /**
+     * Init.
+     *
+     * @param repoID   the repo id
+     * @param path     the path
+     * @param isdir    the isdir
+     * @param account  the account
+     * @param password the password
+     * @param days     the days
+     */
     public void init(String repoID, String path, boolean isdir, Account account, String password, String days) {
         this.repoID = repoID;
         this.path = path;
@@ -98,6 +157,11 @@ public class GetShareLinkDialog extends TaskDialog {
         return task;
     }
 
+    /**
+     * Gets link.
+     *
+     * @return the link
+     */
     public String getLink() {
         if (getTask() != null) {
             GetShareLinkTask task = (GetShareLinkTask)getTask();

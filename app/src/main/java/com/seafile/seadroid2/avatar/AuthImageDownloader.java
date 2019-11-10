@@ -15,9 +15,22 @@ import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.seafile.seadroid2.ssl.SSLTrustManager;
 import com.seafile.seadroid2.account.Account;
 
+/**
+ * The type Auth image downloader.
+ */
 public class AuthImageDownloader extends BaseImageDownloader {
+    /**
+     * The constant TAG.
+     */
     public static final String TAG = AuthImageDownloader.class.getName();
 
+    /**
+     * Instantiates a new Auth image downloader.
+     *
+     * @param context        the context
+     * @param connectTimeout the connect timeout
+     * @param readTimeout    the read timeout
+     */
     public AuthImageDownloader(Context context, int connectTimeout,
             int readTimeout) {
         super(context, connectTimeout, readTimeout);

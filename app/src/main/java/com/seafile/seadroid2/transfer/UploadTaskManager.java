@@ -17,14 +17,39 @@ import java.util.List;
 public class UploadTaskManager extends TransferManager implements UploadStateListener {
     private static final String DEBUG_TAG = "UploadTaskManager";
 
+    /**
+     * The constant BROADCAST_FILE_UPLOAD_SUCCESS.
+     */
     public static final String BROADCAST_FILE_UPLOAD_SUCCESS = "uploaded";
+    /**
+     * The constant BROADCAST_FILE_UPLOAD_FAILED.
+     */
     public static final String BROADCAST_FILE_UPLOAD_FAILED = "uploadFailed";
+    /**
+     * The constant BROADCAST_FILE_UPLOAD_PROGRESS.
+     */
     public static final String BROADCAST_FILE_UPLOAD_PROGRESS = "uploadProgress";
+    /**
+     * The constant BROADCAST_FILE_UPLOAD_CANCELLED.
+     */
     public static final String BROADCAST_FILE_UPLOAD_CANCELLED = "uploadCancelled";
 
     private static UploadNotificationProvider mNotifyProvider;
 
 
+    /**
+     * Add task to que int.
+     *
+     * @param account       the account
+     * @param repoID        the repo id
+     * @param repoName      the repo name
+     * @param dir           the dir
+     * @param filePath      the file path
+     * @param isUpdate      the is update
+     * @param isCopyToLocal the is copy to local
+     * @param byBlock       the by block
+     * @return the int
+     */
     public int addTaskToQue(Account account, String repoID, String repoName, String dir, String filePath, boolean isUpdate, boolean isCopyToLocal, boolean byBlock) {
         if (repoID == null || repoName == null)
             return 0;
@@ -35,6 +60,11 @@ public class UploadTaskManager extends TransferManager implements UploadStateLis
         return task.getTaskID();
     }
 
+    /**
+     * Gets none camera upload task infos.
+     *
+     * @return the none camera upload task infos
+     */
     public List<UploadTaskInfo> getNoneCameraUploadTaskInfos() {
         List<UploadTaskInfo> noneCameraUploadTaskInfos = Lists.newArrayList();
         List<UploadTaskInfo> uploadTaskInfos = (List<UploadTaskInfo>) getAllTaskInfoList();
@@ -50,6 +80,11 @@ public class UploadTaskManager extends TransferManager implements UploadStateLis
         return noneCameraUploadTaskInfos;
     }
 
+    /**
+     * Retry.
+     *
+     * @param taskID the task id
+     */
     public void retry(int taskID) {
         UploadTask task = (UploadTask) getTask(taskID);
         if (task == null || !task.canRetry())
@@ -74,14 +109,29 @@ public class UploadTaskManager extends TransferManager implements UploadStateLis
 
     }
 
+    /**
+     * Save upload notif provider.
+     *
+     * @param provider the provider
+     */
     public void saveUploadNotifProvider(UploadNotificationProvider provider) {
         mNotifyProvider = provider;
     }
 
+    /**
+     * Has notif provider boolean.
+     *
+     * @return the boolean
+     */
     public boolean hasNotifProvider() {
         return mNotifyProvider != null;
     }
 
+    /**
+     * Gets notif provider.
+     *
+     * @return the notif provider
+     */
     public UploadNotificationProvider getNotifProvider() {
         if (hasNotifProvider())
             return mNotifyProvider;
@@ -89,6 +139,9 @@ public class UploadTaskManager extends TransferManager implements UploadStateLis
             return null;
     }
 
+    /**
+     * Cancel all upload notification.
+     */
     public void cancelAllUploadNotification() {
         if (mNotifyProvider != null)
             mNotifyProvider.cancelNotification();

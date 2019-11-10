@@ -11,6 +11,9 @@ import com.seafile.seadroid2.R;
 import com.seafile.seadroid2.SettingsManager;
 import com.seafile.seadroid2.ui.adapter.SeafItemAdapter;
 
+/**
+ * The type Sort files dialog fragment.
+ */
 public class SortFilesDialogFragment extends DialogFragment {
 
     /**
@@ -19,10 +22,19 @@ public class SortFilesDialogFragment extends DialogFragment {
      * Each method passes the DialogFragment in case the host needs to query it.
      */
     public interface SortItemClickListener {
+        /**
+         * On sort file item click.
+         *
+         * @param dialog   the dialog
+         * @param position the position
+         */
         void onSortFileItemClick(DialogFragment dialog, int position);
     }
 
-    // Use this instance of the interface to deliver action events
+    /**
+     * The M listener.
+     */
+// Use this instance of the interface to deliver action events
     SortItemClickListener mListener;
 
     // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener

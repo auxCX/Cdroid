@@ -10,12 +10,21 @@ import com.seafile.seadroid2.SeadroidApplication;
 
 import java.io.File;
 
+/**
+ * The type Camera upload db helper.
+ */
 public class CameraUploadDBHelper extends SQLiteOpenHelper {
     private static final String DEBUG_TAG = "CameraUploadDBHelper";
 
-    // If you change the database schema, you must increment the database
+    /**
+     * The constant DATABASE_VERSION.
+     */
+// If you change the database schema, you must increment the database
     // version.
     public static final int DATABASE_VERSION = 3;
+    /**
+     * The constant DATABASE_NAME.
+     */
     public static final String DATABASE_NAME = "photo.db";
     private static CameraUploadDBHelper dbHelper;
     private SQLiteDatabase database;
@@ -38,6 +47,11 @@ public class CameraUploadDBHelper extends SQLiteOpenHelper {
             PHOTOCACHE_COLUMN_DATE_ADDED
     };
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static synchronized CameraUploadDBHelper getInstance() {
         if (dbHelper == null) {
             dbHelper = new CameraUploadDBHelper(SeadroidApplication.getAppContext());
@@ -75,6 +89,12 @@ public class CameraUploadDBHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
+    /**
+     * Is uploaded boolean.
+     *
+     * @param file the file
+     * @return the boolean
+     */
     public boolean isUploaded(File file) {
         String path = file.getAbsolutePath();
         long modified = file.lastModified();
@@ -94,6 +114,11 @@ public class CameraUploadDBHelper extends SQLiteOpenHelper {
         return count > 0;
     }
 
+    /**
+     * Mark as uploaded.
+     *
+     * @param file the file
+     */
     public void markAsUploaded(File file) {
         String path = file.getAbsolutePath();
         long modified = file.lastModified();
@@ -105,6 +130,9 @@ public class CameraUploadDBHelper extends SQLiteOpenHelper {
         database.insert(PHOTOCACHE_TABLE_NAME, null, values);
     }
 
+    /**
+     * Clean photo cache.
+     */
     public void cleanPhotoCache() {
         database.delete(PHOTOCACHE_TABLE_NAME, null, null);
     }

@@ -47,11 +47,20 @@ import java.security.cert.X509Certificate;
  * <p/>
  */
 public class SingleSignOnAuthorizeActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener {
+    /**
+     * The constant DEBUG_TAG.
+     */
     public static final String DEBUG_TAG = "SingleSignOnAuthorizeActivity";
 
+    /**
+     * The constant SEAHUB_SHIB_COOKIE_NAME.
+     */
     public static final String SEAHUB_SHIB_COOKIE_NAME = "seahub_auth";
     private WebView mWebview;
     private LinearLayout mloadingAnimation;
+    /**
+     * The Server url.
+     */
     public String serverUrl;
 
     @Override
@@ -167,6 +176,9 @@ public class SingleSignOnAuthorizeActivity extends BaseActivity implements Toolb
         showShortToast(this, R.string.ssl_error);
     }
 
+    /**
+     * The type Custom webview client.
+     */
     class CustomWebviewClient extends WebViewClient {
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
@@ -261,10 +273,25 @@ public class SingleSignOnAuthorizeActivity extends BaseActivity implements Toolb
     }
 
     private class AccountInfoTask extends AsyncTask<Void, Void, String> {
+        /**
+         * The Login account.
+         */
         Account loginAccount;
+        /**
+         * The Auth token.
+         */
         String authToken;
+        /**
+         * The Err.
+         */
         SeafException err = null;
 
+        /**
+         * Instantiates a new Account info task.
+         *
+         * @param loginAccount the login account
+         * @param authToken    the auth token
+         */
         public AccountInfoTask(Account loginAccount, String authToken) {
             this.loginAccount = loginAccount;
             this.authToken = authToken;
@@ -341,6 +368,13 @@ public class SingleSignOnAuthorizeActivity extends BaseActivity implements Toolb
         }
     }
 
+    /**
+     * Gets cookie.
+     *
+     * @param url the url
+     * @param key the key
+     * @return the cookie
+     */
     @SuppressLint("LongLogTag")
     public String getCookie(String url, String key) {
         String CookieValue = "";

@@ -48,12 +48,30 @@ import org.json.JSONException;
 
 import java.util.List;
 
+/**
+ * The type Activities fragment.
+ */
 public class ActivitiesFragment extends Fragment {
     private static final String DEBUG_TAG = "ActivitiesFragment";
+    /**
+     * The constant REFRESH_ON_NONE.
+     */
     public static final int REFRESH_ON_NONE = 0;
+    /**
+     * The constant REFRESH_ON_PULL_DOWN_SWIPE.
+     */
     public static final int REFRESH_ON_PULL_DOWN_SWIPE = 1;
+    /**
+     * The constant REFRESH_ON_PULL_DOWN_RESUME.
+     */
     public static final int REFRESH_ON_PULL_DOWN_RESUME = 3;
+    /**
+     * The constant REFRESH_ON_PULL_UP.
+     */
     public static final int REFRESH_ON_PULL_UP = 2;
+    /**
+     * The constant VERSIONS_NUMBER.
+     */
     public static final int VERSIONS_NUMBER = 6;
     private static int mRefreshType = REFRESH_ON_NONE;
     private boolean useNewActivity = false;
@@ -78,6 +96,11 @@ public class ActivitiesFragment extends Fragment {
     private Account account;
     private AccountManager accountManager;
 
+    /**
+     * Is bottom sheet shown boolean.
+     *
+     * @return the boolean
+     */
     public boolean isBottomSheetShown() {
         return boolShown;
     }
@@ -203,6 +226,9 @@ public class ActivitiesFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
+    /**
+     * Refresh view.
+     */
     public void refreshView() {
         account = accountManager.getCurrentAccount();
         ServerInfo serverInfo = accountManager.getServerInfo(account);
@@ -239,6 +265,11 @@ public class ActivitiesFragment extends Fragment {
         });
     }
 
+    /**
+     * Show loading.
+     *
+     * @param show the show
+     */
     public void showLoading(boolean show) {
         mErrorText.setVisibility(View.GONE);
         if (show) {
@@ -256,10 +287,16 @@ public class ActivitiesFragment extends Fragment {
         }
     }
 
+    /**
+     * Hide bottom sheet.
+     */
     public void hideBottomSheet() {
         switchMenu();
     }
 
+    /**
+     * Switch menu.
+     */
     public void switchMenu() {
         if (mActivity == null || ppw == null || ppwContainerView == null || maskView == null || underLine == null) {
             boolShown = false;
@@ -353,7 +390,13 @@ public class ActivitiesFragment extends Fragment {
         }
     }
 
+    /**
+     * The type Load events task.
+     */
     class LoadEventsTask extends AsyncTask<Void, Void, SeafActivities> {
+        /**
+         * The Err.
+         */
         SeafException err;
 
         @Override
@@ -436,10 +479,18 @@ public class ActivitiesFragment extends Fragment {
         }
     }
 
+    /**
+     * The type Load history changes task.
+     */
     class LoadHistoryChangesTask extends AsyncTask<String, Void, CommitDetails> {
         private SeafException err;
         private SeafEvent event;
 
+        /**
+         * Instantiates a new Load history changes task.
+         *
+         * @param event the event
+         */
         public LoadHistoryChangesTask(SeafEvent event) {
             this.event = event;
         }

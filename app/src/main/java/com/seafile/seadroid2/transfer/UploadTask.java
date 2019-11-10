@@ -18,9 +18,11 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * Upload task
- *
  */
 public class UploadTask extends TransferTask {
+    /**
+     * The constant DEBUG_TAG.
+     */
     public static final String DEBUG_TAG = "UploadTask";
 
     private String dir;   // parent dir
@@ -32,6 +34,20 @@ public class UploadTask extends TransferTask {
     private DataManager dataManager;
     public static final int HTTP_ABOVE_QUOTA = 443;
 
+    /**
+     * Instantiates a new Upload task.
+     *
+     * @param taskID              the task id
+     * @param account             the account
+     * @param repoID              the repo id
+     * @param repoName            the repo name
+     * @param dir                 the dir
+     * @param filePath            the file path
+     * @param isUpdate            the is update
+     * @param isCopyToLocal       the is copy to local
+     * @param byBlock             the by block
+     * @param uploadStateListener the upload state listener
+     */
     public UploadTask(int taskID, Account account, String repoID, String repoName,
                       String dir, String filePath, boolean isUpdate, boolean isCopyToLocal, boolean byBlock,
                       UploadStateListener uploadStateListener) {
@@ -53,6 +69,9 @@ public class UploadTask extends TransferTask {
         return info;
     }
 
+    /**
+     * Cancel upload.
+     */
     public void cancelUpload() {
         if (state != TaskState.INIT && state != TaskState.TRANSFERRING) {
             return;
@@ -133,14 +152,29 @@ public class UploadTask extends TransferTask {
         }
     }
 
+    /**
+     * Gets dir.
+     *
+     * @return the dir
+     */
     public String getDir() {
         return dir;
     }
 
+    /**
+     * Is copy to local boolean.
+     *
+     * @return the boolean
+     */
     public boolean isCopyToLocal() {
         return isCopyToLocal;
     }
 
+    /**
+     * Is update boolean.
+     *
+     * @return the boolean
+     */
     public boolean isUpdate() {
         return isUpdate;
     }

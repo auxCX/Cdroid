@@ -38,9 +38,15 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Share to seafile activity.
+ */
 public class ShareToSeafileActivity extends BaseActivity {
     private static final String DEBUG_TAG = "ShareToSeafileActivity";
 
+    /**
+     * The constant PASSWORD_DIALOG_FRAGMENT_TAG.
+     */
     public static final String PASSWORD_DIALOG_FRAGMENT_TAG = "password_dialog_fragment_tag";
     private static final int CHOOSE_COPY_MOVE_DEST_REQUEST = 1;
 
@@ -91,6 +97,9 @@ public class ShareToSeafileActivity extends BaseActivity {
         }
     }
 
+    /**
+     * The type Load shared file task.
+     */
     class LoadSharedFileTask extends AsyncTask<Uri, Void, File[]> {
 
         @Override
@@ -385,6 +394,9 @@ public class ShareToSeafileActivity extends BaseActivity {
         ConcurrentAsyncTask.execute(task);
     }
 
+    /**
+     * The type Check dirent existent task.
+     */
     class CheckDirentExistentTask extends AsyncTask<Void, Void, Void> {
 
         private Account account;
@@ -394,6 +406,14 @@ public class ShareToSeafileActivity extends BaseActivity {
         private DataManager dm;
         private boolean fileExistent = false;
 
+        /**
+         * Instantiates a new Check dirent existent task.
+         *
+         * @param account   the account
+         * @param repoName  the repo name
+         * @param repoID    the repo id
+         * @param targetDir the target dir
+         */
         public CheckDirentExistentTask(Account account,
                                        String repoName,
                                        String repoID,

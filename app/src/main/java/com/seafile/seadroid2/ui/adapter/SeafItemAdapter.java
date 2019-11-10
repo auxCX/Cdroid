@@ -33,6 +33,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The type Seaf item adapter.
+ */
 public class SeafItemAdapter extends BaseAdapter {
 
     private ArrayList<SeafItem> items;
@@ -49,6 +52,11 @@ public class SeafItemAdapter extends BaseAdapter {
      **/
     private List<DownloadTaskInfo> mDownloadTaskInfos;
 
+    /**
+     * Instantiates a new Seaf item adapter.
+     *
+     * @param activity the activity
+     */
     public SeafItemAdapter(BrowserActivity activity) {
         mActivity = activity;
         items = Lists.newArrayList();
@@ -88,7 +96,7 @@ public class SeafItemAdapter extends BaseAdapter {
      * <p>
      * This method should be called after the "Download folder" menu was clicked.
      *
-     * @param newList
+     * @param newList the new list
      */
     public void setDownloadTaskList(List<DownloadTaskInfo> newList) {
         if (!equalLists(newList, mDownloadTaskInfos)) {
@@ -118,16 +126,29 @@ public class SeafItemAdapter extends BaseAdapter {
         return newList.equals(oldList);
     }
 
+    /**
+     * Add entry.
+     *
+     * @param entry the entry
+     */
     public void addEntry(SeafItem entry) {
         items.add(entry);
         // Collections.sort(items);
         notifyDataSetChanged();
     }
 
+    /**
+     * Add.
+     *
+     * @param entry the entry
+     */
     public void add(SeafItem entry) {
         items.add(entry);
     }
 
+    /**
+     * Notify changed.
+     */
     public void notifyChanged() {
         notifyDataSetChanged();
     }
@@ -137,6 +158,11 @@ public class SeafItemAdapter extends BaseAdapter {
         return items.get(position);
     }
 
+    /**
+     * Sets items.
+     *
+     * @param dirents the dirents
+     */
     public void setItems(List<SeafDirent> dirents) {
         items.clear();
         items.addAll(dirents);
@@ -145,6 +171,9 @@ public class SeafItemAdapter extends BaseAdapter {
         this.mSelectedItemsValues.clear();
     }
 
+    /**
+     * Deselect all items.
+     */
     public void deselectAllItems() {
         mSelectedItemsIds.clear();
         mSelectedItemsPositions.clear();
@@ -152,6 +181,9 @@ public class SeafItemAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * Select all items.
+     */
     public void selectAllItems() {
         mSelectedItemsIds.clear();
         mSelectedItemsPositions.clear();
@@ -169,19 +201,39 @@ public class SeafItemAdapter extends BaseAdapter {
         return position;
     }
 
+    /**
+     * Clear.
+     */
     public void clear() {
         items.clear();
     }
 
+    /**
+     * Are all items selectable boolean.
+     *
+     * @return the boolean
+     */
     public boolean areAllItemsSelectable() {
         return false;
     }
 
+    /**
+     * Is enable boolean.
+     *
+     * @param position the position
+     * @return the boolean
+     */
     public boolean isEnable(int position) {
         SeafItem item = items.get(position);
         return !(item instanceof SeafGroup);
     }
 
+    /**
+     * Is clickable boolean.
+     *
+     * @param position the position
+     * @return the boolean
+     */
     public boolean isClickable(int position) {
         SeafItem item = items.get(position);
         return !(item instanceof SeafGroup);
@@ -486,10 +538,20 @@ public class SeafItemAdapter extends BaseAdapter {
         }
     }
 
+    /**
+     * Sets action mode on.
+     *
+     * @param actionModeOn the action mode on
+     */
     public void setActionModeOn(boolean actionModeOn) {
         this.actionModeOn = actionModeOn;
     }
 
+    /**
+     * Toggle selection.
+     *
+     * @param position the position
+     */
     public void toggleSelection(int position) {
         if (mSelectedItemsIds.get(position)) {
             // unselected
@@ -506,21 +568,63 @@ public class SeafItemAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * Gets checked item count.
+     *
+     * @return the checked item count
+     */
     public int getCheckedItemCount() {
         return mSelectedItemsIds.size();
     }
 
+    /**
+     * Gets selected items values.
+     *
+     * @return the selected items values
+     */
     public List<SeafDirent> getSelectedItemsValues() {
         return mSelectedItemsValues;
     }
 
     private class Viewholder {
-        TextView title, subtitle;
-        ImageView icon, multiSelect, downloadStatusIcon; // downloadStatusIcon used to show file downloading status, it is invisible by
-        // default
+        /**
+         * The Title.
+         */
+        TextView title, /**
+         * The Subtitle.
+         */
+        subtitle;
+        /**
+         * The Icon.
+         */
+        ImageView icon, /**
+         * The Multi select.
+         */
+        multiSelect, /**
+         * The Download status icon.
+         */
+        downloadStatusIcon; // downloadStatusIcon used to show file downloading status, it is invisible by
+        /**
+         * The Progress bar.
+         */
+// default
         ProgressBar progressBar;
+        /**
+         * The Action.
+         */
         RelativeLayout action;
 
+        /**
+         * Instantiates a new Viewholder.
+         *
+         * @param title              the title
+         * @param subtitle           the subtitle
+         * @param multiSelect        the multi select
+         * @param icon               the icon
+         * @param action             the action
+         * @param downloadStatusIcon the download status icon
+         * @param progressBar        the progress bar
+         */
         public Viewholder(TextView title,
                           TextView subtitle,
                           ImageView multiSelect,
@@ -544,6 +648,11 @@ public class SeafItemAdapter extends BaseAdapter {
         return (int) SeadroidApplication.getAppContext().getResources().getDimension(R.dimen.lv_icon_width);
     }
 
+    /**
+     * Sets encrypted repo.
+     *
+     * @param encrypted the encrypted
+     */
     public void setEncryptedRepo(boolean encrypted) {
         repoIsEncrypted = encrypted;
     }
@@ -551,6 +660,9 @@ public class SeafItemAdapter extends BaseAdapter {
     /**
      * Sorts the given list by type of {@link #SORT_BY_NAME} or {@link #SORT_BY_LAST_MODIFIED_TIME},
      * and by order of {@link #SORT_ORDER_ASCENDING} or {@link #SORT_ORDER_DESCENDING}
+     *
+     * @param type  the type
+     * @param order the order
      */
     public void sortFiles(int type, int order) {
         List<SeafGroup> groups = Lists.newArrayList();

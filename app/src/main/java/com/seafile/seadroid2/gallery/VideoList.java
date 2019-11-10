@@ -63,6 +63,14 @@ public class VideoList extends BaseImageList {
                 mimeType, dateTaken, title);
     }
 
+    /**
+     * Instantiates a new Video list.
+     *
+     * @param resolver the resolver
+     * @param uri      the uri
+     * @param sort     the sort
+     * @param bucketId the bucket id
+     */
     public VideoList(ContentResolver resolver, Uri uri, int sort,
             String bucketId) {
         super(resolver, uri, sort, bucketId);
@@ -89,6 +97,11 @@ public class VideoList extends BaseImageList {
         }
     }
 
+    /**
+     * Where clause string.
+     *
+     * @return the string
+     */
     protected String whereClause() {
         int count = ImageManager.getAllBucketIds().size();
         List<String> chars = Lists.newArrayList();
@@ -101,6 +114,11 @@ public class VideoList extends BaseImageList {
         return clause;
     }
 
+    /**
+     * Where clause args string [ ].
+     *
+     * @return the string [ ]
+     */
     protected String[] whereClauseArgs() {
         return Iterables.toArray(ImageManager.getAllBucketIds(), String.class);
     }

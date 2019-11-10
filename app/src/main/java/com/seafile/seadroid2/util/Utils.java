@@ -80,12 +80,30 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TreeMap;
 
+/**
+ * The type Utils.
+ */
 public class Utils {
+    /**
+     * The constant MIME_APPLICATION_OCTET_STREAM.
+     */
     public static final String MIME_APPLICATION_OCTET_STREAM = "application/octet-stream";
+    /**
+     * The constant AUTHORITY.
+     */
     public static final String AUTHORITY = "com.seafile.seadroid2";
+    /**
+     * The constant PATH_SEPERATOR.
+     */
     public static final String PATH_SEPERATOR = "/";
-    // public static final String NOGROUP = "$nogroup";
+    /**
+     * The constant PERSONAL_REPO.
+     */
+// public static final String NOGROUP = "$nogroup";
     public static final String PERSONAL_REPO = "personal_repo";
+    /**
+     * The constant SHARED_REPO.
+     */
     public static final String SHARED_REPO = "shared_repo";
     private static final String DEBUG_TAG = "Utils";
     private static final String HIDDEN_PREFIX = ".";
@@ -94,6 +112,12 @@ public class Utils {
 
     private Utils() {}
 
+    /**
+     * Parse json object json object.
+     *
+     * @param json the json
+     * @return the json object
+     */
     public static JSONObject parseJsonObject(String json) {
         if (json == null) {
             // the caller should not give null
@@ -108,6 +132,14 @@ public class Utils {
         }
     }
 
+    /**
+     * Parse json array by key json array.
+     *
+     * @param json the json
+     * @param key  the key
+     * @return the json array
+     * @throws JSONException the json exception
+     */
     public static JSONArray parseJsonArrayByKey(@NonNull String json, @NonNull String key) throws JSONException {
         String value = new JSONObject(json).optString(key);
         if (!TextUtils.isEmpty(value))
@@ -116,6 +148,12 @@ public class Utils {
             return null;
     }
 
+    /**
+     * Parse json array json array.
+     *
+     * @param json the json
+     * @return the json array
+     */
     public static JSONArray parseJsonArray(@NonNull String json) {
         try {
             return (JSONArray) new JSONTokener(json).nextValue();
@@ -125,6 +163,12 @@ public class Utils {
         }
     }
 
+    /**
+     * Read file string.
+     *
+     * @param file the file
+     * @return the string
+     */
     public static String readFile(File file) {
         Reader reader = null;
         try {
@@ -157,6 +201,12 @@ public class Utils {
         }
     }
 
+    /**
+     * Gets parent path.
+     *
+     * @param path the path
+     * @return the parent path
+     */
     public static String getParentPath(String path) {
         if (path == null) {
             // the caller should not give null
@@ -175,6 +225,12 @@ public class Utils {
             return parent;
     }
 
+    /**
+     * File name from path string.
+     *
+     * @param path the path
+     * @return the string
+     */
     public static String fileNameFromPath(String path) {
         if (path == null) {
             // the caller should not give null
@@ -185,6 +241,12 @@ public class Utils {
         return path.substring(path.lastIndexOf("/") + 1);
     }
 
+    /**
+     * Readable file size string.
+     *
+     * @param size the size
+     * @return the string
+     */
     public static String readableFileSize(long size) {
         if(size <= 0) return "0 KB";
         final String[] units = new String[] { "B", "KB", "MB", "GB", "TB" };
@@ -192,6 +254,13 @@ public class Utils {
         return new DecimalFormat("#,##0.#").format(size/Math.pow(1000, digitGroups)) + " " + units[digitGroups];
     }
 
+    /**
+     * Write file.
+     *
+     * @param file    the file
+     * @param content the content
+     * @throws IOException the io exception
+     */
     public static void writeFile(File file, String content) throws IOException {
         OutputStream os = null;
         try {
@@ -207,6 +276,12 @@ public class Utils {
         }
     }
 
+    /**
+     * Group repos tree map.
+     *
+     * @param repos the repos
+     * @return the tree map
+     */
     public static TreeMap<String, List<SeafRepo>> groupRepos(List<SeafRepo> repos) {
         TreeMap<String, List<SeafRepo>> map = new TreeMap<String, List<SeafRepo>>();
         String groupName = null;
@@ -229,6 +304,12 @@ public class Utils {
         return map;
     }
 
+    /**
+     * Gets res idfor mimetype.
+     *
+     * @param mimetype the mimetype
+     * @return the res idfor mimetype
+     */
     public static int getResIdforMimetype(String mimetype) {
         if (mimetype == null)
             return R.drawable.file;
@@ -280,6 +361,12 @@ public class Utils {
         return suffixIconMap;
     }
 
+    /**
+     * Gets file icon.
+     *
+     * @param name the name
+     * @return the file icon
+     */
     public static int getFileIcon(String name) {
         String suffix = name.substring(name.lastIndexOf('.') + 1).toLowerCase();
         if (suffix.length() == 0) {
@@ -295,6 +382,12 @@ public class Utils {
         return getResIdforMimetype(mime);
     }
 
+    /**
+     * Is viewable image boolean.
+     *
+     * @param name the name
+     * @return the boolean
+     */
     public static boolean isViewableImage(String name) {
         String suffix = name.substring(name.lastIndexOf('.') + 1).toLowerCase();
         if (suffix.length() == 0)
@@ -309,6 +402,12 @@ public class Utils {
         return mime.contains("image/");
     }
 
+    /**
+     * Is video file boolean.
+     *
+     * @param name the name
+     * @return the boolean
+     */
     public static boolean isVideoFile(String name) {
         if (name == null)
             return false;
@@ -321,6 +420,12 @@ public class Utils {
         return mime.contains("video/");
     }
 
+    /**
+     * Is text file boolean.
+     *
+     * @param file the file
+     * @return the boolean
+     */
     public static boolean isTextFile(File file) {
         if (file != null) {
             String fileName = file.getName();
@@ -337,6 +442,11 @@ public class Utils {
         return false;
     }
 
+    /**
+     * Is network on boolean.
+     *
+     * @return the boolean
+     */
     public static boolean isNetworkOn() {
         ConnectivityManager connMgr = (ConnectivityManager)
                 SeadroidApplication.getAppContext().getSystemService(
@@ -357,6 +467,11 @@ public class Utils {
         return false;
     }
 
+    /**
+     * Is wi fi on boolean.
+     *
+     * @return the boolean
+     */
     public static boolean isWiFiOn() {
         ConnectivityManager connMgr = (ConnectivityManager)
                 SeadroidApplication.getAppContext().getSystemService(
@@ -370,6 +485,14 @@ public class Utils {
 
         return false;
     }
+
+    /**
+     * Path join string.
+     *
+     * @param first the first
+     * @param rest  the rest
+     * @return the string
+     */
     public static String pathJoin (String first, String... rest) {
         StringBuilder result = new StringBuilder(first);
         for (String b: rest) {
@@ -388,6 +511,12 @@ public class Utils {
         return result.toString();
     }
 
+    /**
+     * Remove last path seperator string.
+     *
+     * @param path the path
+     * @return the string
+     */
     public static String removeLastPathSeperator(String path) {
         if (TextUtils.isEmpty(path)) return null;
 
@@ -397,19 +526,31 @@ public class Utils {
         } else
             return path;
     }
+
     /**
      * Strip leading and trailing slashes
+     *
+     * @param a the a
+     * @return the string
      */
     public static String stripSlashes(String a) {
         return a.replaceAll("^[/]*|[/]*$", "");
     }
 
+    /**
+     * Gets current hour minute.
+     *
+     * @return the current hour minute
+     */
     public static String getCurrentHourMinute() {
         return (String) DateFormat.format("hh:mm", new Date());
     }
 
     /**
      * Translate commit time to human readable time description
+     *
+     * @param timestampInMillis the timestamp in millis
+     * @return the string
      */
     public static String translateCommitTime(long timestampInMillis) {
         long now = Calendar.getInstance().getTimeInMillis();
@@ -445,6 +586,8 @@ public class Utils {
 
     /**
      * Translate create time
+     *
+     * @return the string
      */
     public static String translateTime() {
         long now = Calendar.getInstance().getTimeInMillis();
@@ -454,10 +597,21 @@ public class Utils {
     }
 
 
+    /**
+     * Now long.
+     *
+     * @return the long
+     */
     public static long now() {
         return Calendar.getInstance().getTimeInMillis();
     }
 
+    /**
+     * Gets file mime type.
+     *
+     * @param path the path
+     * @return the file mime type
+     */
     public static String getFileMimeType(String path) {
         String name = fileNameFromPath(path);
         String suffix = name.substring(name.lastIndexOf('.') + 1).toLowerCase();
@@ -473,10 +627,23 @@ public class Utils {
         }
     }
 
+    /**
+     * Gets file mime type.
+     *
+     * @param file the file
+     * @return the file mime type
+     */
     public static String getFileMimeType(File file) {
         return getFileMimeType(file.getPath());
     }
 
+    /**
+     * Copy file.
+     *
+     * @param src the src
+     * @param dst the dst
+     * @throws IOException the io exception
+     */
     public static void copyFile(File src, File dst) throws IOException {
         InputStream in = new BufferedInputStream(new FileInputStream(src));
         OutputStream out = new BufferedOutputStream(new FileOutputStream(dst));
@@ -516,6 +683,13 @@ public class Utils {
         }
     };
 
+    /**
+     * Gets file list.
+     *
+     * @param path         the path
+     * @param selectedFile the selected file
+     * @return the file list
+     */
     public static List<SelectableFile> getFileList(String path, List<File> selectedFile) {
         ArrayList<SelectableFile> list = Lists.newArrayList();
 
@@ -550,6 +724,11 @@ public class Utils {
         return list;
     }
 
+    /**
+     * Create get content intent intent.
+     *
+     * @return the intent
+     */
     public static Intent createGetContentIntent() {
         // Implicitly allow the user to select a particular kind of data
         final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -567,6 +746,13 @@ public class Utils {
         return intent;
     }
 
+    /**
+     * Gets filenamefrom uri.
+     *
+     * @param context the context
+     * @param uri     the uri
+     * @return the filenamefrom uri
+     */
     public static String getFilenamefromUri(Context context, Uri uri) {
 
         ContentResolver resolver =context.getContentResolver();
@@ -585,6 +771,14 @@ public class Utils {
         return displayName;
     }
 
+    /**
+     * Gets path.
+     *
+     * @param context the context
+     * @param uri     the uri
+     * @return the path
+     * @throws URISyntaxException the uri syntax exception
+     */
     public static String getPath(Context context, Uri uri) throws URISyntaxException {
         if ("content".equalsIgnoreCase(uri.getScheme())) {
             String[] projection = { "_data" };
@@ -608,6 +802,12 @@ public class Utils {
         return null;
     }
 
+    /**
+     * Gets stack trace.
+     *
+     * @param e the e
+     * @return the stack trace
+     */
     public static String getStackTrace(Exception e) {
         StringWriter buffer = new StringWriter();
         PrintWriter writer = new PrintWriter(buffer);
@@ -615,6 +815,14 @@ public class Utils {
         return buffer.toString();
     }
 
+    /**
+     * Calculate in sample size int.
+     *
+     * @param options   the options
+     * @param reqWidth  the req width
+     * @param reqHeight the req height
+     * @return the int
+     */
     public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
         final int height = options.outHeight;
@@ -637,6 +845,14 @@ public class Utils {
         return inSampleSize;
     }
 
+    /**
+     * Decode sampled bitmap from stream bitmap.
+     *
+     * @param stream    the stream
+     * @param reqWidth  the req width
+     * @param reqHeight the req height
+     * @return the bitmap
+     */
     public static Bitmap decodeSampledBitmapFromStream(InputStream stream,
                                                        int reqWidth, int reqHeight) {
 
@@ -654,6 +870,14 @@ public class Utils {
         return BitmapFactory.decodeStream(stream, null, options);
     }
 
+    /**
+     * Assemble user name string.
+     *
+     * @param name   the name
+     * @param email  the email
+     * @param server the server
+     * @return the string
+     */
     public static String assembleUserName(String name, String email, String server) {
         if (name == null || email == null || server == null)
             return null;
@@ -670,6 +894,11 @@ public class Utils {
         return info;
     }
 
+    /**
+     * Hide soft keyboard.
+     *
+     * @param view the view
+     */
     public static void hideSoftKeyboard(View view) {
         if (view == null)
             return;
@@ -678,6 +907,13 @@ public class Utils {
                 view.getWindowToken(), 0);
     }
 
+    /**
+     * Clean server url string.
+     *
+     * @param serverURL the server url
+     * @return the string
+     * @throws MalformedURLException the malformed url exception
+     */
     public static String cleanServerURL(String serverURL) throws MalformedURLException {
         if (!serverURL.endsWith("/")) {
             serverURL = serverURL + "/";
@@ -691,6 +927,12 @@ public class Utils {
         return serverURL;
     }
 
+    /**
+     * Gets we chat intent.
+     *
+     * @param intent the intent
+     * @return the we chat intent
+     */
     public static ResolveInfo getWeChatIntent(Intent intent) {
         PackageManager pm = SeadroidApplication.getAppContext().getPackageManager();
         List<ResolveInfo> infos = pm.queryIntentActivities(intent, 0);
@@ -709,6 +951,8 @@ public class Utils {
 
     /**
      * use compare user system  is chinese
+     *
+     * @return the boolean
      */
     public static boolean isInChina() {
         Locale locale;
@@ -720,6 +964,13 @@ public class Utils {
         String language = locale.getCountry();
         return TextUtils.equals("CN",language)||TextUtils.equals("TW",language);
     }
+
+    /**
+     * Gets apps by intent.
+     *
+     * @param intent the intent
+     * @return the apps by intent
+     */
     public static List<ResolveInfo> getAppsByIntent(Intent intent) {
         PackageManager pm = SeadroidApplication.getAppContext().getPackageManager();
         List<ResolveInfo> infos = pm.queryIntentActivities(intent, 0);
@@ -738,10 +989,22 @@ public class Utils {
         return infos;
     }
 
+    /**
+     * Is valid email boolean.
+     *
+     * @param target the target
+     * @return the boolean
+     */
     public final static boolean isValidEmail(CharSequence target) {
         return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 
+    /**
+     * Is text mime type boolean.
+     *
+     * @param fileName the file name
+     * @return the boolean
+     */
     public static boolean isTextMimeType(String fileName) {
         String suffix = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
         //file is markdown or  txt
@@ -755,7 +1018,8 @@ public class Utils {
 
     /**
      * check if click event is a fast tapping
-     * @return
+     *
+     * @return boolean
      */
     public static boolean isFastTapping() {
         long time = System.currentTimeMillis();
@@ -769,6 +1033,9 @@ public class Utils {
     /**
      * SslCertificate class does not has a public getter for the underlying
      * X509Certificate, we can only do this by hack. This only works for andorid 4.0+
+     *
+     * @param sslCert the ssl cert
+     * @return the x 509 cert from ssl cert hack
      * @see https://groups.google.com/forum/#!topic/android-developers/eAPJ6b7mrmg
      */
     public static X509Certificate getX509CertFromSslCertHack(SslCertificate sslCert) {
@@ -792,6 +1059,13 @@ public class Utils {
         return x509Certificate;
     }
 
+    /**
+     * Is same cert boolean.
+     *
+     * @param sslCert  the ssl cert
+     * @param x509Cert the x 509 cert
+     * @return the boolean
+     */
     public static boolean isSameCert(SslCertificate sslCert, X509Certificate x509Cert) {
         if (sslCert == null || x509Cert == null) {
             return false;
@@ -815,6 +1089,13 @@ public class Utils {
         private SslCertificateComparator() {
         }
 
+        /**
+         * Compare boolean.
+         *
+         * @param cert1 the cert 1
+         * @param cert2 the cert 2
+         * @return the boolean
+         */
         public static boolean compare(SslCertificate cert1, SslCertificate cert2) {
             return isSameDN(cert1.getIssuedTo(), cert2.getIssuedTo())
                     && isSameDN(cert1.getIssuedBy(), cert2.getIssuedBy())
@@ -843,16 +1124,35 @@ public class Utils {
         }
     }
 
+    /**
+     * Dip 2 px int.
+     *
+     * @param context the context
+     * @param dip     the dip
+     * @return the int
+     */
     public static int dip2px(Context context, float dip) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dip * scale + 0.5f);
     }
 
+    /**
+     * Px 2 dip int.
+     *
+     * @param context the context
+     * @param pxValue the px value
+     * @return the int
+     */
     public static int px2dip(Context context, float pxValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
 
+    /**
+     * Hide system navigation bar.
+     *
+     * @param activity the activity
+     */
     public static void hideSystemNavigationBar(Activity activity) {
         if (activity == null) {
             return;
@@ -868,6 +1168,11 @@ public class Utils {
         }
     }
 
+    /**
+     * Gets thumbnail width.
+     *
+     * @return the thumbnail width
+     */
     public static int getThumbnailWidth() {
         return (int) SeadroidApplication.getAppContext().getResources().getDimension(R.dimen.gallery_icon_show);
     }

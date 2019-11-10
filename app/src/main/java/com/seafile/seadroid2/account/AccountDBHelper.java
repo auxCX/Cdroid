@@ -18,10 +18,13 @@ import java.util.List;
 
 /**
  * Legacy code. Only for migrating old account settings to the new android account store.
- *
+ * <p>
  * A helper class to manage {@link #DATABASE_NAME} database creation and version management.
  */
 public class AccountDBHelper extends SQLiteOpenHelper {
+    /**
+     * The constant DEBUG_TAG.
+     */
     public static final String DEBUG_TAG = "AccountDBHelper";
 
     // NOTE: carefully update onUpgrade() when bumping database versions to make
@@ -71,6 +74,11 @@ public class AccountDBHelper extends SQLiteOpenHelper {
     private android.accounts.AccountManager mAccountManager;
     private Context context;
 
+    /**
+     * Migrate accounts.
+     *
+     * @param context the context
+     */
     public static void migrateAccounts(Context context) {
         AccountDBHelper db = null;
         try {

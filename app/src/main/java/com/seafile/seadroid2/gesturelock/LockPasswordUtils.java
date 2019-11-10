@@ -17,6 +17,9 @@ import android.content.SharedPreferences.Editor;
 import android.os.FileObserver;
 import android.util.Log;
 
+/**
+ * The type Lock password utils.
+ */
 public class LockPasswordUtils {
     private static final String TAG = "LockPasswordUtils";
     private final static String LOCK_PASSWORD_SALT_FILE = "password_salt";
@@ -30,6 +33,12 @@ public class LockPasswordUtils {
     private static FileObserver sPasswordObserver;
 
     private static class PasswordFileObserver extends FileObserver {
+        /**
+         * Instantiates a new Password file observer.
+         *
+         * @param path the path
+         * @param mask the mask
+         */
         public PasswordFileObserver(String path, int mask) {
             super(path, mask);
         }
@@ -44,6 +53,11 @@ public class LockPasswordUtils {
         }
     }
 
+    /**
+     * Instantiates a new Lock password utils.
+     *
+     * @param context the context
+     */
     public LockPasswordUtils(Context context) {
         mSharedPreferences = context.getSharedPreferences(
                 LOCK_PASSWORD_SALT_FILE, Context.MODE_PRIVATE);
@@ -65,7 +79,7 @@ public class LockPasswordUtils {
 
     /**
      * Check to see if the user has stored a lock pattern.
-     * 
+     *
      * @return Whether a saved pattern exists.
      */
     public static boolean savedPasswordExists() {
@@ -74,6 +88,9 @@ public class LockPasswordUtils {
 
     /**
      * Compute the password quality from the given password string.
+     *
+     * @param password the password
+     * @return the int
      */
     public static int computePasswordQuality(String password) {
         boolean hasDigit = false;
@@ -102,15 +119,12 @@ public class LockPasswordUtils {
     /**
      * Save a lock password. Does not ensure that the password is as good as the
      * requested mode, but will adjust the mode to be as good as the pattern.
-     * 
-     * @param password
-     *            The password to save
-     * @param quality
-     *            {@see 
-     *            DevicePolicyManager#getPasswordQuality(android.content.ComponentName
-     *            )}
-     * @param isFallback
-     *            Specifies if this is a fallback to biometric weak
+     *
+     * @param password   The password to save
+     * @param quality    {@see
+     *                   DevicePolicyManager#getPasswordQuality(android.content.ComponentName
+     *)}
+     * @param isFallback Specifies if this is a fallback to biometric weak
      */
     public static void saveLockPassword(String password, int quality,
             boolean isFallback) {
@@ -146,9 +160,8 @@ public class LockPasswordUtils {
     /**
      * Check to see if a password matches the saved password. If no password
      * exists, always returns true.
-     * 
-     * @param password
-     *            The password to check.
+     *
+     * @param password The password to check.
      * @return Whether the password matches the stored one.
      */
     public static boolean checkPassword(String password) {
@@ -171,6 +184,12 @@ public class LockPasswordUtils {
         }
     }
 
+    /**
+     * Password to hash byte [ ].
+     *
+     * @param password the password
+     * @return the byte [ ]
+     */
     /*
      * Generate a hash for the given password. To avoid brute force attacks, we
      * use a salted hash. Not the most secure, but it is at least a second level

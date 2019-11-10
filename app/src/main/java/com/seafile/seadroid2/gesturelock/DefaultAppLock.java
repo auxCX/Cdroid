@@ -24,6 +24,9 @@ import java.util.concurrent.ConcurrentMap;
  * Implementation of AppLock
  */
 public class DefaultAppLock extends AbstractAppLock {
+    /**
+     * The constant DEBUG_TAG.
+     */
     public static final String DEBUG_TAG = "DefaultAppLock";
 
     private Application currentApp; //Keep a reference to the app that invoked the locker
@@ -35,6 +38,11 @@ public class DefaultAppLock extends AbstractAppLock {
             .weakKeys()
             .makeMap();
 
+    /**
+     * Instantiates a new Default app lock.
+     *
+     * @param currentApp the current app
+     */
     public DefaultAppLock(Application currentApp) {
         super();
         this.currentApp = currentApp;

@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+/**
+ * The type File footer fragment.
+ */
 public class FileFooterFragment extends Fragment {
 
     private TextView statusView;
@@ -52,10 +55,20 @@ public class FileFooterFragment extends Fragment {
         return root;
     }
 
+    /**
+     * Gets status view.
+     *
+     * @return the status view
+     */
     public TextView getStatusView() {
         return statusView;
     }
 
+    /**
+     * Gets confirm button.
+     *
+     * @return the confirm button
+     */
     public Button getConfirmButton() {
         return confirmButton;
     }

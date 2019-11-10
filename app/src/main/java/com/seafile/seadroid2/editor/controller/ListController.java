@@ -8,13 +8,24 @@ import com.yydcdut.markdown.MarkdownEditText;
 import com.yydcdut.markdown.span.MDOrderListSpan;
 import com.yydcdut.markdown.span.MDUnOrderListSpan;
 
+/**
+ * The type List controller.
+ */
 public class ListController {
     private MarkdownEditText mRxMDEditText;
 
+    /**
+     * Instantiates a new List controller.
+     *
+     * @param rxMDEditText the rx md edit text
+     */
     public ListController(MarkdownEditText rxMDEditText) {
         mRxMDEditText = rxMDEditText;
     }
 
+    /**
+     * Do un order list.
+     */
     public void doUnOrderList() {
         int start = mRxMDEditText.getSelectionStart();
         int end = mRxMDEditText.getSelectionEnd();
@@ -57,6 +68,9 @@ public class ListController {
         }
     }
 
+    /**
+     * Do order list.
+     */
     public void doOrderList() {
         int start = mRxMDEditText.getSelectionStart();
         int end = mRxMDEditText.getSelectionEnd();

@@ -11,9 +11,17 @@ import com.seafile.seadroid2.ui.adapter.ReposAdapter;
  */
 public class CloudLibraryAdapter extends ReposAdapter {
 
-    /** mark the checked repo */
+    /**
+     * mark the checked repo
+     */
     public SeafRepo selectedRepo;
 
+    /**
+     * Instantiates a new Cloud library adapter.
+     *
+     * @param onlyShowWritableRepos the only show writable repos
+     * @param encryptedRepoId       the encrypted repo id
+     */
     public CloudLibraryAdapter(boolean onlyShowWritableRepos, String encryptedRepoId) {
         super(onlyShowWritableRepos, encryptedRepoId);
     }
@@ -68,6 +76,11 @@ public class CloudLibraryAdapter extends ReposAdapter {
             imageView.setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * Sets selected repo.
+     *
+     * @param repo the repo
+     */
     public void setSelectedRepo(SeafRepo repo) {
         selectedRepo = repo;
     }

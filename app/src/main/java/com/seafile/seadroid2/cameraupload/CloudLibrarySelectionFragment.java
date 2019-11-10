@@ -44,16 +44,43 @@ import java.util.List;
  * Choose account and library for camera upload
  */
 public class CloudLibrarySelectionFragment extends Fragment {
+    /**
+     * The constant DEBUG_TAG.
+     */
     public static final String DEBUG_TAG = "CloudLibrarySelectionFragment";
 
+    /**
+     * The constant PASSWORD_DIALOG_FRAGMENT_TAG.
+     */
     public static final String PASSWORD_DIALOG_FRAGMENT_TAG = "passwordDialogFragmentTag";
+    /**
+     * The constant ONLY_SHOW_WRITABLE_REPOS.
+     */
     public static final String ONLY_SHOW_WRITABLE_REPOS = "onlyShowWritableRepos";
+    /**
+     * The constant SHOW_ENCRYPTED_REPOS.
+     */
     public static final String SHOW_ENCRYPTED_REPOS = "showEncryptedRepos";
+    /**
+     * The constant ENCRYPTED_REPO_ID.
+     */
     public static final String ENCRYPTED_REPO_ID = "encryptedRepoId";
 
+    /**
+     * The constant DATA_REPO_ID.
+     */
     public static final String DATA_REPO_ID = "repoID";
+    /**
+     * The constant DATA_REPO_NAME.
+     */
     public static final String DATA_REPO_NAME = "repoNAME";
+    /**
+     * The constant DATA_DIR.
+     */
     public static final String DATA_DIR = "dir";
+    /**
+     * The constant DATA_ACCOUNT.
+     */
     public static final String DATA_ACCOUNT = "account";
 
     private static final int STEP_CHOOSE_ACCOUNT = 1;
@@ -195,6 +222,13 @@ public class CloudLibrarySelectionFragment extends Fragment {
         }
     }
 
+    /**
+     * On list item click.
+     *
+     * @param v        the v
+     * @param position the position
+     * @param id       the id
+     */
     public void onListItemClick(final View v, final int position, final long id) {
         NavContext nav = getNavContext();
         SeafRepo repo = null;
@@ -311,6 +345,14 @@ public class CloudLibrarySelectionFragment extends Fragment {
         }, null);
     }
 
+    /**
+     * Show password dialog.
+     *
+     * @param repoName the repo name
+     * @param repoID   the repo id
+     * @param listener the listener
+     * @param password the password
+     */
     public void showPasswordDialog(String repoName, String repoID,
                                    TaskDialog.TaskDialogListener listener, String password) {
         PasswordDialog passwordDialog = new PasswordDialog();
@@ -524,6 +566,12 @@ public class CloudLibrarySelectionFragment extends Fragment {
         private AccountManager accountManager;
         private boolean forwardIfOnlyOneAccount;
 
+        /**
+         * Instantiates a new Load accounts task.
+         *
+         * @param accountManager          the account manager
+         * @param forwardIfOnlyOneAccount the forward if only one account
+         */
         public LoadAccountsTask(AccountManager accountManager, boolean forwardIfOnlyOneAccount) {
             this.accountManager = accountManager;
             this.forwardIfOnlyOneAccount = forwardIfOnlyOneAccount;
@@ -578,6 +626,11 @@ public class CloudLibrarySelectionFragment extends Fragment {
         private SeafException err;
         private DataManager dataManager;
 
+        /**
+         * Instantiates a new Load repos task.
+         *
+         * @param dataManager the data manager
+         */
         public LoadReposTask(DataManager dataManager) {
             this.dataManager = dataManager;
         }
@@ -621,6 +674,13 @@ public class CloudLibrarySelectionFragment extends Fragment {
         private DataManager dataManager;
         private List<SeafDirent> dirents;
 
+        /**
+         * Instantiates a new Load dir task.
+         *
+         * @param repoID      the repo id
+         * @param dirPath     the dir path
+         * @param dataManager the data manager
+         */
         public LoadDirTask(String repoID, String dirPath, DataManager dataManager) {
             this.repoID = repoID;
             this.dirPath = dirPath;
@@ -715,6 +775,11 @@ public class CloudLibrarySelectionFragment extends Fragment {
         private int avatarSize;
         private SeafConnection httpConnection;
 
+        /**
+         * Instantiates a new Load avatar urls task.
+         *
+         * @param avatarSize the avatar size
+         */
         public LoadAvatarUrlsTask(int avatarSize) {
             this.avatarSize = avatarSize;
             this.avatars = Lists.newArrayList();

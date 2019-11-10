@@ -8,6 +8,12 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
+/**
+ * The type Lru cache.
+ *
+ * @param <K> the type parameter
+ * @param <V> the type parameter
+ */
 public class LruCache<K, V> {
 
     private final HashMap<K, V> mLruMap;
@@ -15,6 +21,11 @@ public class LruCache<K, V> {
             Maps.newHashMap();
     private ReferenceQueue<V> mQueue = new ReferenceQueue<V>();
 
+    /**
+     * Instantiates a new Lru cache.
+     *
+     * @param capacity the capacity
+     */
     @SuppressWarnings("serial")
     public LruCache(final int capacity) {
         mLruMap = new LinkedHashMap<K, V>(16, 0.75f, true) {
@@ -26,8 +37,18 @@ public class LruCache<K, V> {
     }
 
     private static class Entry<K, V> extends WeakReference<V> {
+        /**
+         * The M key.
+         */
         K mKey;
 
+        /**
+         * Instantiates a new Entry.
+         *
+         * @param key   the key
+         * @param value the value
+         * @param queue the queue
+         */
         public Entry(K key, V value, ReferenceQueue<V> queue) {
             super(value, queue);
             mKey = key;
@@ -43,6 +64,13 @@ public class LruCache<K, V> {
         }
     }
 
+    /**
+     * Put v.
+     *
+     * @param key   the key
+     * @param value the value
+     * @return the v
+     */
     public synchronized V put(K key, V value) {
         cleanUpWeakMap();
         mLruMap.put(key, value);
@@ -51,6 +79,12 @@ public class LruCache<K, V> {
         return entry == null ? null : entry.get();
     }
 
+    /**
+     * Get v.
+     *
+     * @param key the key
+     * @return the v
+     */
     public synchronized V get(K key) {
         cleanUpWeakMap();
         V value = mLruMap.get(key);
@@ -59,6 +93,9 @@ public class LruCache<K, V> {
         return entry == null ? null : entry.get();
     }
 
+    /**
+     * Clear.
+     */
     public synchronized void clear() {
         mLruMap.clear();
         mWeakMap.clear();

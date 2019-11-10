@@ -34,6 +34,12 @@ public class ImageListUber implements IImageList {
     private int [] mSkipCounts;
     private int mLastListIndex;
 
+    /**
+     * Instantiates a new Image list uber.
+     *
+     * @param sublist the sublist
+     * @param sort    the sort
+     */
     public ImageListUber(IImageList [] sublist, int sort) {
         mSubList = sublist.clone();
         mQueue = new PriorityQueue<MergeSlot>(4,
@@ -256,15 +262,35 @@ public class ImageListUber implements IImageList {
         private int mOffset = -1;
         private final IImageList mList;
 
+        /**
+         * The M list index.
+         */
         int mListIndex;
+        /**
+         * The M date taken.
+         */
         long mDateTaken;
+        /**
+         * The M image.
+         */
         IImage mImage;
 
+        /**
+         * Instantiates a new Merge slot.
+         *
+         * @param list  the list
+         * @param index the index
+         */
         public MergeSlot(IImageList list, int index) {
             mList = list;
             mListIndex = index;
         }
 
+        /**
+         * Next boolean.
+         *
+         * @return the boolean
+         */
         public boolean next() {
             if (mOffset >= mList.getCount() - 1) return false;
             mImage = mList.getImageAt(++mOffset);

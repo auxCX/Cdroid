@@ -23,6 +23,9 @@ import com.seafile.seadroid2.transfer.TransferService;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Switch storage task.
+ */
 class SwitchStorageTask extends TaskDialog.Task {
 
     private static final String DEBUG_TAG = "SwitchStorageTask";
@@ -30,11 +33,19 @@ class SwitchStorageTask extends TaskDialog.Task {
     private TransferService txService;
     private StorageManager.Location location = null;
 
+    /**
+     * Instantiates a new Switch storage task.
+     */
     SwitchStorageTask() {
         Intent bIntent = new Intent(SeadroidApplication.getAppContext(), TransferService.class);
         SeadroidApplication.getAppContext().bindService(bIntent, mConnection, Context.BIND_AUTO_CREATE);
     }
 
+    /**
+     * Sets new location.
+     *
+     * @param loc the loc
+     */
     public void setNewLocation(StorageManager.Location loc) {
         location = loc;
     }
@@ -84,11 +95,26 @@ class SwitchStorageTask extends TaskDialog.Task {
     }
 }
 
+/**
+ * The type Switch storage task dialog.
+ */
 public class SwitchStorageTaskDialog extends TaskDialog {
+    /**
+     * The Group.
+     */
     RadioGroup group;
+    /**
+     * The Button list.
+     */
     List<RadioButton> buttonList = new ArrayList<>();
+    /**
+     * The Current location id.
+     */
     int currentLocationId = -1;
 
+    /**
+     * The Task.
+     */
     SwitchStorageTask task;
 
     @Override

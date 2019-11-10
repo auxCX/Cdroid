@@ -37,7 +37,19 @@ public class TransferTaskAdapter extends BaseAdapter {
     private boolean actionModeStarted;
     private TransferActivity mActivity;
     private TaskType mTransferTaskType;
-    public enum TaskType {DOWNLOAD_TASK, UPLOAD_TASK}
+
+    /**
+     * The enum Task type.
+     */
+    public enum TaskType {
+        /**
+         * Download task task type.
+         */
+        DOWNLOAD_TASK,
+        /**
+         * Upload task task type.
+         */
+        UPLOAD_TASK}
 
     /**
      * Constructor of {@link TransferTaskAdapter}
@@ -46,8 +58,8 @@ public class TransferTaskAdapter extends BaseAdapter {
      * set {@link TransferTaskAdapter #mUploadTaskInfos} to null if the task is a downloading task </br>
      * set {@link TransferTaskAdapter #mTransferTaskType} 0 to mark as Download Task, 1 mark to mark as Upload Task</br>
      *
-     * @param activity
-     * @param transferTaskInfos
+     * @param activity          the activity
+     * @param transferTaskInfos the transfer task infos
      */
     public TransferTaskAdapter(TransferActivity activity,
                                List<? extends TransferTaskInfo> transferTaskInfos) {
@@ -56,6 +68,11 @@ public class TransferTaskAdapter extends BaseAdapter {
         this.mSelectedItemsIds = new SparseBooleanArray();
     }
 
+    /**
+     * Sets current tab.
+     *
+     * @param type the type
+     */
     public void setCurrentTab(TaskType type) {
         this.mTransferTaskType = type;
     }
@@ -88,6 +105,11 @@ public class TransferTaskAdapter extends BaseAdapter {
         }
     }
 
+    /**
+     * Sets transfer task infos.
+     *
+     * @param infos the infos
+     */
     public void setTransferTaskInfos(List<? extends TransferTaskInfo> infos) {
         mTransferTaskInfos = infos;
         Collections.sort(mTransferTaskInfos, new TaskInfoComparator());
@@ -192,14 +214,29 @@ public class TransferTaskAdapter extends BaseAdapter {
         viewHolder.state.setTextColor(stateColor);
     }
 
+    /**
+     * Gets checked item count.
+     *
+     * @return the checked item count
+     */
     public int getCheckedItemCount() {
         return mSelectedItemsIds.size();
     }
 
+    /**
+     * Gets selected ids.
+     *
+     * @return the selected ids
+     */
     public List<Integer> getSelectedIds() {
         return mSelectedItemsPositions;
     }
 
+    /**
+     * Toggle selection.
+     *
+     * @param position the position
+     */
     public void toggleSelection(int position) {
         if (mSelectedItemsIds.get(position)) {
             // unselected
@@ -214,22 +251,34 @@ public class TransferTaskAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * Action mode on.
+     */
     public void actionModeOn() {
         actionModeStarted = true;
         notifyDataSetChanged();
     }
 
+    /**
+     * Action mode off.
+     */
     public void actionModeOff() {
         actionModeStarted = false;
         notifyDataSetChanged();
     }
 
+    /**
+     * Deselect all items.
+     */
     public void deselectAllItems() {
         mSelectedItemsIds.clear();
         mSelectedItemsPositions.clear();
         notifyDataSetChanged();
     }
 
+    /**
+     * Select all items.
+     */
     public void selectAllItems() {
         mSelectedItemsIds.clear();
         mSelectedItemsPositions.clear();
@@ -331,10 +380,42 @@ public class TransferTaskAdapter extends BaseAdapter {
     }
 
     private class Viewholder {
-        ImageView icon, multiSelectBtn;
-        TextView targetPath, fileName, fileSize, state;
+        /**
+         * The Icon.
+         */
+        ImageView icon, /**
+         * The Multi select btn.
+         */
+        multiSelectBtn;
+        /**
+         * The Target path.
+         */
+        TextView targetPath, /**
+         * The File name.
+         */
+        fileName, /**
+         * The File size.
+         */
+        fileSize, /**
+         * The State.
+         */
+        state;
+        /**
+         * The Progress bar.
+         */
         ProgressBar progressBar;
 
+        /**
+         * Instantiates a new Viewholder.
+         *
+         * @param icon           the icon
+         * @param multiSelectBtn the multi select btn
+         * @param state          the state
+         * @param targetPath     the target path
+         * @param fileName       the file name
+         * @param fileSize       the file size
+         * @param progressBar    the progress bar
+         */
         public Viewholder(ImageView icon, ImageView multiSelectBtn, TextView state, TextView targetPath,
                           TextView fileName, TextView fileSize, ProgressBar progressBar) {
             super();

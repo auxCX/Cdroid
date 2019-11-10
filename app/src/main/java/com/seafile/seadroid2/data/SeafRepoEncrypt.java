@@ -8,22 +8,74 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+/**
+ * The type Seaf repo encrypt.
+ */
 public class SeafRepoEncrypt {
+    /**
+     * The Id.
+     */
     public String id;     // repo id
+    /**
+     * The Name.
+     */
     public String name;
+    /**
+     * The Owner.
+     */
     public String owner;
+    /**
+     * The Mtime.
+     */
     public long mtime;    // the last modification time
+    /**
+     * The Is group repo.
+     */
     public boolean isGroupRepo;
+    /**
+     * The Is personal repo.
+     */
     public boolean isPersonalRepo;
+    /**
+     * The Is shared repo.
+     */
     public boolean isSharedRepo;
+    /**
+     * The Encrypted.
+     */
     public boolean encrypted;
+    /**
+     * The Permission.
+     */
     public String permission;
+    /**
+     * The Magic.
+     */
     public String magic;
+    /**
+     * The Enc key.
+     */
     public String encKey;
+    /**
+     * The Enc version.
+     */
     public int encVersion;
+    /**
+     * The Size.
+     */
     public long size;
+    /**
+     * The Root.
+     */
     public String root; // the id of root directory
 
+    /**
+     * From json seaf repo encrypt.
+     *
+     * @param obj the obj
+     * @return the seaf repo encrypt
+     * @throws JSONException the json exception
+     */
     static SeafRepoEncrypt fromJson(JSONObject obj) throws JSONException {
         SeafRepoEncrypt repo = new SeafRepoEncrypt();
         repo.magic = obj.optString("magic");
@@ -43,9 +95,17 @@ public class SeafRepoEncrypt {
         return repo;
     }
 
+    /**
+     * Instantiates a new Seaf repo encrypt.
+     */
     public SeafRepoEncrypt() {
     }
 
+    /**
+     * Can local decrypt boolean.
+     *
+     * @return the boolean
+     */
     public boolean canLocalDecrypt() {
         return encrypted
                 && encVersion == 2

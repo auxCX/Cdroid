@@ -9,6 +9,9 @@ import com.seafile.seadroid2.R;
 import com.seafile.seadroid2.data.DatabaseHelper;
 import com.seafile.seadroid2.data.StorageManager;
 
+/**
+ * The type Clear cache task.
+ */
 class ClearCacheTask extends TaskDialog.Task {
 
     @Override
@@ -22,6 +25,9 @@ class ClearCacheTask extends TaskDialog.Task {
     }
 }
 
+/**
+ * The type Clear cache task dialog.
+ */
 public class ClearCacheTaskDialog extends TaskDialog {
     @Override
     protected View createDialogContentView(LayoutInflater inflater, Bundle savedInstanceState) {

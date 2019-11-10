@@ -17,10 +17,15 @@ import java.util.List;
 
 /**
  * Download notification provider
- *
  */
 public class DownloadNotificationProvider extends BaseNotificationProvider {
 
+    /**
+     * Instantiates a new Download notification provider.
+     *
+     * @param downloadTaskManager the download task manager
+     * @param transferService     the transfer service
+     */
     public DownloadNotificationProvider(DownloadTaskManager downloadTaskManager,
                                         TransferService transferService) {
         super(downloadTaskManager, transferService);

@@ -14,12 +14,35 @@ import com.seafile.seadroid2.account.Account;
 import com.seafile.seadroid2.data.DataManager;
 import com.seafile.seadroid2.ui.dialog.TaskDialog.Task;
 
+/**
+ * The type New file task.
+ */
 class NewFileTask extends TaskDialog.Task {
+    /**
+     * The Repo id.
+     */
     String repoID;
+    /**
+     * The Parent dir.
+     */
     String parentDir;
+    /**
+     * The File name.
+     */
     String fileName;
+    /**
+     * The Data manager.
+     */
     DataManager dataManager;
 
+    /**
+     * Instantiates a new New file task.
+     *
+     * @param repoID      the repo id
+     * @param parentDir   the parent dir
+     * @param fileName    the file name
+     * @param dataManager the data manager
+     */
     public NewFileTask(String repoID, String parentDir,
                        String fileName, DataManager dataManager) {
         this.repoID = repoID;
@@ -38,6 +61,9 @@ class NewFileTask extends TaskDialog.Task {
     }
 }
 
+/**
+ * The type New file dialog.
+ */
 public class NewFileDialog extends TaskDialog {
     private static final String STATE_TASK_REPO_ID = "new_file_task.repo_id";
     private static final String STATE_TASK_PARENT_DIR = "new_file_task.parent_dir";
@@ -50,6 +76,13 @@ public class NewFileDialog extends TaskDialog {
     private DataManager dataManager;
     private Account account;
 
+    /**
+     * Init.
+     *
+     * @param repoID    the repo id
+     * @param parentDir the parent dir
+     * @param account   the account
+     */
     public void init(String repoID, String parentDir, Account account) {
         this.repoID = repoID;
         this.parentDir = parentDir;
@@ -64,6 +97,11 @@ public class NewFileDialog extends TaskDialog {
         return dataManager;
     }
 
+    /**
+     * Gets new file name.
+     *
+     * @return the new file name
+     */
     public String getNewFileName() {
         return fileNameText.getText().toString().trim();
     }

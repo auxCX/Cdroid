@@ -50,9 +50,17 @@ import okhttp3.Response;
 
 /**
  * SeafConnection encapsulates Seafile Web API
+ *
  * @author plt
  */
 public class SeafConnection {
+
+
+
+    /**
+     * The constant HTTP_STATUS_REPO_PASSWORD_REQUIRED.
+     */
+    /**   WHAT THE HELL IS THIS STTIC HTTP_REPO_PASSWORD?? **/
     public static final int HTTP_STATUS_REPO_PASSWORD_REQUIRED = 440;
 
     private static final String DEBUG_TAG = "SeafConnection";
@@ -61,10 +69,20 @@ public class SeafConnection {
 
     private Account account;
 
+    /**
+     * Instantiates a new Seaf connection.
+     *
+     * @param act the act
+     */
     public SeafConnection(Account act) {
         account = act;
     }
 
+    /**
+     * Gets account.
+     *
+     * @return the account
+     */
     public Account getAccount() {
         return account;
     }
@@ -231,8 +249,8 @@ public class SeafConnection {
      * </p>
      * use GET to send HTTP request.
      *
-     * @return
-     * @throws SeafException
+     * @return account info
+     * @throws SeafException the seaf exception
      */
     public String getAccountInfo() throws SeafException {
 
@@ -252,6 +270,12 @@ public class SeafConnection {
         return result;
     }
 
+    /**
+     * Gets server info.
+     *
+     * @return the server info
+     * @throws SeafException the seaf exception
+     */
     public String getServerInfo() throws SeafException {
 
         String result;
@@ -269,6 +293,15 @@ public class SeafConnection {
         return result;
     }
 
+    /**
+     * Do login boolean.
+     *
+     * @param passwd         the passwd
+     * @param authToken      the auth token
+     * @param rememberDevice the remember device
+     * @return the boolean
+     * @throws SeafException the seaf exception
+     */
     public boolean doLogin(String passwd, String authToken, boolean rememberDevice) throws SeafException {
         try {
             return realLogin(passwd, authToken, rememberDevice);
@@ -278,6 +311,12 @@ public class SeafConnection {
         }
     }
 
+    /**
+     * Gets repos.
+     *
+     * @return the repos
+     * @throws SeafException the seaf exception
+     */
     public String getRepos() throws SeafException {
         HttpRequest req = null;
         try {
@@ -295,6 +334,14 @@ public class SeafConnection {
         }
     }
 
+    /**
+     * Gets events.
+     *
+     * @param start          the start
+     * @param useNewActivity the use new activity
+     * @return the events
+     * @throws SeafException the seaf exception
+     */
     public String getEvents(int start, boolean useNewActivity) throws SeafException {
         String apiPath;
         try {
@@ -323,6 +370,14 @@ public class SeafConnection {
         }
     }
 
+    /**
+     * Gets history changes.
+     *
+     * @param repoID   the repo id
+     * @param commitId the commit id
+     * @return the history changes
+     * @throws SeafException the seaf exception
+     */
     public String getHistoryChanges(String repoID, String commitId) throws SeafException {
         try {
             String apiPath = String.format("api2/repo_history_changes/%s/", repoID);
@@ -343,6 +398,12 @@ public class SeafConnection {
         }
     }
 
+    /**
+     * Gets starred files.
+     *
+     * @return the starred files
+     * @throws SeafException the seaf exception
+     */
     public String getStarredFiles() throws SeafException {
         try {
             HttpRequest req = prepareApiGetRequest("api2/starredfiles/");
@@ -357,6 +418,15 @@ public class SeafConnection {
             throw SeafException.networkException;
         }
     }
+
+    /**
+     * Gets avatar.
+     *
+     * @param email the email
+     * @param size  the size
+     * @return the avatar
+     * @throws SeafException the seaf exception
+     */
     public String getAvatar(String email, int size) throws SeafException {
         try {
             String apiPath = String.format("api2/avatars/user/%s/resized/%d", email, size);
@@ -374,6 +444,14 @@ public class SeafConnection {
         }
     }
 
+    /**
+     * Search libraries string.
+     *
+     * @param query the query
+     * @param page  the page
+     * @return the string
+     * @throws SeafException the seaf exception
+     */
     public String searchLibraries(String query, int page) throws SeafException {
 
         try {
@@ -403,11 +481,12 @@ public class SeafConnection {
 
     /**
      * Get the contents of a directory.
-     * @param repoID
-     * @param path
+     *
+     * @param repoID      the repo id
+     * @param path        the path
      * @param cachedDirID The local cached dirID.
      * @return A non-null Pair of (dirID, content). If the local cache is up to date, the "content" is null.
-     * @throws SeafException
+     * @throws SeafException the seaf exception
      */
     public Pair<String, String> getDirents(String repoID, String path, String cachedDirID)
             throws SeafException {
@@ -455,6 +534,15 @@ public class SeafConnection {
         }
     }
 
+    /**
+     * Gets download link.
+     *
+     * @param repoID   the repo id
+     * @param path     the path
+     * @param isReUsed the is re used
+     * @return the download link
+     * @throws SeafException the seaf exception
+     */
     public Pair<String, String> getDownloadLink(String repoID, String path ,boolean isReUsed) throws SeafException {
         try {
             String apiPath = String.format("api2/repos/%s/file/", repoID);
@@ -488,6 +576,15 @@ public class SeafConnection {
         }
     }
 
+    /**
+     * Gets block download list.
+     *
+     * @param repoID the repo id
+     * @param path   the path
+     * @return the block download list
+     * @throws SeafException the seaf exception
+     * @throws IOException   the io exception
+     */
     public String getBlockDownloadList(String repoID, String path) throws SeafException, IOException {
         try {
             String apiPath = String.format("api2/repos/%s/file/", repoID);
@@ -532,12 +629,17 @@ public class SeafConnection {
 
     /**
      * Get the latest version of the file from server
-     * @param repoID
-     * @param fileBlocks
-     * @param blockId
-     * @param localPath
-     * @param monitor
+     *
+     * @param repoID     the repo id
+     * @param fileBlocks the file blocks
+     * @param blockId    the block id
+     * @param localPath  the local path
+     * @param fileSize   the file size
+     * @param monitor    the monitor
      * @return A two tuple of (fileID, file). If the local cached version is up to date, the returned file is null.
+     * @throws SeafException the seaf exception
+     * @throws IOException   the io exception
+     * @throws JSONException the json exception
      */
     public Pair<String, File> getBlock(String repoID,
                                        FileBlocks fileBlocks,
@@ -556,6 +658,19 @@ public class SeafConnection {
         }
     }
 
+    /**
+     * Upload by blocks string.
+     *
+     * @param repoID   the repo id
+     * @param dir      the dir
+     * @param filePath the file path
+     * @param blocks   the blocks
+     * @param update   the update
+     * @param monitor  the monitor
+     * @return the string
+     * @throws IOException   the io exception
+     * @throws SeafException the seaf exception
+     */
     public String uploadByBlocks(String repoID, String dir, String filePath, List<Block> blocks, boolean update, ProgressMonitor monitor) throws IOException, SeafException {
 
         try {
@@ -695,6 +810,14 @@ public class SeafConnection {
         }
     }
 
+    /**
+     * Gets re used file link.
+     *
+     * @param repoID the repo id
+     * @param path   the path
+     * @return the re used file link
+     * @throws SeafException the seaf exception
+     */
     public String getReUsedFileLink(String repoID, String path) throws SeafException {
         //Setting up links can be reused
         Pair<String, String> ret = getDownloadLink(repoID, path, true);
@@ -703,12 +826,14 @@ public class SeafConnection {
 
     /**
      * Get the latest version of the file from server
-     * @param repoID
-     * @param path
-     * @param localPath
+     *
+     * @param repoID       the repo id
+     * @param path         the path
+     * @param localPath    the local path
      * @param cachedFileID The file id of the local cached version
-     * @param monitor
+     * @param monitor      the monitor
      * @return A two tuple of (fileID, file). If the local cached version is up to date, the returned file is null.
+     * @throws SeafException the seaf exception
      */
     public Pair<String, File> getFile(String repoID,
                                       String path,
@@ -737,7 +862,14 @@ public class SeafConnection {
         }
     }
 
-    // get encrypted repo info
+    /**
+     * Gets encrypt repo.
+     *
+     * @param repoID the repo id
+     * @return the encrypt repo
+     * @throws SeafException the seaf exception
+     */
+// get encrypted repo info
     public String  getEncryptRepo(String repoID) throws SeafException {
         Response response = null;
         try {
@@ -758,7 +890,15 @@ public class SeafConnection {
         return "";
     }
 
-    // set password for an encrypted repo
+    /**
+     * Sets password.
+     *
+     * @param repoID the repo id
+     * @param passwd the passwd
+     * @return the password
+     * @throws SeafException the seaf exception
+     */
+// set password for an encrypted repo
     public boolean setPassword(String repoID, String passwd) throws SeafException {
         try {
             HttpRequest req = prepareApiPostRequest("api2/repos/" + repoID + "/", true, null);
@@ -869,13 +1009,14 @@ public class SeafConnection {
     /**
      * Upload or update a file
      *
-     * @param repoID
-     * @param dir
-     * @param filePath
-     * @param monitor
-     * @param update
-     * @return
-     * @throws SeafException
+     * @param repoID   the repo id
+     * @param dir      the dir
+     * @param filePath the file path
+     * @param monitor  the monitor
+     * @param update   the update
+     * @return string
+     * @throws SeafException the seaf exception
+     * @throws IOException   the io exception
      */
     public String uploadFile(String repoID, String dir, String filePath, ProgressMonitor monitor, boolean update)
             throws SeafException, IOException {
@@ -956,6 +1097,14 @@ public class SeafConnection {
         throw new SeafException(SeafException.OTHER_EXCEPTION, "File upload failed");
     }
 
+    /**
+     * Create new repo.
+     *
+     * @param repoName    the repo name
+     * @param description the description
+     * @param password    the password
+     * @throws SeafException the seaf exception
+     */
     public void createNewRepo(String repoName, String description, String password) throws SeafException {
         HttpRequest req = prepareApiPostRequest("api2/repos/", true, null);
         req.form("name", repoName);
@@ -971,6 +1120,15 @@ public class SeafConnection {
         checkRequestResponseStatus(req, HttpURLConnection.HTTP_OK);
     }
 
+    /**
+     * Create new dir pair.
+     *
+     * @param repoID    the repo id
+     * @param parentDir the parent dir
+     * @param dirName   the dir name
+     * @return the pair
+     * @throws SeafException the seaf exception
+     */
     public Pair<String, String> createNewDir(String repoID,
                                              String parentDir,
                                              String dirName) throws SeafException {
@@ -1010,6 +1168,15 @@ public class SeafConnection {
         }
     }
 
+    /**
+     * Create new file pair.
+     *
+     * @param repoID    the repo id
+     * @param parentDir the parent dir
+     * @param fileName  the file name
+     * @return the pair
+     * @throws SeafException the seaf exception
+     */
     public Pair<String, String> createNewFile(String repoID,
                                               String parentDir,
                                               String fileName) throws SeafException {
@@ -1052,6 +1219,9 @@ public class SeafConnection {
      * Wrap a FileInputStream in a upload task. We publish the progress of the upload during the process, and if we detect the task has been cancelled by the user, we throw a {@link MonitorCancelledException} to indicate such a situation.
      */
     private class MonitoredFileInputStream extends InputStream {
+        /**
+         * The constant BUFFER_SIZE.
+         */
         public static final int BUFFER_SIZE = 1024;
 
 
@@ -1061,6 +1231,13 @@ public class SeafConnection {
         private long bytesRead = 0;
         private long nextUpdate = System.currentTimeMillis() + PROGRESS_UPDATE_INTERVAL;
 
+        /**
+         * Instantiates a new Monitored file input stream.
+         *
+         * @param file    the file
+         * @param monitor the monitor
+         * @throws IOException the io exception
+         */
         public MonitoredFileInputStream(File file, ProgressMonitor monitor) throws IOException {
             this.src = new FileInputStream(file);
             this.monitor = monitor;
@@ -1113,6 +1290,9 @@ public class SeafConnection {
      * Wrap a FileOutputStream in a download task. We publish the upload progress during the process, and if we detect the task has been cancelled by the user, we throw a {@link MonitorCancelledException} to indicate such a situation.
      */
     private class MonitoredFileOutputStream extends OutputStream {
+        /**
+         * The constant BUFFER_SIZE.
+         */
         public static final int BUFFER_SIZE = 4096;
 
         private static final long PROGRESS_UPDATE_INTERVAL = 500;
@@ -1124,11 +1304,27 @@ public class SeafConnection {
         private FileBlocks fileBlocks;
         private String blockId;
 
+        /**
+         * Instantiates a new Monitored file output stream.
+         *
+         * @param file    the file
+         * @param monitor the monitor
+         * @throws IOException the io exception
+         */
         public MonitoredFileOutputStream(File file, ProgressMonitor monitor) throws IOException {
             this.dst = new FileOutputStream(file);
             this.monitor = monitor;
         }
 
+        /**
+         * Instantiates a new Monitored file output stream.
+         *
+         * @param fileBlocks the file blocks
+         * @param blockId    the block id
+         * @param file       the file
+         * @param monitor    the monitor
+         * @throws IOException the io exception
+         */
         public MonitoredFileOutputStream(FileBlocks fileBlocks, String blockId, File file, ProgressMonitor monitor) throws IOException {
             this.dst = new FileOutputStream(file);
             this.monitor = monitor;
@@ -1193,6 +1389,13 @@ public class SeafConnection {
         }
     }
 
+    /**
+     * Rename repo.
+     *
+     * @param repoID  the repo id
+     * @param newName the new name
+     * @throws SeafException the seaf exception
+     */
     public void renameRepo(String repoID, String newName) throws SeafException {
         Map<String, Object> params = Maps.newHashMap();
         params.put("op", "rename");
@@ -1203,6 +1406,12 @@ public class SeafConnection {
         checkRequestResponseStatus(req, HttpURLConnection.HTTP_OK);
     }
 
+    /**
+     * Delete repo.
+     *
+     * @param repoID the repo id
+     * @throws SeafException the seaf exception
+     */
     public void deleteRepo(String repoID) throws SeafException {
         try {
             HttpRequest req = prepareApiDeleteRequest(String.format("api2/repos/%s/", repoID), null);
@@ -1213,6 +1422,13 @@ public class SeafConnection {
     }
 
 
+    /**
+     * Delete share link boolean.
+     *
+     * @param token the token
+     * @return the boolean
+     * @throws SeafException the seaf exception
+     */
     public boolean deleteShareLink(String token) throws SeafException {
         try {
             HttpRequest req = prepareApiDeleteRequest(String.format("api/v2.1/share-links/%s/", token), null);
@@ -1233,6 +1449,14 @@ public class SeafConnection {
     }
 
 
+    /**
+     * Gets share link.
+     *
+     * @param repoID the repo id
+     * @param path   the path
+     * @return the share link
+     * @throws SeafException the seaf exception
+     */
     public String getShareLink(String repoID, String path) throws SeafException {
         try {
             Map<String, Object> params = Maps.newHashMap();
@@ -1251,6 +1475,16 @@ public class SeafConnection {
         }
     }
 
+    /**
+     * Gets share link.
+     *
+     * @param repoID   the repo id
+     * @param path     the path
+     * @param password the password
+     * @param days     the days
+     * @return the share link
+     * @throws SeafException the seaf exception
+     */
     public String getShareLink(String repoID, String path, String password, String days) throws SeafException {
         try {
             Map<String, Object> params = Maps.newHashMap();
@@ -1284,6 +1518,12 @@ public class SeafConnection {
         }
     }
 
+    /**
+     * Complete remote wipe.
+     *
+     * @param token the token
+     * @throws SeafException the seaf exception
+     */
     public void completeRemoteWipe(String token) throws SeafException {
         try {
             HttpRequest req = prepareApiPostRequest("api2/device-wiped/", true, null);
@@ -1296,6 +1536,13 @@ public class SeafConnection {
         }
     }
 
+    /**
+     * Star.
+     *
+     * @param repoID the repo id
+     * @param path   the path
+     * @throws SeafException the seaf exception
+     */
     public void star(String repoID, String path) throws SeafException {
         try {
             HttpRequest req = prepareApiPostRequest("api2/starredfiles/", true, null);
@@ -1312,6 +1559,13 @@ public class SeafConnection {
         }
     }
 
+    /**
+     * Unstar.
+     *
+     * @param repoID the repo id
+     * @param path   the path
+     * @throws SeafException the seaf exception
+     */
     public void unstar(String repoID, String path) throws SeafException {
         try {
             Map<String, Object> params = Maps.newHashMap();
@@ -1328,6 +1582,16 @@ public class SeafConnection {
         }
     }
 
+    /**
+     * Rename pair.
+     *
+     * @param repoID  the repo id
+     * @param path    the path
+     * @param newName the new name
+     * @param isdir   the isdir
+     * @return the pair
+     * @throws SeafException the seaf exception
+     */
     public Pair<String, String> rename(String repoID, String path,
                                        String newName, boolean isdir) throws SeafException {
         try {
@@ -1362,6 +1626,15 @@ public class SeafConnection {
         }
     }
 
+    /**
+     * Delete pair.
+     *
+     * @param repoID the repo id
+     * @param path   the path
+     * @param isdir  the isdir
+     * @return the pair
+     * @throws SeafException the seaf exception
+     */
     public Pair<String, String> delete(String repoID, String path,
                                        boolean isdir) throws SeafException {
         try {
@@ -1401,7 +1674,7 @@ public class SeafConnection {
      * @param srcFn     list of file/folder names to copy. Multiple file/folder names can be seperated by ":"
      * @param dstRepoId the destination repo id
      * @param dstDir    the destination folder in dst_repo
-     * @throws SeafException
+     * @throws SeafException the seaf exception
      */
     public void copy(String srcRepoId, String srcDir, String srcFn,
                      String dstRepoId, String dstDir) throws SeafException {
@@ -1434,7 +1707,7 @@ public class SeafConnection {
      * @param srcFn     list of file/folder names to move. Multiple file/folder names can be seperated by ":"
      * @param dstRepoId the destination repo id
      * @param dstDir    the destination folder in dst_repo
-     * @throws SeafException
+     * @throws SeafException the seaf exception
      */
     public void move(String srcRepoId, String srcDir, String srcFn,
                      String dstRepoId, String dstDir) throws SeafException {
@@ -1464,8 +1737,8 @@ public class SeafConnection {
      * @param srcPath   the source file path
      * @param dstRepoId the destination repo id
      * @param dstDir    the destination folder in dst_repo
-     * @return
-     * @throws SeafException
+     * @return pair
+     * @throws SeafException the seaf exception
      */
     public Pair<String, String> move(String srcRepoId, String srcPath, String dstRepoId, String dstDir) throws SeafException {
         try {

@@ -10,6 +10,9 @@ import android.content.Context;
 import android.os.FileObserver;
 import android.support.v4.content.AsyncTaskLoader;
 
+/**
+ * The type File loader.
+ */
 public class FileLoader extends AsyncTaskLoader<List<SelectableFile>> {
 
     private static final int FILE_OBSERVER_MASK = FileObserver.CREATE
@@ -23,6 +26,13 @@ public class FileLoader extends AsyncTaskLoader<List<SelectableFile>> {
     private String mPath;
     private List<File> mSelectedFiles;
 
+    /**
+     * Instantiates a new File loader.
+     *
+     * @param context       the context
+     * @param path          the path
+     * @param selectedFiles the selected files
+     */
     public FileLoader(Context context, String path, List<File> selectedFiles) {
         super(context);
         this.mPath = path;
@@ -92,6 +102,11 @@ public class FileLoader extends AsyncTaskLoader<List<SelectableFile>> {
         onReleaseResources(data);
     }
 
+    /**
+     * On release resources.
+     *
+     * @param data the data
+     */
     protected void onReleaseResources(List<SelectableFile> data) {
 
         if (mFileObserver != null) {

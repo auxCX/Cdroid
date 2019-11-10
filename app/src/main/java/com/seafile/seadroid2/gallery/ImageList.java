@@ -46,6 +46,11 @@ public class ImageList extends BaseImageList implements IImageList {
 
     /**
      * ImageList constructor.
+     *
+     * @param resolver the resolver
+     * @param imageUri the image uri
+     * @param sort     the sort
+     * @param bucketId the bucket id
      */
     public ImageList(ContentResolver resolver, Uri imageUri,
             int sort, String bucketId) {
@@ -55,6 +60,11 @@ public class ImageList extends BaseImageList implements IImageList {
     private static final String WHERE_CLAUSE =
             "(" + Media.MIME_TYPE + " in (?, ?, ?))";
 
+    /**
+     * Where clause string.
+     *
+     * @return the string
+     */
     protected String whereClause() {
         int count = ImageManager.getAllBucketIds().size();
         List<String> chars = Lists.newArrayList();
@@ -68,6 +78,11 @@ public class ImageList extends BaseImageList implements IImageList {
         return clause;
     }
 
+    /**
+     * Where clause args string [ ].
+     *
+     * @return the string [ ]
+     */
     protected String[] whereClauseArgs() {
         int count = ACCEPTABLE_IMAGE_TYPES.length;
         List<String> ids = ImageManager.getAllBucketIds();
@@ -88,6 +103,9 @@ public class ImageList extends BaseImageList implements IImageList {
         return c;
     }
 
+    /**
+     * The Image projection.
+     */
     static final String[] IMAGE_PROJECTION = new String[] {
             Media._ID,
             Media.DATA,

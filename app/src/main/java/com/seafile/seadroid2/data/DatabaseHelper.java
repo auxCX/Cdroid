@@ -17,10 +17,19 @@ import com.seafile.seadroid2.account.Account;
 import java.io.File;
 import java.util.List;
 
+/**
+ * The type Database helper.
+ */
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DEBUG_TAG = "DatabaseHelper";
-    // If you change the database schema, you must increment the database version.
+    /**
+     * The constant DATABASE_VERSION.
+     */
+// If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 9;
+    /**
+     * The constant DATABASE_NAME.
+     */
     public static final String DATABASE_NAME = "data.db";
 
     // FileCache table
@@ -61,11 +70,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DIRENTS_CACHE_COLUMN_PATH = "path";
     private static final String DIRENTS_CACHE_COLUMN_DIR_ID = "dir_id";
 
+    /**
+     * The constant ENCKEY_TABLE_NAME.
+     */
     public static final String ENCKEY_TABLE_NAME = "EncKey";
 
+    /**
+     * The constant ENCKEY_COLUMN_ID.
+     */
     public static final String ENCKEY_COLUMN_ID = "id";
+    /**
+     * The constant ENCKEY_COLUMN_ENCKEY.
+     */
     public static final String ENCKEY_COLUMN_ENCKEY = "enc_key";
+    /**
+     * The constant ENCKEY_COLUMN_ENCIV.
+     */
     public static final String ENCKEY_COLUMN_ENCIV = "enc_iv";
+    /**
+     * The constant ENCKEY_COLUMN_REPO_ID.
+     */
     public static final String ENCKEY_COLUMN_REPO_ID = "repo_id";
 
     private static final String SQL_CREATE_FILECACHE_TABLE =
@@ -109,6 +133,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static DatabaseHelper dbHelper = null;
     private SQLiteDatabase database = null;
 
+    /**
+     * Gets database helper.
+     *
+     * @return the database helper
+     */
     public static synchronized DatabaseHelper getDatabaseHelper() {
         if (dbHelper != null)
             return dbHelper;
@@ -217,6 +246,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
+    /**
+     * Gets file cache item.
+     *
+     * @param repoID      the repo id
+     * @param path        the path
+     * @param dataManager the data manager
+     * @return the file cache item
+     */
     public SeafCachedFile getFileCacheItem(String repoID,
                                            String path, DataManager dataManager) {
         String[] projection = {
@@ -248,8 +285,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         c.close();
         return item;
     }
-    
-    // XXX: Here we can use SQLite3  "INSERT OR REPLACE" for convience
+
+    /**
+     * Save file cache item.
+     *
+     * @param item        the item
+     * @param dataManager the data manager
+     */
+// XXX: Here we can use SQLite3  "INSERT OR REPLACE" for convience
     public void saveFileCacheItem(SeafCachedFile item, DataManager dataManager) {
         SeafCachedFile old = getFileCacheItem(item.repoID, item.path, dataManager);
         if (old != null) {
@@ -267,7 +310,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Insert the new row, returning the primary key value of the new row
         database.insert(FILECACHE_TABLE_NAME, null, values);
     }
-    
+
+    /**
+     * Delete file cache item.
+     *
+     * @param item the item
+     */
     public void deleteFileCacheItem(SeafCachedFile item) {
         if (item.id != -1) {
             database.delete(FILECACHE_TABLE_NAME,  FILECACHE_COLUMN_ID + "=?",
@@ -277,6 +325,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[] { item.repoID, item.path });
     }
 
+    /**
+     * Del caches.
+     */
     public void delCaches() {
         database.delete(REPODIR_TABLE_NAME, null, null);
         database.delete(FILECACHE_TABLE_NAME, null, null);
@@ -284,6 +335,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.delete(STARRED_FILECACHE_TABLE_NAME, null, null);
     }
 
+    /**
+     * Gets file cache items.
+     *
+     * @param dataManager the data manager
+     * @return the file cache items
+     */
     public List<SeafCachedFile> getFileCacheItems(DataManager dataManager) {
         List<SeafCachedFile> files = Lists.newArrayList();
 
@@ -331,6 +388,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Return the directory of a repo on external storage.
+     *
+     * @param account the account
+     * @param repoID  the repo id
+     * @return the repo dir
      */
     public String getRepoDir(Account account, String repoID) {
         String[] projection = {
@@ -364,6 +425,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return dir;
     }
 
+    /**
+     * Gets cached starred files.
+     *
+     * @param account the account
+     * @return the cached starred files
+     */
     public String getCachedStarredFiles(Account account) {
         String[] projection = {
                 STARRED_FILECACHE_COLUMN_CONTENT
@@ -397,6 +464,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Tell if a record exists already.
+     *
+     * @param account the account
+     * @param dir     the dir
+     * @return the boolean
      */
     public boolean repoDirExists(Account account, String dir) {
         String[] projection = {
@@ -426,6 +497,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return exist;
     }
 
+    /**
+     * Save repo dir mapping.
+     *
+     * @param account the account
+     * @param repoID  the repo id
+     * @param dir     the dir
+     */
     public void saveRepoDirMapping(Account account,
                                    String repoID, String dir) {
         String log = String.format("Saving repo dir mapping: account = %s(%s) "
@@ -445,6 +523,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.insert(REPODIR_TABLE_NAME, null, values);
     }
 
+    /**
+     * Save cached starred files.
+     *
+     * @param account the account
+     * @param content the content
+     */
     public void saveCachedStarredFiles(Account account, String content) {
         removeStarredFiles(account);
 
@@ -456,6 +540,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.insert(STARRED_FILECACHE_TABLE_NAME, null, values);
     }
 
+    /**
+     * Save dirents.
+     *
+     * @param repoID the repo id
+     * @param path   the path
+     * @param dirID  the dir id
+     */
     public void saveDirents(String repoID, String path, String dirID) {
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
@@ -467,6 +558,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.insert(DIRENTS_CACHE_TABLE_NAME, null, values);
     }
 
+    /**
+     * Remove cached dirents.
+     *
+     * @param repoID the repo id
+     * @param path   the path
+     */
     public void removeCachedDirents(String repoID, String path) {
         String whereClause = String.format("%s = ? and %s = ?",
             DIRENTS_CACHE_COLUMN_REPO_ID, DIRENTS_CACHE_COLUMN_PATH);
@@ -481,6 +578,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.delete(STARRED_FILECACHE_TABLE_NAME, whereClause, new String[] { account.getSignature() });
     }
 
+    /**
+     * Gets cached dirents.
+     *
+     * @param repoID the repo id
+     * @param path   the path
+     * @return the cached dirents
+     */
     public String getCachedDirents(String repoID, String path) {
         String[] projection = {
             DIRENTS_CACHE_COLUMN_DIR_ID
@@ -516,8 +620,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * Return the number of cached dirs that reference a specific dirID.
      * Used for cache cleaning.
      *
-     * @param dirID
-     * @return
+     * @param dirID the dir id
+     * @return cached dirent usage
      */
     public int getCachedDirentUsage(String dirID) {
         String[] projection = { DIRENTS_CACHE_COLUMN_DIR_ID };
@@ -547,6 +651,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return count;
     }
 
+    /**
+     * Gets enckey.
+     *
+     * @param repoId the repo id
+     * @return the enckey
+     */
     public Pair<String, String> getEnckey(@NonNull String repoId) {
         String[] projection = {
                 ENCKEY_COLUMN_ENCKEY,
@@ -579,6 +689,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return new Pair<>(encKey, encIv);
     }
 
+    /**
+     * Save enc key.
+     *
+     * @param encKey the enc key
+     * @param encIv  the enc iv
+     * @param repoId the repo id
+     */
     public void saveEncKey(@NonNull String encKey, @NonNull String encIv, @NonNull String repoId) {
         Pair<String, String> old = getEnckey(repoId);
 
@@ -604,6 +721,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[] { repoId });
     }
 
+    /**
+     * Clear enckeys.
+     */
     public void clearEnckeys() {
         database.delete(ENCKEY_TABLE_NAME, null, null);
     }

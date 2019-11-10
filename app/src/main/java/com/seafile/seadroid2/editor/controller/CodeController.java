@@ -7,14 +7,25 @@ import com.seafile.seadroid2.R;
 import com.seafile.seadroid2.editor.Utils;
 import com.yydcdut.markdown.MarkdownEditText;
 
+/**
+ * The type Code controller.
+ */
 public class CodeController {
     private MarkdownEditText mRxMDEditText;
 
+    /**
+     * Instantiates a new Code controller.
+     *
+     * @param rxMDEditText the rx md edit text
+     */
     public CodeController(MarkdownEditText rxMDEditText) {
         mRxMDEditText = rxMDEditText;
     }
 
 
+    /**
+     * Do inline code.
+     */
     public void doInlineCode() {
         int start = mRxMDEditText.getSelectionStart();
         int end = mRxMDEditText.getSelectionEnd();
@@ -48,6 +59,9 @@ public class CodeController {
         }
     }
 
+    /**
+     * Do code.
+     */
     public void doCode() {
         int start = mRxMDEditText.getSelectionStart();
         int end = mRxMDEditText.getSelectionEnd();

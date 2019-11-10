@@ -17,18 +17,41 @@ import java.util.List;
  * Seafile file blocks
  */
 public class FileBlocks implements Serializable {
+    /**
+     * The constant DEBUG_TAG.
+     */
     public static final String DEBUG_TAG = "FileBlocks";
 
+    /**
+     * The Blocks.
+     */
     public ArrayList<Block> blocks;
 
+    /**
+     * The Enc version.
+     */
     public int encVersion;
+    /**
+     * The Blklist.
+     */
     public String blklist;
+    /**
+     * The File id.
+     */
     public String fileID;
 
+    /**
+     * Instantiates a new File blocks.
+     */
     public FileBlocks() {
         blocks = new ArrayList<>();
     }
 
+    /**
+     * Gets size.
+     *
+     * @return the size
+     */
     public long getSize() {
         long size = 0L;
         for (Block block : blocks) {
@@ -37,6 +60,11 @@ public class FileBlocks implements Serializable {
         return size;
     }
 
+    /**
+     * Gets finished.
+     *
+     * @return the finished
+     */
     public long getFinished() {
         long finished = 0L;
         for (Block block : blocks) {
@@ -45,6 +73,12 @@ public class FileBlocks implements Serializable {
         return finished;
     }
 
+    /**
+     * Gets block.
+     *
+     * @param blkId the blk id
+     * @return the block
+     */
     public Block getBlock(@NonNull String blkId) {
         for (Block block : blocks) {
             if (blkId.equals(block.blockId)) {
@@ -54,6 +88,13 @@ public class FileBlocks implements Serializable {
         return null;
     }
 
+    /**
+     * From json file blocks.
+     *
+     * @param obj the obj
+     * @return the file blocks
+     * @throws JSONException the json exception
+     */
     static FileBlocks fromJson(JSONObject obj) throws JSONException {
         FileBlocks blocks = new FileBlocks();
         blocks.blklist = obj.optString("blklist");

@@ -6,18 +6,50 @@ import com.google.common.collect.Lists;
 
 import android.os.Bundle;
 
+/**
+ * The type Monitored activity.
+ */
 public class MonitoredActivity extends NoSearchActivity {
 
     private final ArrayList<LifeCycleListener> mListeners =
             Lists.newArrayList();
 
+    /**
+     * The interface Life cycle listener.
+     */
     public static interface LifeCycleListener {
+        /**
+         * On activity created.
+         *
+         * @param activity the activity
+         */
         public void onActivityCreated(MonitoredActivity activity);
+
+        /**
+         * On activity destroyed.
+         *
+         * @param activity the activity
+         */
         public void onActivityDestroyed(MonitoredActivity activity);
+
+        /**
+         * On activity started.
+         *
+         * @param activity the activity
+         */
         public void onActivityStarted(MonitoredActivity activity);
+
+        /**
+         * On activity stopped.
+         *
+         * @param activity the activity
+         */
         public void onActivityStopped(MonitoredActivity activity);
     }
 
+    /**
+     * The type Life cycle adapter.
+     */
     public static class LifeCycleAdapter implements LifeCycleListener {
         public void onActivityCreated(MonitoredActivity activity) {
         }
@@ -32,11 +64,21 @@ public class MonitoredActivity extends NoSearchActivity {
         }
     }
 
+    /**
+     * Add life cycle listener.
+     *
+     * @param listener the listener
+     */
     public void addLifeCycleListener(LifeCycleListener listener) {
         if (mListeners.contains(listener)) return;
         mListeners.add(listener);
     }
 
+    /**
+     * Remove life cycle listener.
+     *
+     * @param listener the listener
+     */
     public void removeLifeCycleListener(LifeCycleListener listener) {
         mListeners.remove(listener);
     }

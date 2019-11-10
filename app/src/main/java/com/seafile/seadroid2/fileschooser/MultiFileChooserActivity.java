@@ -22,12 +22,24 @@ import android.support.v4.app.FragmentManager.BackStackEntry;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.widget.Toast;
 
+/**
+ * The type Multi file chooser activity.
+ */
 public class MultiFileChooserActivity extends FragmentActivity implements
 OnBackStackChangedListener {
 
+    /**
+     * The constant EXTERNAL_BASE_PATH.
+     */
     public static final String EXTERNAL_BASE_PATH = Environment
             .getExternalStorageDirectory().getAbsolutePath();
+    /**
+     * The constant PATH.
+     */
     public static final String PATH = "path";
+    /**
+     * The constant MULTI_FILES_PATHS.
+     */
     public static final String MULTI_FILES_PATHS = "com.seafile.seadroid2.fileschooser.paths";
 
     private String mPath;
@@ -105,11 +117,17 @@ OnBackStackChangedListener {
 
     }
 
+    /**
+     * On cancel button clicked.
+     */
     public void onCancelButtonClicked() {
         setResult(RESULT_CANCELED);
         finish();
     }
 
+    /**
+     * On confirm button clicked.
+     */
     public void onConfirmButtonClicked() {
         File file;
         Uri uri;
@@ -168,6 +186,11 @@ OnBackStackChangedListener {
 
     }
 
+    /**
+     * Gets selected files.
+     *
+     * @return the selected files
+     */
     public List<File> getSelectedFiles() {
         return mSelectedFiles;
     }

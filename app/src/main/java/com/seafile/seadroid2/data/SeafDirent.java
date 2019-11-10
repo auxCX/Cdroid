@@ -13,17 +13,60 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.Comparator;
 
+/**
+ * The type Seaf dirent.
+ */
 public class SeafDirent implements SeafItem, Serializable {
+    /**
+     * The constant serialVersionUID.
+     */
     public static final long serialVersionUID = 0L;
     private static final String DEBUG_TAG = "SeafDirent";
-    public enum DirentType {DIR, FILE}
+
+    /**
+     * The enum Dirent type.
+     */
+    public enum DirentType {
+        /**
+         * Dir dirent type.
+         */
+        DIR,
+        /**
+         * File dirent type.
+         */
+        FILE}
+
+    /**
+     * The Permission.
+     */
     public String permission;
+    /**
+     * The Id.
+     */
     public String id;
+    /**
+     * The Type.
+     */
     public DirentType type;
+    /**
+     * The Name.
+     */
     public String name;
+    /**
+     * The Size.
+     */
     public long size;    // size of file, 0 if type is dir
+    /**
+     * The Mtime.
+     */
     public long mtime;   // last modified timestamp
 
+    /**
+     * From json seaf dirent.
+     *
+     * @param obj the obj
+     * @return the seaf dirent
+     */
     static SeafDirent fromJson(JSONObject obj) {
         SeafDirent dirent = new SeafDirent();
         try {
@@ -44,6 +87,11 @@ public class SeafDirent implements SeafItem, Serializable {
         }
     }
 
+    /**
+     * Is dir boolean.
+     *
+     * @return the boolean
+     */
     public boolean isDir() {
         return (type == DirentType.DIR);
     }
@@ -74,6 +122,11 @@ public class SeafDirent implements SeafItem, Serializable {
         return Utils.getFileIcon(name);
     }
 
+    /**
+     * Has write permission boolean.
+     *
+     * @return the boolean
+     */
     public boolean hasWritePermission() {
         return permission.indexOf('w') != -1;
     }

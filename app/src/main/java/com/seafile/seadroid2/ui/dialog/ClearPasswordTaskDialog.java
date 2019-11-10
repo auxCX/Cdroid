@@ -10,6 +10,9 @@ import com.seafile.seadroid2.data.DataManager;
 import com.seafile.seadroid2.data.DatabaseHelper;
 import com.seafile.seadroid2.data.StorageManager;
 
+/**
+ * The type Clear password task dialog.
+ */
 public class ClearPasswordTaskDialog extends TaskDialog {
 
     @Override
@@ -30,6 +33,9 @@ public class ClearPasswordTaskDialog extends TaskDialog {
     }
 }
 
+/**
+ * The type Clear password task.
+ */
 class ClearPasswordTask extends TaskDialog.Task {
 
     @Override

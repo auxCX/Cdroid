@@ -8,13 +8,24 @@ import com.seafile.seadroid2.editor.Utils;
 import com.yydcdut.markdown.MarkdownEditText;
 import com.yydcdut.markdown.span.MDHorizontalRulesSpan;
 
+/**
+ * The type Horizontal rules controller.
+ */
 public class HorizontalRulesController {
     private MarkdownEditText mRxMDEditText;
 
+    /**
+     * Instantiates a new Horizontal rules controller.
+     *
+     * @param rxMDEditText the rx md edit text
+     */
     public HorizontalRulesController(MarkdownEditText rxMDEditText) {
         mRxMDEditText = rxMDEditText;
     }
 
+    /**
+     * Do horizontal rules.
+     */
     public void doHorizontalRules() {
         int start = mRxMDEditText.getSelectionStart();
         int end = mRxMDEditText.getSelectionEnd();

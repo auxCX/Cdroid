@@ -17,10 +17,25 @@ import java.util.List;
  */
 public abstract class ReposAdapter extends BaseAdapter {
 
+    /**
+     * The Repos.
+     */
     protected List<SeafRepo> repos = Lists.newArrayList();
+    /**
+     * The Only show writable repos.
+     */
     protected boolean onlyShowWritableRepos;
+    /**
+     * The Encrypted repo id.
+     */
     protected String encryptedRepoId;
 
+    /**
+     * Instantiates a new Repos adapter.
+     *
+     * @param onlyShowWritableRepos the only show writable repos
+     * @param encryptedRepoId       the encrypted repo id
+     */
     public ReposAdapter(boolean onlyShowWritableRepos, String encryptedRepoId) {
         this.onlyShowWritableRepos = onlyShowWritableRepos;
         this.encryptedRepoId = encryptedRepoId;
@@ -31,14 +46,29 @@ public abstract class ReposAdapter extends BaseAdapter {
         return position;
     }
 
+    /**
+     * Are all repos selectable boolean.
+     *
+     * @return the boolean
+     */
     public boolean areAllReposSelectable() {
         return false;
     }
 
+    /**
+     * Gets data.
+     *
+     * @return the data
+     */
     public  List<SeafRepo> getData() {
         return repos;
     }
 
+    /**
+     * Sets repos.
+     *
+     * @param seafRepos the seaf repos
+     */
     public void setRepos(List<SeafRepo> seafRepos) {
         repos.clear();
         for (SeafRepo repo: seafRepos) {
@@ -53,18 +83,55 @@ public abstract class ReposAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * Gets child layout.
+     *
+     * @return the child layout
+     */
     protected abstract int getChildLayout();
 
+    /**
+     * Gets child title id.
+     *
+     * @return the child title id
+     */
     protected abstract int getChildTitleId();
 
+    /**
+     * Gets child sub title id.
+     *
+     * @return the child sub title id
+     */
     protected abstract int getChildSubTitleId();
 
+    /**
+     * Gets child icon id.
+     *
+     * @return the child icon id
+     */
     protected abstract int getChildIconId();
 
+    /**
+     * Gets child action id.
+     *
+     * @return the child action id
+     */
     protected abstract int getChildActionId();
 
+    /**
+     * Gets child seaf repo.
+     *
+     * @param position the position
+     * @return the child seaf repo
+     */
     protected abstract SeafRepo getChildSeafRepo(int position);
 
+    /**
+     * Show repo selected icon.
+     *
+     * @param position  the position
+     * @param imageView the image view
+     */
     protected abstract void showRepoSelectedIcon(int position, ImageView imageView);
 
     @Override
@@ -97,9 +164,29 @@ public abstract class ReposAdapter extends BaseAdapter {
     }
 
     private class Viewholder {
-        TextView title, subtitle;
-        ImageView icon, action;
+        /**
+         * The Title.
+         */
+        TextView title, /**
+         * The Subtitle.
+         */
+        subtitle;
+        /**
+         * The Icon.
+         */
+        ImageView icon, /**
+         * The Action.
+         */
+        action;
 
+        /**
+         * Instantiates a new Viewholder.
+         *
+         * @param title    the title
+         * @param subtitle the subtitle
+         * @param icon     the icon
+         * @param action   the action
+         */
         public Viewholder(TextView title, TextView subtitle, ImageView icon, ImageView action) {
             super();
             this.icon = icon;
