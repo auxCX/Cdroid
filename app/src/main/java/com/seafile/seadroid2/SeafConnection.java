@@ -1131,7 +1131,7 @@ public class SeafConnection {
                 req.form("repo_id", repoId.toString());
             } catch(Exception e){
                 e.printStackTrace();
-                throw new SeafException(1, "FUCK");
+                throw new SeafException(1, "failed to create new repo");
             }
 
 

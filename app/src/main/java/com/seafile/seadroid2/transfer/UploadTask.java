@@ -89,7 +89,6 @@ public class UploadTask extends TransferTask {
     @Override
     protected void onProgressUpdate(Long... values) {
         long uploaded = values[0];
-        Log.d(DEBUG_TAG, "FUCKFUCKFUCKFUCKFUCKFUCKFUCK");
         this.finished = uploaded;
         uploadStateListener.onFileUploadProgress(taskID);
     }

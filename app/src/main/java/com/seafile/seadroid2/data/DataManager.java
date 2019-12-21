@@ -1698,40 +1698,6 @@ public class DataManager {
             return seafBlock;
 
 
-
-
-
-            /*in = new FileInputStream(file);
-            byte[] buffer = new byte[BUFFER_SIZE];
-            int byteRead;
-            byte[] header = lazySodium.randomBytesBuf(SecretStream.HEADERBYTES);
-            System.out.println(new String(header));
-            System.out.println(SecretStream.HEADERBYTES);
-            final String hdid = Crypto.sha1(header);
-            File blk = new File(storageManager.getTempDir(), hdid);
-            Block block = new Block(hdid, blk.getAbsolutePath(), header.length, 0L);
-            seafBlock.blocks.add(block);
-            out = new FileOutputStream(blk);
-            out.write(header);
-            SecretStream.State state = secretStreamLazy.cryptoSecretStreamInitPush(header, Key.fromHexString(encKey));
-
-            while((byteRead = in.read(buffer, 0, BUFFER_SIZE)) != -1){
-                String ciphertext = secretStreamLazy.cryptoSecretStreamPush(state, lazySodium.toHexStr(buffer), SecretStream.TAG_MESSAGE);
-                byte[] cipher_bytes = new byte[BUFFER_SIZE + SecretStream.ABYTES];
-                //System.out.println(lazySodium.cryptoSecretStreamPush(state, cipher_bytes, buffer, buffer.length, SecretStream.TAG_MESSAGE));
-                //System.out.println(lazySodium.toBinary(ciphertext).length + " ciphertext length upload");
-                //final String blkid = Crypto.sha1(lazySodium.toBinary(ciphertext));
-                final String blkid = Crypto.sha1(ciphertext.getBytes());
-                blk = new File(storageManager.getTempDir(), blkid);
-                block = new Block(blkid, blk.getAbsolutePath(),blk.length(), 0L);
-                System.out.println(blk.length() + "   blk.length upload");
-                seafBlock.blocks.add(block);
-                out = new FileOutputStream(blk);
-                DataOutputStream dis = new DataOutputStream(out);
-                dis.write(cipher_bytes);
-                //out.write(lazySodium.toBinary(ciphertext));
-                buffer = new byte[BUFFER_SIZE];
-            }*/
         }catch (NoSuchAlgorithmException f) {
             f.printStackTrace();
             return null;
@@ -1741,50 +1707,7 @@ public class DataManager {
         }catch(SodiumException e){
             e.printStackTrace();
         }
-        /*File file = new File(filePath);
-        InputStream in = null;
-        DataInputStream dis;
-        OutputStream out = null;
-        byte[] buffer = new byte[BUFFER_SIZE];
-        FileBlocks seafBlock = new FileBlocks();
-        try {
-            in = new FileInputStream(file);
-            dis = new DataInputStream(in);
 
-            // Log.d(DEBUG_TAG, "file size " + file.length());
-            int byteRead;
-            while ((byteRead = dis.read(buffer, 0, BUFFER_SIZE)) != -1) {
-                byte[] cipher;
-                if (byteRead < BUFFER_SIZE)
-                    cipher = Crypto.encrypt(buffer, byteRead, encKey, enkIv);
-                else
-                    cipher = Crypto.encrypt(buffer, encKey, enkIv);
-
-                final String blkid = Crypto.sha1(cipher);
-                File blk = new File(storageManager.getTempDir(), blkid)
-                Block block = new Block(blkid, blk.getAbsolutePath(), blk.length(), 0L);
-                seafBlock.blocks.add(block);
-                out = new FileOutputStream(blk);
-                out.write(cipher);
-                out.close();
-            }
-
-            in.close();
-
-            return seafBlock;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-            if (out != null) out.close();
-            if (in != null) in.close();
-        }*/
         return null;
     }
 

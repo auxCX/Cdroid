@@ -157,7 +157,6 @@ public class SeafRepo implements SeafItem {
      * @return the boolean
      */
     public boolean canLocalDecrypt() {
-        System.out.println("FUCKYOU SEAFILE");
         return encrypted && SettingsManager.instance().isEncryptEnabled();
     }
 

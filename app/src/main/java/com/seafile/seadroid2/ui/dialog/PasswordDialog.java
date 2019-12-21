@@ -124,7 +124,6 @@ public class PasswordDialog extends TaskDialog {
     protected View createDialogContentView(LayoutInflater inflater, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_password, null);
         passwordText = (EditText) view.findViewById(R.id.password);
-        Log.d(DEBUG_TAG, "FUCKFUCKDIALOG");
         if (savedInstanceState != null) {
             repoName = savedInstanceState.getString(STATE_TASK_REPO_NAME);
             repoID = savedInstanceState.getString(STATE_TASK_REPO_ID);
