@@ -947,7 +947,7 @@ public class ReposFragment extends ListFragment {
             }
 
             // Prompt the user to accept the ssl certificate
-            if (err == SeafException.sslException) {
+/*            if (err == SeafException.sslException) {
                 SslConfirmDialog dialog = new SslConfirmDialog(dataManager.getAccount(),
                         new SslConfirmDialog.Listener() {
                             @Override
@@ -964,9 +964,9 @@ public class ReposFragment extends ListFragment {
                         });
                 dialog.show(getFragmentManager(), SslConfirmDialog.FRAGMENT_TAG);
                 return;
-            } else if (err == SeafException.remoteWipedException) {
+            } if (err == SeafException.remoteWipedException) {
                 mActivity.completeRemoteWipe();
-            }
+            }*/
 
             if (err != null) {
                 if (err.getCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
@@ -1146,7 +1146,7 @@ public class ReposFragment extends ListFragment {
                 return;
             }
 
-            if (err == SeafException.sslException) {
+/*            if (err == SeafException.sslException) {
                 SslConfirmDialog dialog = new SslConfirmDialog(dataManager.getAccount(),
                         new SslConfirmDialog.Listener() {
                             @Override
@@ -1165,7 +1165,7 @@ public class ReposFragment extends ListFragment {
                 return;
             } else if (err == SeafException.remoteWipedException) {
                 mActivity.completeRemoteWipe();
-            }
+            }*/
 
             if (err != null) {
                 if (err.getCode() == SeafConnection.HTTP_STATUS_REPO_PASSWORD_REQUIRED) {

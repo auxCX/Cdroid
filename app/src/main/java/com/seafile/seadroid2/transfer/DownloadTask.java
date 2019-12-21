@@ -61,6 +61,7 @@ public class DownloadTask extends TransferTask {
         try {
             DataManager dataManager = new DataManager(account);
             final SeafRepo repo = dataManager.getCachedRepoByID(repoID);
+            //final SeafRepo repo=null;
             if (repo != null && repo.canLocalDecrypt()) {
                 return dataManager.getFileByBlocks(repoName, repoID, path, totalSize,
                         new ProgressMonitor() {
@@ -92,6 +93,18 @@ public class DownloadTask extends TransferTask {
                             }
                         }
                 );
+                /*return dataManager.getFileByBlocks(repoName,repoID,path, totalSize,new ProgressMonitor() {
+
+                    @Override
+                    public void onProgressNotify(long total, boolean updateTotal) {
+                        publishProgress(total);
+                    }
+
+                    @Override
+                    public boolean isCancelled() {
+                        return DownloadTask.this.isCancelled();
+                    }
+                });*/
         } catch (SeafException e) {
             err = e;
             return null;

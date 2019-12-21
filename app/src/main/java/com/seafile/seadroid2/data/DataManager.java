@@ -6,7 +6,9 @@ import android.util.Pair;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.goterl.lazycode.lazysodium.LazySodium;
 import com.goterl.lazycode.lazysodium.LazySodiumAndroid;
+import com.goterl.lazycode.lazysodium.Sodium;
 import com.goterl.lazycode.lazysodium.SodiumAndroid;
 import com.goterl.lazycode.lazysodium.exceptions.SodiumException;
 import com.goterl.lazycode.lazysodium.interfaces.SecretStream;
@@ -26,9 +28,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,7 +44,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Arrays;
 
+/*
+import org.libsodium.jni.NaCl;
+import org.libsodium.jni.Sodium;
+import org.libsodium.jni.SodiumJNI;
+import org.libsodium.jni.SodiumConstants;
+import org.libsodium.jni.encoders.Hex;
+
+import static org.libsodium.jni.Sodium.crypto_secretstream_xchacha20poly1305_init_push;
+import static org.libsodium.jni.Sodium.crypto_secretstream_xchacha20poly1305_pull;
+import static org.libsodium.jni.Sodium.crypto_secretstream_xchacha20poly1305_push;
+*/
 /**
  * The type Data manager.
  */
@@ -50,6 +64,9 @@ public class DataManager {
     private static final String DEBUG_TAG = "DataManager";
     private static final long SET_PASSWORD_INTERVAL = 59 * 60 * 1000; // 59 min
     // private static final long SET_PASSWORD_INTERVAL = 5 * 1000; // 5s
+
+
+
 
     /**
      * The constant PULL_TO_REFRESH_LAST_TIME_FOR_REPOS_FRAGMENT.
@@ -90,7 +107,10 @@ public class DataManager {
     private List<SeafRepo> reposCache = null;
 
 
-    private static LazySodiumAndroid lazySodium = new LazySodiumAndroid(new SodiumAndroid());
+
+
+
+
 
 
 
@@ -103,7 +123,9 @@ public class DataManager {
         account = act;
         sc = new SeafConnection(act);
         dbHelper = DatabaseHelper.getDatabaseHelper();
+
     }
+
 
     /**
      * Creates and returns a temporary file. It is guarantied that the file is unique and freshly
@@ -503,6 +525,7 @@ public class DataManager {
 
     private void getEncryptRepo(String repoID) throws SeafException {
         String json = sc.getEncryptRepo(repoID);
+        System.out.println(json);
         //Save to Cache
         if (!TextUtils.isEmpty(json)) {
             try {
@@ -623,8 +646,7 @@ public class DataManager {
             throw SeafException.decryptException;
         }
         final String encKey = pair.first;
-        final String encIv = pair.second;
-        if (TextUtils.isEmpty(encKey) || TextUtils.isEmpty(encIv)) {
+        if (TextUtils.isEmpty(encKey)) {
             throw SeafException.decryptException;
         }
 
@@ -639,36 +661,71 @@ public class DataManager {
         }
         byte[] tag = new byte[1];
 
-
+        System.out.println(" Encrypted File Download starting!!");
 
         try {
-            SecretStream.State state2 = null;
+            //SecretStream.Lazy secretStreamLazy = (SecretStream.Lazy) lazySodium;
             boolean first = true;
+            SodiumAndroid sodium = new SodiumAndroid();
+            LazySodium lazySodium = new LazySodiumAndroid(sodium);
 
             for (Block blk : fileBlocks.blocks) {
+
                 File tempBlock = new File(storageManager.getTempDir(), blk.blockId);
                 final Pair<String, File> block = sc.getBlock(repoID, fileBlocks, blk.blockId, tempBlock.getPath(), fileSize, monitor);
-                final byte[] bytes = FileUtils.readFileToByteArray(block.second);
-                if (first){
-                    byte[] header = bytes;
-                    state2 = lazySodium.cryptoSecretStreamInitPull(header, Key.fromBytes(encKey.getBytes()));
+
+                SecretStream.State state = new SecretStream.State();
+                if(first){
+                    FileInputStream in = new FileInputStream(block.second);
+                    DataInputStream dis = new DataInputStream(in);
+                    byte[] header = new byte[SecretStream.HEADERBYTES];
+                    dis.readFully(header);
+                    Log.d("DEBUG_CRYPTO_DOWNLOAD", Crypto.sha1(header) + "    header");
+                    lazySodium.cryptoSecretStreamInitPull(state, header, encKey.getBytes());
                     first = false;
                 }else {
-                    String decryptedMessage = lazySodium.cryptoSecretStreamPull(state2, new String(bytes), tag);
-                    final byte[] decryptedBlock = Crypto.decrypt(bytes, encKey, encIv);
-                    FileUtils.writeByteArrayToFile(localFile, decryptedBlock, true);
+                    FileInputStream in = new FileInputStream(block.second);
+                    DataInputStream dis = new DataInputStream(in);
+                    byte[] cipher = new byte[(int)block.second.length()];
+                    dis.readFully(cipher);
+                    byte[] message = new byte[cipher.length - SecretStream.ABYTES];
+                    System.out.println(message.length);
+                    Log.d("DEBUG_CRYPTO_DOWNLOAD",blk.blockId + "   blockid              -");
+                    //System.out.println(lazySodium.cryptoSecretStreamPull(state, message, tag, buffer, buffer.length));
+                    if(!lazySodium.cryptoSecretStreamPull(state, message, tag, cipher, cipher.length)){
+                        throw new SodiumException("File decryption fails!");
+                    }
+                    FileOutputStream out = new FileOutputStream(localFile);
+                    DataOutputStream dos = new DataOutputStream(out);
+                    out.write(message);
                 }
+
+
             }
-        } catch(SodiumException e){
+
+           /* for (Block blk : fileBlocks.blocks) {
+
+                //state2 = lazySodium.cryptoSecretStreamInitPull(header, Key.fromBytes(key));
+                if(lazySodium.sodiumInit() == 1) {
+                    /*if (first) {
+                        String temp = new String(bytes);
+                        byte[] header = this.header;
+
+                        first = false;
+
+                        String decryptedMessage = lazySodium.cryptoSecretStreamPull(state2, new String(bytes), tag);
+                        //final byte[] decryptedBlock = Crypto.decrypt(bytes, encKey, encIv);
+                        FileUtils.writeByteArrayToFile(localFile, decryptedMessage.getBytes(), true);
+                    }
+                }
+*/
+        } catch(Exception e){
             e.printStackTrace();
         }
-
-
-
-
         Log.d(DEBUG_TAG, String.format("addCachedFile repoName %s, repoId %s, path %s, fileId %s", repoName, repoID, path, fileBlocks.fileID));
         addCachedFile(repoName, repoID, path, fileBlocks.fileID, localFile);
         return localFile;
+
     }
 
     private List<SeafDirent> parseDirents(String json) {
@@ -882,11 +939,11 @@ public class DataManager {
      * @throws SeafException the seaf exception
      */
     public void setPassword(String repoID, String passwd) throws SeafException {
-        boolean success = sc.setPassword(repoID, passwd);
+        //boolean success = sc.setPassword(repoID, passwd);
         //if password is true, to get encrypt repo info
-        if (success) {
+        //if (success) {
             getEncryptRepo(repoID);
-        }
+        //}
     }
 
     /**
@@ -910,7 +967,7 @@ public class DataManager {
     private void uploadFileCommon(String repoName, String repoID, String dir,
                                   String filePath, ProgressMonitor monitor,
                                   boolean isUpdate, boolean isCopyToLocal) throws SeafException, IOException {
-        String newFileID  = sc.uploadFile(repoID, dir, filePath, monitor,isUpdate);
+        String newFileID = sc.uploadFile(repoID, dir, filePath, monitor,isUpdate);
         if (newFileID == null || newFileID.length() == 0) {
             return;
         }
@@ -1381,8 +1438,7 @@ public class DataManager {
      */
     public void setRepoPasswordSet(String repoID, String key, String iv) {
         if (!TextUtils.isEmpty(repoID)
-                && !TextUtils.isEmpty(key)
-                && !TextUtils.isEmpty(iv)) {
+                &&!TextUtils.isEmpty(key)) {
             dbHelper.saveEncKey(key, iv, repoID);
         }
     }
@@ -1598,56 +1654,135 @@ public class DataManager {
         }
     }
 
-    private FileBlocks chunkFile(String encKey, String enkIv, String filePath) throws IOException {
+    public FileBlocks chunkFile(String encKey, String enkIv, String filePath) throws IOException, NoSuchAlgorithmException {
 
-        File file = new File(filePath);
-        InputStream in = null;
-        DataInputStream dis = null;
-        OutputStream out = null;
-        byte[] buffer = new byte[BUFFER_SIZE];
-        int byteRead;
-        byte[] header = lazySodium.randomBytesBuf(SecretStream.HEADERBYTES);
-        SecretStream.State state = null;
-        String ciphertext = null;
-        FileBlocks seafBlock = new FileBlocks();
-        try {
-            final String hdid = Crypto.sha1(header);
+
+        /*
+        byte[] plaintext = new byte[(int)file.length()];
+        byte[] ciphertext = new byte[(int)file.length() + SecretBox.MACBYTES];
+        byte[] nonce = lazySodium.randomBytesBuf(SecretBox.NONCEBYTES);
+
+        dis.readFully(plaintext);
+        System.out.println(file.length() + " plintext encrypting length + length of encrypting ciphertext "+ ciphertext.length);
+
+
+        try{
+            System.out.println(lazySodium.cryptoSecretBoxEasy(ciphertext,plaintext,plaintext.length,nonce, encKey.getBytes()));
+            System.out.println(plaintext.length + " plintext encrypting length + length of encrypting ciphertext "+ ciphertext.length);
+            byte[] final_bytes = new byte[nonce.length + ciphertext.length];
+            System.arraycopy(nonce, 0, final_bytes, 0, nonce.length);
+            System.arraycopy(ciphertext, 0, final_bytes, nonce.length, ciphertext.length);
+            final String hdid = Crypto.sha1(final_bytes);
             File blk = new File(storageManager.getTempDir(), hdid);
             out = new FileOutputStream(blk);
-            out.write(header);
+            out.write(final_bytes);
             out.close();
-            Block block = new Block(hdid, blk.getAbsolutePath(), blk.length(), 0L);
+            Block block = new Block(hdid, blk.getAbsolutePath(), hdid.length(),0L);
             seafBlock.blocks.add(block);
-        }catch(NoSuchAlgorithmException e){
+        }catch(Exception e){
             e.printStackTrace();
-            return null;
         }
+        */
+        //SecretStream.Lazy secretStreamLazy = (SecretStream.Lazy) lazySodium;
+        SodiumAndroid sodium = new SodiumAndroid();
+        LazySodium lazySodium = new LazySodiumAndroid(sodium);
+        File file = new File(filePath);
+        InputStream in = null;
+        DataInputStream dis;
+        OutputStream out = null;
+        byte[] buffer = new byte[BUFFER_SIZE];
+        FileBlocks seafBlock = new FileBlocks();
+        byte[] header = lazySodium.randomBytesBuf(SecretStream.HEADERBYTES);
+
+        final String hdid = Crypto.sha1(header);
+        Log.d("DEBUG_CRYPTO_UPLOAD", hdid + "     header");
+        File hd = new File(storageManager.getTempDir(), hdid);
+        out = new FileOutputStream(hd);
+        Block header_block = new Block(hdid, hd.getAbsolutePath(), hd.length(), 0L);
+        seafBlock.blocks.add(header_block);
+        out.write(header);
+        out.close();
 
 
-        try {
-            state = lazySodium.cryptoSecretStreamInitPush(header, Key.fromPlainString(encKey));
 
-            while((byteRead = dis.read(buffer, 0, BUFFER_SIZE)) != -1){
-                if (byteRead < BUFFER_SIZE)
-                    ciphertext = lazySodium.cryptoSecretStreamPush(state, new String(buffer), SecretStream.TAG_MESSAGE);
-                else
-                    ciphertext = lazySodium.cryptoSecretStreamPush(state, new String(buffer), SecretStream.TAG_FINAL);
-                final String blkid = Crypto.sha1(ciphertext.getBytes());
+        in = new FileInputStream(file);
+        dis = new DataInputStream(in);
+
+        try{
+
+            SecretStream.State state = new SecretStream.State();
+            lazySodium.cryptoSecretStreamInitPush(state, header, encKey.getBytes());
+
+            int byteRead;
+            while ((byteRead = dis.read(buffer, 0, BUFFER_SIZE)) != -1) {
+                byte[] cipher = new byte[BUFFER_SIZE + SecretStream.ABYTES];
+
+                if(!lazySodium.cryptoSecretStreamPush(
+                            state,
+                            cipher,
+                            buffer,
+                            byteRead,
+                            SecretStream.TAG_MESSAGE
+                        )){
+                        throw new SodiumException("Encryption failed bitch!");
+                }
+                final String blkid = Crypto.sha1(cipher);
+                Log.d("DEBUG_CRYPTO_UPLOAD_IF", blkid );
                 File blk = new File(storageManager.getTempDir(), blkid);
                 Block block = new Block(blkid, blk.getAbsolutePath(), blk.length(), 0L);
                 seafBlock.blocks.add(block);
                 out = new FileOutputStream(blk);
-                out.write(ciphertext.getBytes());
-                out.close();
+                DataOutputStream dos = new DataOutputStream(out);
+                dos.write(cipher);
+                dos.close();
             }
+            in.close();
+            return seafBlock;
+
+
+
+
+
+            /*in = new FileInputStream(file);
+            byte[] buffer = new byte[BUFFER_SIZE];
+            int byteRead;
+            byte[] header = lazySodium.randomBytesBuf(SecretStream.HEADERBYTES);
+            System.out.println(new String(header));
+            System.out.println(SecretStream.HEADERBYTES);
+            final String hdid = Crypto.sha1(header);
+            File blk = new File(storageManager.getTempDir(), hdid);
+            Block block = new Block(hdid, blk.getAbsolutePath(), header.length, 0L);
+            seafBlock.blocks.add(block);
+            out = new FileOutputStream(blk);
+            out.write(header);
+            SecretStream.State state = secretStreamLazy.cryptoSecretStreamInitPush(header, Key.fromHexString(encKey));
+
+            while((byteRead = in.read(buffer, 0, BUFFER_SIZE)) != -1){
+                String ciphertext = secretStreamLazy.cryptoSecretStreamPush(state, lazySodium.toHexStr(buffer), SecretStream.TAG_MESSAGE);
+                byte[] cipher_bytes = new byte[BUFFER_SIZE + SecretStream.ABYTES];
+                //System.out.println(lazySodium.cryptoSecretStreamPush(state, cipher_bytes, buffer, buffer.length, SecretStream.TAG_MESSAGE));
+                //System.out.println(lazySodium.toBinary(ciphertext).length + " ciphertext length upload");
+                //final String blkid = Crypto.sha1(lazySodium.toBinary(ciphertext));
+                final String blkid = Crypto.sha1(ciphertext.getBytes());
+                blk = new File(storageManager.getTempDir(), blkid);
+                block = new Block(blkid, blk.getAbsolutePath(),blk.length(), 0L);
+                System.out.println(blk.length() + "   blk.length upload");
+                seafBlock.blocks.add(block);
+                out = new FileOutputStream(blk);
+                DataOutputStream dis = new DataOutputStream(out);
+                dis.write(cipher_bytes);
+                //out.write(lazySodium.toBinary(ciphertext));
+                buffer = new byte[BUFFER_SIZE];
+            }*/
+        }catch (NoSuchAlgorithmException f) {
+            f.printStackTrace();
+            return null;
+        }catch (IOException g){
+            g.printStackTrace();
+            return null;
         }catch(SodiumException e){
             e.printStackTrace();
-        }catch (NoSuchAlgorithmException f){
-            f.printStackTrace();
         }
-        return seafBlock;
-
-
         /*File file = new File(filePath);
         InputStream in = null;
         DataInputStream dis;
@@ -1668,7 +1803,7 @@ public class DataManager {
                     cipher = Crypto.encrypt(buffer, encKey, enkIv);
 
                 final String blkid = Crypto.sha1(cipher);
-                File blk = new File(storageManager.getTempDir(), blkid);
+                File blk = new File(storageManager.getTempDir(), blkid)
                 Block block = new Block(blkid, blk.getAbsolutePath(), blk.length(), 0L);
                 seafBlock.blocks.add(block);
                 out = new FileOutputStream(blk);
@@ -1692,6 +1827,7 @@ public class DataManager {
             if (out != null) out.close();
             if (in != null) in.close();
         }*/
+        return null;
     }
 
     /**
@@ -1716,8 +1852,6 @@ public class DataManager {
 
     private void uploadByBlocksCommon(String repoName, String repoID, String dir, String filePath,
                                       ProgressMonitor monitor, boolean isUpdate, boolean isCopyToLocal) throws NoSuchAlgorithmException, IOException, SeafException {
-
-
         final Pair<String, String> pair = getRepoEncKey(repoID);
         final String encKey = pair.first;
         final String encIv = pair.second;

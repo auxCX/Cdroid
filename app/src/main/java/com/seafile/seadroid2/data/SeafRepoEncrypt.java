@@ -56,6 +56,9 @@ public class SeafRepoEncrypt {
      * The Enc key.
      */
     public String encKey;
+
+    public String salt;
+
     /**
      * The Enc version.
      */
@@ -89,6 +92,7 @@ public class SeafRepoEncrypt {
         repo.name = obj.getString("name");
         repo.root = obj.getString("root");
         repo.encKey = obj.optString("random_key");
+        repo.salt = obj.optString("salt");
         repo.isGroupRepo = obj.getString("type").equals("grepo");
         repo.isPersonalRepo = obj.getString("type").equals("repo");
         repo.isSharedRepo = obj.getString("type").equals("srepo");
@@ -107,8 +111,9 @@ public class SeafRepoEncrypt {
      * @return the boolean
      */
     public boolean canLocalDecrypt() {
+
         return encrypted
-                && encVersion == 2
+                && (encVersion == 2 || encVersion == 3)
                 && !TextUtils.isEmpty(magic)
                 && SettingsManager.instance().isEncryptEnabled();
     }

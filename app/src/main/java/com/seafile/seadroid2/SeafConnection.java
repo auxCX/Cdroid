@@ -13,6 +13,7 @@ import com.github.kevinsawicki.http.HttpRequest;
 import com.github.kevinsawicki.http.HttpRequest.HttpRequestException;
 import com.google.common.collect.Maps;
 import com.seafile.seadroid2.account.Account;
+import com.seafile.seadroid2.crypto.Crypto;
 import com.seafile.seadroid2.data.Block;
 import com.seafile.seadroid2.data.BlockInfoBean;
 import com.seafile.seadroid2.data.DataManager;
@@ -38,6 +39,7 @@ import java.net.URLEncoder;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLHandshakeException;
@@ -903,7 +905,7 @@ public class SeafConnection {
         try {
             HttpRequest req = prepareApiPostRequest("api2/repos/" + repoID + "/", true, null);
 
-            req.form("password", passwd);
+            req.form("password", "password");
             checkRequestResponseStatus(req, HttpURLConnection.HTTP_OK);
             return true;
         } catch (SeafException e) {
@@ -1021,6 +1023,7 @@ public class SeafConnection {
     public String uploadFile(String repoID, String dir, String filePath, ProgressMonitor monitor, boolean update)
             throws SeafException, IOException {
             String url = getUploadLink(repoID, update);
+            System.out.println(url + "   url seafconnenction upload");
             return uploadFileCommon(url, repoID, dir, filePath, monitor, update);
     }
 
@@ -1073,6 +1076,7 @@ public class SeafConnection {
             throw new SeafException(SeafException.OTHER_EXCEPTION, "File not exists");
         }
         MultipartBody.Builder builder = new MultipartBody.Builder();
+        File f = new File("test");
         //set type
         builder.setType(MultipartBody.FORM);
         builder.addFormDataPart("filename", file.getName());
@@ -1114,9 +1118,24 @@ public class SeafConnection {
         }
 
         if (password.length() > 0) {
-            req.form("passwd", password);
-        }
+            //req.form("passwd", "12345678");
+            try {
+                UUID repoId = UUID.randomUUID();
+                String magic = Crypto.generateMagic(repoId.toString(), password, 3);
+                Log.d("DEBUG", "Magic length: " + String.valueOf(magic.length()));
+                Log.d("DEBUG", String.valueOf(Crypto.generateKey(48).length()));
+                req.form("magic", magic);
+                req.form("random_key", Crypto.generateKey(48));
+                req.form("enc_version", "3");
+                req.form("salt", Crypto.generateKey(32));
+                req.form("repo_id", repoId.toString());
+            } catch(Exception e){
+                e.printStackTrace();
+                throw new SeafException(1, "FUCK");
+            }
 
+
+        }
         checkRequestResponseStatus(req, HttpURLConnection.HTTP_OK);
     }
 

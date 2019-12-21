@@ -8,6 +8,7 @@ import com.seafile.seadroid2.SeadroidApplication;
 import com.seafile.seadroid2.SeafException;
 import com.seafile.seadroid2.SettingsManager;
 import com.seafile.seadroid2.account.Account;
+import com.seafile.seadroid2.crypto.Crypto;
 import com.seafile.seadroid2.data.DataManager;
 import com.seafile.seadroid2.data.ProgressMonitor;
 import com.seafile.seadroid2.util.Utils;
@@ -88,7 +89,7 @@ public class UploadTask extends TransferTask {
     @Override
     protected void onProgressUpdate(Long... values) {
         long uploaded = values[0];
-        // Log.d(DEBUG_TAG, "Uploaded " + uploaded);
+        Log.d(DEBUG_TAG, "FUCKFUCKFUCKFUCKFUCKFUCKFUCK");
         this.finished = uploaded;
         uploadStateListener.onFileUploadProgress(taskID);
     }
@@ -110,8 +111,10 @@ public class UploadTask extends TransferTask {
 
             if (byBlock) {
                 dataManager.uploadByBlocks(repoName, repoID, dir, path, monitor, isUpdate, isCopyToLocal);
+                //dataManager.chunkFile(new String(lazySodium.randomBytesBuf(SecretStream.KEYBYTES)), new String(lazySodium.randomBytesBuf(SecretStream.HEADERBYTES)), path );
             } else {
                 dataManager.uploadFile(repoName, repoID, dir, path, monitor, isUpdate, isCopyToLocal);
+                //dataManager.chunkFile(new String(lazySodium.randomBytesBuf(SecretStream.KEYBYTES)), new String(lazySodium.randomBytesBuf(SecretStream.HEADERBYTES)), path );
             }
 
         } catch (SeafException e) {

@@ -25,6 +25,7 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import android.util.Log;
 
 /**
  * The type Set password task.
@@ -65,6 +66,7 @@ class SetPasswordTask extends TaskDialog.Task {
     @Override
     protected void runTask() {
         SeafRepoEncrypt repo = dataManager.getCachedRepoEncryptByID(repoID);
+        System.out.println("HELLO");
         try {
             if (repo == null || !repo.canLocalDecrypt()) {
                 dataManager.setPassword(repoID, password);
@@ -73,8 +75,6 @@ class SetPasswordTask extends TaskDialog.Task {
             }
         } catch (SeafException e) {
             setTaskException(e);
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException | InvalidKeySpecException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException | BadPaddingException | IllegalBlockSizeException e) {
-            e.printStackTrace();
         }
     }
 }
@@ -124,7 +124,7 @@ public class PasswordDialog extends TaskDialog {
     protected View createDialogContentView(LayoutInflater inflater, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_password, null);
         passwordText = (EditText) view.findViewById(R.id.password);
-
+        Log.d(DEBUG_TAG, "FUCKFUCKDIALOG");
         if (savedInstanceState != null) {
             repoName = savedInstanceState.getString(STATE_TASK_REPO_NAME);
             repoID = savedInstanceState.getString(STATE_TASK_REPO_ID);
@@ -228,7 +228,8 @@ public class PasswordDialog extends TaskDialog {
                 return;
 
             try {
-                final Pair<String, String> pair = Crypto.generateKey(password, repo.encKey, repo.encVersion);
+                //System.out.println(repo.salt.substring(0, 15)   + "  repo salt");
+                final Pair<String, String> pair = Crypto.generateKey(password + repo.encKey, repo.salt.substring(0, 16), repo.encVersion);
                 dataManager.setRepoPasswordSet(repoID, pair.first, pair.second);
             } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
                 // TODO notify error

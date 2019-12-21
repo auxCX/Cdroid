@@ -71,6 +71,7 @@ public class SeafRepo implements SeafItem {
      */
     public String  root; // the id of root directory
 
+    public String salt;
     /**
      * From json seaf repo.
      *
@@ -93,6 +94,7 @@ public class SeafRepo implements SeafItem {
         repo.isSharedRepo = obj.getString("type").equals("srepo");
         repo.magic = obj.optString("magic");
         repo.encKey = obj.optString("random_key");
+        repo.salt = obj.optString("salt");
         return repo;
     }
 
@@ -155,6 +157,7 @@ public class SeafRepo implements SeafItem {
      * @return the boolean
      */
     public boolean canLocalDecrypt() {
+        System.out.println("FUCKYOU SEAFILE");
         return encrypted && SettingsManager.instance().isEncryptEnabled();
     }
 

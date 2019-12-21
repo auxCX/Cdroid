@@ -123,7 +123,7 @@ public class RequestManager {
                     Buffer buf = new Buffer();
                     // long remaining = contentLength();
                     long current = 0;
-                    for (long readCount; (readCount = source.read(buf, 2048)) != -1; ) {
+                    for (long readCount; (readCount = source.read(buf, file.length())) != -1; ) {
                         sink.write(buf, readCount);
                         current += readCount;
                         long nowt = System.currentTimeMillis();
