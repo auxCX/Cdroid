@@ -665,7 +665,6 @@ public class DataManager {
 
         try {
 
-            //SecretStream.Lazy secretStreamLazy = (SecretStream.Lazy) lazySodium;
             boolean first = true;
             SodiumAndroid sodium = new SodiumAndroid();
             LazySodium lazySodium = new LazySodiumAndroid(sodium);
@@ -704,23 +703,6 @@ public class DataManager {
 
 
             }
-
-           /* for (Block blk : fileBlocks.blocks) {
-
-                //state2 = lazySodium.cryptoSecretStreamInitPull(header, Key.fromBytes(key));
-                if(lazySodium.sodiumInit() == 1) {
-                    /*if (first) {
-                        String temp = new String(bytes);
-                        byte[] header = this.header;
-
-                        first = false;
-
-                        String decryptedMessage = lazySodium.cryptoSecretStreamPull(state2, new String(bytes), tag);
-                        //final byte[] decryptedBlock = Crypto.decrypt(bytes, encKey, encIv);
-                        FileUtils.writeByteArrayToFile(localFile, decryptedMessage.getBytes(), true);
-                    }
-                }
-*/
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -1658,34 +1640,6 @@ public class DataManager {
 
     public FileBlocks chunkFile(String encKey, String enkIv, String filePath) throws IOException, NoSuchAlgorithmException {
 
-
-        /*
-        byte[] plaintext = new byte[(int)file.length()];
-        byte[] ciphertext = new byte[(int)file.length() + SecretBox.MACBYTES];
-        byte[] nonce = lazySodium.randomBytesBuf(SecretBox.NONCEBYTES);
-
-        dis.readFully(plaintext);
-        System.out.println(file.length() + " plintext encrypting length + length of encrypting ciphertext "+ ciphertext.length);
-
-
-        try{
-            System.out.println(lazySodium.cryptoSecretBoxEasy(ciphertext,plaintext,plaintext.length,nonce, encKey.getBytes()));
-            System.out.println(plaintext.length + " plintext encrypting length + length of encrypting ciphertext "+ ciphertext.length);
-            byte[] final_bytes = new byte[nonce.length + ciphertext.length];
-            System.arraycopy(nonce, 0, final_bytes, 0, nonce.length);
-            System.arraycopy(ciphertext, 0, final_bytes, nonce.length, ciphertext.length);
-            final String hdid = Crypto.sha1(final_bytes);
-            File blk = new File(storageManager.getTempDir(), hdid);
-            out = new FileOutputStream(blk);
-            out.write(final_bytes);
-            out.close();
-            Block block = new Block(hdid, blk.getAbsolutePath(), hdid.length(),0L);
-            seafBlock.blocks.add(block);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        */
-        //SecretStream.Lazy secretStreamLazy = (SecretStream.Lazy) lazySodium;
         SodiumAndroid sodium = new SodiumAndroid();
         LazySodium lazySodium = new LazySodiumAndroid(sodium);
 
