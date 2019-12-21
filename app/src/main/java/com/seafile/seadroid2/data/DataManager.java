@@ -664,10 +664,12 @@ public class DataManager {
         System.out.println(" Encrypted File Download starting!!");
 
         try {
+
             //SecretStream.Lazy secretStreamLazy = (SecretStream.Lazy) lazySodium;
             boolean first = true;
             SodiumAndroid sodium = new SodiumAndroid();
             LazySodium lazySodium = new LazySodiumAndroid(sodium);
+            if(lazySodium.sodiumInit() != 0) throw new SodiumException("libsodium could not be initialized!");
 
             for (Block blk : fileBlocks.blocks) {
 
@@ -1686,6 +1688,7 @@ public class DataManager {
         //SecretStream.Lazy secretStreamLazy = (SecretStream.Lazy) lazySodium;
         SodiumAndroid sodium = new SodiumAndroid();
         LazySodium lazySodium = new LazySodiumAndroid(sodium);
+
         File file = new File(filePath);
         InputStream in = null;
         DataInputStream dis;
@@ -1709,6 +1712,7 @@ public class DataManager {
         dis = new DataInputStream(in);
 
         try{
+            if(lazySodium.sodiumInit() != 0) throw new SodiumException("libsodium could not be initialized!");
 
             SecretStream.State state = new SecretStream.State();
             lazySodium.cryptoSecretStreamInitPush(state, header, encKey.getBytes());
