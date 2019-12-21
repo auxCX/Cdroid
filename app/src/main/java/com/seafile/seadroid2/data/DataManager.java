@@ -1644,9 +1644,9 @@ public class DataManager {
         LazySodium lazySodium = new LazySodiumAndroid(sodium);
 
         File file = new File(filePath);
-        InputStream in = null;
+        InputStream in;
         DataInputStream dis;
-        OutputStream out = null;
+        OutputStream out;
         byte[] buffer = new byte[BUFFER_SIZE];
         FileBlocks seafBlock = new FileBlocks();
         byte[] header = lazySodium.randomBytesBuf(SecretStream.HEADERBYTES);
