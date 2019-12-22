@@ -146,7 +146,7 @@ public final class SettingsManager {
      * Whether the user has enabled client side encryption
      * defaultValue true
      */
-
+    //
     public boolean isEncryptEnabled() {
         return settingsSharedPref.getBoolean(CLIENT_ENC_SWITCH_KEY, true);
     }
