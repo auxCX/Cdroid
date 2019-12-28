@@ -674,11 +674,12 @@ public class DataManager {
             SecretStream.State state = new SecretStream.State();
             lazySodium.cryptoSecretStreamInitPull(state, header, key);
             for (Block blk : fileBlocks.blocks) {
-                Log.d("DEBUg_DECRYPT_STATE", state.toString());
+
                 File tempBlock = new File(storageManager.getTempDir(), blk.blockId);
                 final Pair<String, File> block = sc.getBlock(repoID, fileBlocks, blk.blockId, tempBlock.getPath(), fileSize, monitor);
                 FileInputStream in = new FileInputStream(block.second);
                 DataInputStream dis = new DataInputStream(in);
+
                 if(first){
                     /*byte[] header = new byte[SecretStream.HEADERBYTES];
                     dis.read(header);
@@ -691,13 +692,14 @@ public class DataManager {
                     byte[] message = new byte[(int)block.second.length() - SecretStream.ABYTES];
                     //Log.d("DEBUG_DECRYPT_M_LEN", )
                     System.out.println(message.length);
-                    Log.d("DEBUG_CRYPTO_DOWNLOAD",blk.blockId + "   blockid              -");
                     if(!lazySodium.cryptoSecretStreamPull(state, message, tag, cipher, cipher.length)){
                         throw new SodiumException("File decryption fails!");
                     }
+                    Log.d("DEBUG_UP_DENC_SHA1", Crypto.sha1(message));
                     FileOutputStream out = new FileOutputStream(localFile);
                     DataOutputStream dos = new DataOutputStream(out);
-                    dos.write(message);
+                    out.write(message);
+                    out.close();
                 }
             }
         } catch(Exception e){
@@ -1665,9 +1667,13 @@ public class DataManager {
 
             int byteRead;
             while ((byteRead = dis.read(buffer, 0, BUFFER_SIZE)) != -1) {
+
                 byte[] cipher = new byte[byteRead + SecretStream.ABYTES];
                 System.out.println(byteRead);
-                if(byteRead < BUFFER_SIZE) buffer = Arrays.copyOfRange(buffer, 0, byteRead-1);
+                if(byteRead < BUFFER_SIZE){
+                    buffer = Arrays.copyOfRange(buffer, 0, byteRead);
+                }
+                Log.d("DEBUG_UP_ENC_SHA1", Crypto.sha1(buffer));
                 if(!lazySodium.cryptoSecretStreamPush(
                             state,
                             cipher,
@@ -1678,7 +1684,6 @@ public class DataManager {
                         throw new SodiumException("Encryption failed bitch!");
                 }
                 final String blkid = Crypto.sha1(cipher);
-                Log.d("DEBUG_CRYPTO_UPLOAD_IF", blkid );
                 File blk = new File(storageManager.getTempDir(), blkid);
                 Block block = new Block(blkid, blk.getAbsolutePath(), blk.length(), 0L);
                 seafBlock.blocks.add(block);
