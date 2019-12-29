@@ -110,7 +110,7 @@ public class DataManager {
 
     private static final byte[] header = lazySodium.randomBytesBuf(SecretStream.HEADERBYTES);
 
-    private static final byte[] key = lazySodium.randomBytesBuf(SecretStream.KEYBYTES);
+    private static final byte[] key = lazySodium.randomBytesBuf(SecretStream.KEYBYTES + SecretStream.KEYBYTES);
 
 
 
@@ -690,18 +690,25 @@ public class DataManager {
                     byte[] cipher = new byte[(int)block.second.length()];
                     dis.read(cipher);
                     byte[] message = new byte[(int)block.second.length() - SecretStream.ABYTES];
-                    //Log.d("DEBUG_DECRYPT_M_LEN", )
-                    System.out.println(message.length);
+
                     if(!lazySodium.cryptoSecretStreamPull(state, message, tag, cipher, cipher.length)){
                         throw new SodiumException("File decryption fails!");
                     }
                     Log.d("DEBUG_UP_DENC_SHA1", Crypto.sha1(message));
-                    FileOutputStream out = new FileOutputStream(localFile);
-                    DataOutputStream dos = new DataOutputStream(out);
-                    out.write(message);
-                    out.close();
+                    //FileOutputStream out = new FileOutputStream(localFile);
+                    //DataOutputStream dos = new DataOutputStream(out);
+                    //out.write(message);
+                    //out.close();
+                    FileUtils.writeByteArrayToFile(localFile, cipher, true);
                 }
+
             }
+            FileInputStream in = new FileInputStream(localFile);
+            DataInputStream dis = new DataInputStream(in);
+            byte[] plain_text = new byte[(int) localFile.length()];
+            dis.readFully(plain_text);
+            String shasum_plain_text = Crypto.sha1(plain_text);
+            Log.d("DEBUG_DOWNLOAD_SHA1FULL", shasum_plain_text);
         } catch(Exception e){
             e.printStackTrace();
         }
@@ -1658,8 +1665,18 @@ public class DataManager {
         File file = new File(filePath);
         FileInputStream in = new FileInputStream(file);
         DataInputStream dis = new DataInputStream(in);
+        byte[] plain_text = new byte[(int) file.length()];
+        dis.readFully(plain_text);
+        String shasum_plain_text = Crypto.sha1(plain_text);
+        Log.d("DEBUG_UPLOAD_SHA1FULL", shasum_plain_text);
+
 
         try{
+            dis.close();
+            in.close();
+            file = new File(filePath);
+            in = new FileInputStream(file);
+            dis = new DataInputStream(in);
             //if(lazySodium.sodiumInit() != 0) throw new SodiumException("libsodium could not be initialized!");
 
             SecretStream.State state = new SecretStream.State();
@@ -1669,10 +1686,9 @@ public class DataManager {
             while ((byteRead = dis.read(buffer, 0, BUFFER_SIZE)) != -1) {
 
                 byte[] cipher = new byte[byteRead + SecretStream.ABYTES];
-                System.out.println(byteRead);
-                if(byteRead < BUFFER_SIZE){
-                    buffer = Arrays.copyOfRange(buffer, 0, byteRead);
-                }
+                //if(byteRead < BUFFER_SIZE){
+                buffer = Arrays.copyOfRange(buffer, 0, byteRead);
+                //}
                 Log.d("DEBUG_UP_ENC_SHA1", Crypto.sha1(buffer));
                 if(!lazySodium.cryptoSecretStreamPush(
                             state,

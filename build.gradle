@@ -24,6 +24,7 @@ allprojects {
     repositories {
         google() // https://stackoverflow.com/a/50563942/5923915
         jcenter()
+        mavenCentral()
         maven {
             url  "https://dl.bintray.com/terl/lazysodium-maven"
         }
