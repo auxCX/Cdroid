@@ -687,7 +687,7 @@ public class DataManager {
 
 
                 if(first){
-                    //dis.read(header);
+                    dis.read(header);
                     //
                     //Log.d("DEBUG_CRYPTO_DOWNLOAD", Crypto.sha1(header) + "    header");
                     lazySodium.cryptoSecretStreamInitPull(state, header, lazySodium.bytes(encKey));
@@ -1654,20 +1654,7 @@ public class DataManager {
         byte[] buffer = new byte[BUFFER_SIZE];
         FileBlocks seafBlock = new FileBlocks();
 
-        //byte[] header = lazySodium.randomBytesBuf(SecretStream.HEADERBYTES);
-        final String hdid = Crypto.sha1(header);
 
-        File hd = new File(storageManager.getTempDir(), hdid);
-        FileOutputStream out = new FileOutputStream(hd);
-        Block header_block = new Block(hdid, hd.getAbsolutePath(), hd.length(), 0L);
-        seafBlock.blocks.add(header_block);
-        out.write(header);
-        out.close();
-
-
-        File file = new File(filePath);
-        FileInputStream in = new FileInputStream(file);
-        DataInputStream dis = new DataInputStream(in);
 
 
 
@@ -1676,7 +1663,25 @@ public class DataManager {
                 throw new SodiumException("libsodium could not be initialized!");
 
             SecretStream.State state = new SecretStream.State();
+            byte[] header = new byte[SecretStream.HEADERBYTES];
+
+
             lazySodium.cryptoSecretStreamInitPush(state, header, lazySodium.bytes(encKey));
+            final String hdid = Crypto.sha1(header);
+
+            File hd = new File(storageManager.getTempDir(), hdid);
+            FileOutputStream out = new FileOutputStream(hd);
+            Block header_block = new Block(hdid, hd.getAbsolutePath(), hd.length(), 0L);
+            seafBlock.blocks.add(header_block);
+
+            DataOutputStream dos = new DataOutputStream(out);
+            dos.write(header);
+            dos.close();
+
+
+            File file = new File(filePath);
+            FileInputStream in = new FileInputStream(file);
+            DataInputStream dis = new DataInputStream(in);
 
             int byteRead;
             while ((byteRead = dis.read(buffer, 0, BUFFER_SIZE)) != -1) {
@@ -1700,7 +1705,7 @@ public class DataManager {
                 Block block = new Block(blkid, blk.getAbsolutePath(), blk.length(), 0L);
                 seafBlock.blocks.add(block);
                 out = new FileOutputStream(blk);
-                DataOutputStream dos = new DataOutputStream(out);
+                dos = new DataOutputStream(out);
                 dos.write(cipher);
                 dos.close();
                 buffer = new byte[BUFFER_SIZE];
