@@ -110,7 +110,7 @@ public class DataManager {
 
     private static final byte[] header = lazySodium.randomBytesBuf(SecretStream.HEADERBYTES);
 
-    private static final byte[] key = lazySodium.randomBytesBuf(SecretStream.KEYBYTES);
+    //private static final byte[] key = lazySodium.randomBytesBuf(SecretStream.KEYBYTES);
 
 
 
@@ -668,13 +668,16 @@ public class DataManager {
         try {
 
             boolean first = true;
-            System.out.println( encKey.getBytes().length + "  encKey KeyLength");
-            System.out.println(key.length + "   key keyLength");
-            //if(lazySodium.sodiumInit() != 0) throw new SodiumException("libsodium could not be initialized!");
-            SecretStream.State state = new SecretStream.State();
-            lazySodium.cryptoSecretStreamInitPull(state, header, key);
             FileOutputStream out = new FileOutputStream(localFile);
             DataOutputStream dos = new DataOutputStream(out);
+            //byte[] header = new byte[SecretStream.HEADERBYTES];
+
+            if(lazySodium.sodiumInit() != 1)
+                throw new SodiumException("libsodium could not be initialized!");
+
+            SecretStream.State state = new SecretStream.State();
+
+
             for (Block blk : fileBlocks.blocks) {
 
                 File tempBlock = new File(storageManager.getTempDir(), blk.blockId);
@@ -684,10 +687,10 @@ public class DataManager {
 
 
                 if(first){
-                    /*byte[] header = new byte[SecretStream.HEADERBYTES];
-                    dis.read(header);
-                    Log.d("DEBUG_CRYPTO_DOWNLOAD", Crypto.sha1(header) + "    header");*/
-
+                    //dis.read(header);
+                    //
+                    //Log.d("DEBUG_CRYPTO_DOWNLOAD", Crypto.sha1(header) + "    header");
+                    lazySodium.cryptoSecretStreamInitPull(state, header, lazySodium.bytes(encKey));
                     first = false;
                 }else {
                     byte[] cipher = new byte[(int)block.second.length()];
@@ -699,8 +702,6 @@ public class DataManager {
                     }
                     Log.d("DEBUG_UP_DENC_SHA1", Crypto.sha1(message));
                     dos.write(message);
-                    //out.close();
-                    //FileUtils.writeByteArrayToFile(localFile, cipher, true);
                 }
 
             }
@@ -1655,8 +1656,7 @@ public class DataManager {
 
         //byte[] header = lazySodium.randomBytesBuf(SecretStream.HEADERBYTES);
         final String hdid = Crypto.sha1(header);
-        Log.d("DEBUG_CRYPTO_UPLOAD",new String(header));
-        Log.d("DEBUG_CRYPTO_UPLOAD", hdid + "     header");
+
         File hd = new File(storageManager.getTempDir(), hdid);
         FileOutputStream out = new FileOutputStream(hd);
         Block header_block = new Block(hdid, hd.getAbsolutePath(), hd.length(), 0L);
@@ -1668,22 +1668,15 @@ public class DataManager {
         File file = new File(filePath);
         FileInputStream in = new FileInputStream(file);
         DataInputStream dis = new DataInputStream(in);
-        byte[] plain_text = new byte[(int) file.length()];
-        dis.readFully(plain_text);
-        String shasum_plain_text = Crypto.sha1(plain_text);
-        Log.d("DEBUG_UPLOAD_SHA1FULL", shasum_plain_text);
+
 
 
         try{
-            dis.close();
-            in.close();
-            file = new File(filePath);
-            in = new FileInputStream(file);
-            dis = new DataInputStream(in);
-            //if(lazySodium.sodiumInit() != 0) throw new SodiumException("libsodium could not be initialized!");
+            if(lazySodium.sodiumInit() != 1)
+                throw new SodiumException("libsodium could not be initialized!");
 
             SecretStream.State state = new SecretStream.State();
-            lazySodium.cryptoSecretStreamInitPush(state, header, key);
+            lazySodium.cryptoSecretStreamInitPush(state, header, lazySodium.bytes(encKey));
 
             int byteRead;
             while ((byteRead = dis.read(buffer, 0, BUFFER_SIZE)) != -1) {
