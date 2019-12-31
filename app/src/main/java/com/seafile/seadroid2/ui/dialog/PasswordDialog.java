@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 
+import com.goterl.lazycode.lazysodium.LazySodium;
+import com.goterl.lazycode.lazysodium.LazySodiumAndroid;
+import com.goterl.lazycode.lazysodium.SodiumAndroid;
 import com.seafile.seadroid2.R;
 import com.seafile.seadroid2.SeafException;
 import com.seafile.seadroid2.account.Account;
@@ -227,8 +230,9 @@ public class PasswordDialog extends TaskDialog {
                 return;
 
             try {
-                //System.out.println(repo.salt.substring(0, 15)   + "  repo salt");
-                final Pair<String, String> pair = Crypto.generateKey(password + repo.encKey, repo.salt.substring(0, 16), repo.encVersion);
+                LazySodium lazySodium = new LazySodiumAndroid(new SodiumAndroid());
+                byte[] repo_id = lazySodium.sodiumHex2Bin(repo.id.replace("-",""));
+                final Pair<String, String> pair = Crypto.generateKey(password + repo.encKey, repo_id, repo.encVersion);
                 dataManager.setRepoPasswordSet(repoID, pair.first, pair.second);
             } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
                 // TODO notify error

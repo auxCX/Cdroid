@@ -108,10 +108,6 @@ public class DataManager {
 
     private static final LazySodium lazySodium = new LazySodiumAndroid(new SodiumAndroid());
 
-    private static final byte[] header = lazySodium.randomBytesBuf(SecretStream.HEADERBYTES);
-
-    //private static final byte[] key = lazySodium.randomBytesBuf(SecretStream.KEYBYTES);
-
 
 
 
@@ -670,7 +666,7 @@ public class DataManager {
             boolean first = true;
             FileOutputStream out = new FileOutputStream(localFile);
             DataOutputStream dos = new DataOutputStream(out);
-            //byte[] header = new byte[SecretStream.HEADERBYTES];
+            byte[] header = new byte[SecretStream.HEADERBYTES];
 
             if(lazySodium.sodiumInit() != 1)
                 throw new SodiumException("libsodium could not be initialized!");
@@ -1653,9 +1649,7 @@ public class DataManager {
         Log.d("DEBUG_ENCRYPT_KEY", encKey);
         byte[] buffer = new byte[BUFFER_SIZE];
         FileBlocks seafBlock = new FileBlocks();
-
-
-
+        byte[] filesalt = lazySodium.randomBytesBuf(16);
 
 
         try{

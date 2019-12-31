@@ -144,7 +144,7 @@ public class Crypto {
      * @throws UnsupportedEncodingException the unsupported encoding exception
      * @throws NoSuchAlgorithmException     the no such algorithm exception
      */
-    public static Pair<String, String> generateKey(@NonNull String password, @NonNull String salt, int version) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public static Pair<String, String> generateKey(@NonNull String password, @NonNull byte[] salt, int version) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         //if(lazySodium.sodiumInit() != 0) throw new SodiumException("libsodium could not be initialized!");
         byte[] result = new byte[32];
         lazySodium.cryptoPwHash(
@@ -152,7 +152,7 @@ public class Crypto {
                 result.length,
                 password.getBytes(),
                 password.length(),
-                salt.getBytes(),
+                salt,
                 PwHash.ARGON2ID_OPSLIMIT_INTERACTIVE,
                 new NativeLong((long) PwHash.ARGON2ID_MEMLIMIT_INTERACTIVE),
                 PwHash.Alg.getDefault()
