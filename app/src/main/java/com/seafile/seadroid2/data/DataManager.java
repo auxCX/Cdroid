@@ -714,6 +714,7 @@ public class DataManager {
         } catch(Exception e){
             e.printStackTrace();
         }
+
         Log.d(DEBUG_TAG, String.format("addCachedFile repoName %s, repoId %s, path %s, fileId %s", repoName, repoID, path, fileBlocks.fileID));
         addCachedFile(repoName, repoID, path, fileBlocks.fileID, localFile);
         return localFile;

@@ -8,10 +8,12 @@ import com.seafile.seadroid2.account.Account;
  * The type Auto update info.
  */
 class AutoUpdateInfo {
+     public String updateVersion;
     /**
      * The Account.
      */
     final Account account;
+
     /**
      * The Repo id.
      */
@@ -29,6 +31,8 @@ class AutoUpdateInfo {
      */
     final String localPath;
 
+
+
     /**
      * Instantiates a new Auto update info.
      *
@@ -39,13 +43,14 @@ class AutoUpdateInfo {
      * @param localPath the local path
      */
     public AutoUpdateInfo(Account account, String repoID, String repoName, String parentDir,
-                          String localPath) {
+                          String localPath, String updateVersion) {
 
         this.account = account;
         this.repoID = repoID;
         this.repoName = repoName;
         this.parentDir = parentDir;
         this.localPath = localPath;
+        this.updateVersion = "0";
     }
 
     /**

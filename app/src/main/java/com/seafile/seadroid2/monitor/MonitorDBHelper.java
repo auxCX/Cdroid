@@ -33,6 +33,7 @@ public class MonitorDBHelper extends SQLiteOpenHelper {
      * The constant DATABASE_NAME.
      */
     public static final String DATABASE_NAME = "monitor.db";
+    static int number_update_opr = 0;
 
     // FileCache table
     private static final String AUTO_UPDATE_INFO_TABLE_NAME = "AutoUpdateInfo";
@@ -122,13 +123,14 @@ public class MonitorDBHelper extends SQLiteOpenHelper {
      */
     public void saveAutoUpdateInfo(AutoUpdateInfo info) {
         removeAutoUpdateInfo(info);
-
+        number_update_opr++;
         ContentValues values = new ContentValues();
         values.put(AUTO_UPDATE_INFO_COLUMN_ACCOUNT, info.account.getSignature());
         values.put(AUTO_UPDATE_INFO_COLUMN_REPO_ID, info.repoID);
         values.put(AUTO_UPDATE_INFO_COLUMN_REPO_NAME, info.repoName);
         values.put(AUTO_UPDATE_INFO_COLUMN_PARENT_DIR, info.parentDir);
         values.put(AUTO_UPDATE_INFO_COLUMN_LOCAL_PATH, info.localPath);
+        values.put(AUTO_UPDATE_INFO_COLUMN_VERSION, Integer.valueOf(info.updateVersion)+1);
 
         database.insert(AUTO_UPDATE_INFO_TABLE_NAME, null, values);
     }
@@ -217,7 +219,7 @@ public class MonitorDBHelper extends SQLiteOpenHelper {
         }
 
         Account account = accounts.get(accountSignature);
-        AutoUpdateInfo info = new AutoUpdateInfo(account, repoID, repoName, parentDir, localPath);
+        AutoUpdateInfo info = new AutoUpdateInfo(account, repoID, repoName, parentDir, localPath, "1");
         return info;
     }
 }

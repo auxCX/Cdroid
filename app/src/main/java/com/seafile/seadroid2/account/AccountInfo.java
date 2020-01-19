@@ -38,6 +38,7 @@ public class AccountInfo {
         info.email = accountInfo.getString("email");
         info.name = accountInfo.optString("name");
 
+
         return info;
     }
 

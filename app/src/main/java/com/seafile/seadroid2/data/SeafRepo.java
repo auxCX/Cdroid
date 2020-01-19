@@ -1,5 +1,7 @@
 package com.seafile.seadroid2.data;
 
+import android.support.annotation.NonNull;
+
 import com.seafile.seadroid2.R;
 import com.seafile.seadroid2.SeadroidApplication;
 import com.seafile.seadroid2.SettingsManager;
@@ -9,7 +11,12 @@ import com.seafile.seadroid2.util.Utils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * SeafRepo: A Seafile library
@@ -72,6 +79,8 @@ public class SeafRepo implements SeafItem {
     public String  root; // the id of root directory
 
     public String salt;
+
+    public Map<String, String> updateList;
     /**
      * From json seaf repo.
      *
@@ -95,6 +104,7 @@ public class SeafRepo implements SeafItem {
         repo.magic = obj.optString("magic");
         repo.encKey = obj.optString("random_key");
         repo.salt = obj.optString("salt");
+        repo.updateList = new HashMap<String, String>();
         return repo;
     }
 

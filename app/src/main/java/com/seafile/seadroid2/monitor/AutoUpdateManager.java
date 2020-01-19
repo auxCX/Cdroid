@@ -63,6 +63,7 @@ public class AutoUpdateManager implements Runnable, CachedFileChangedListener {
      */
     @Override
     public void onCachedBlocksChanged(final Account account, final SeafCachedFile cachedFile, final File localFile) {
+
         addTask(account, cachedFile, localFile);
     }
 
@@ -83,14 +84,19 @@ public class AutoUpdateManager implements Runnable, CachedFileChangedListener {
      */
     public void addTask(Account account, SeafCachedFile cachedFile, File localFile) {
         AutoUpdateInfo info = new AutoUpdateInfo(account, cachedFile.repoID, cachedFile.repoName,
-                Utils.getParentPath(cachedFile.path), localFile.getPath());
+                Utils.getParentPath(cachedFile.path), localFile.getPath(), "1");
+        Log.d("AUTOUPDATE_MGR_ADD_TASK", info.localPath);
 
         synchronized (infos) {
             if (infos.contains(info)) {
+                Log.d("AUTOUPDATE_MGR_ADD_TASK", "INFOSALLREADY IN DB");
                 return;
             }
-            infos.add(info);
+
+
         }
+        infos.add(info);
+        Log.d("AUTOUPDATE_MGR_ADD_TASK", new StringBuilder(1).append(info).toString());
 
         db.saveAutoUpdateInfo(info);
 
@@ -110,7 +116,7 @@ public class AutoUpdateManager implements Runnable, CachedFileChangedListener {
                 for (AutoUpdateInfo info : infos) {
                     if (info.canLocalDecrypt()) {
                         txService.addTaskToUploadQue(info.account, info.repoID, info.repoName,
-                                info.parentDir, info.localPath, true, true);
+                                info.parentDir, info.localPath, true, false);
                     } else {
                         txService.addUploadTask(info.account, info.repoID, info.repoName,
                                 info.parentDir, info.localPath, true, true);
@@ -143,7 +149,7 @@ public class AutoUpdateManager implements Runnable, CachedFileChangedListener {
 
     private boolean maxFailureReached(Account account, String repoID, String repoName,
                                       String parentDir, String localPath, int version) {
-        AutoUpdateInfo info = new AutoUpdateInfo(account, repoID, repoName, parentDir, localPath);
+        AutoUpdateInfo info = new AutoUpdateInfo(account, repoID, repoName, parentDir, localPath, "1");
         int failures = uploadFailuresByFile.count(info) + 1;
         if (failures >= MAX_UPLOAD_FAILURES) {
             uploadFailuresByFile.remove(info);
@@ -197,7 +203,7 @@ public class AutoUpdateManager implements Runnable, CachedFileChangedListener {
     }
 
     private boolean removeAutoUpdateInfo(Account account, String repoID, String repoName, String parentDir, String localPath) {
-        final AutoUpdateInfo info = new AutoUpdateInfo(account, repoID, repoName, parentDir, localPath);
+        final AutoUpdateInfo info = new AutoUpdateInfo(account, repoID, repoName, parentDir, localPath , "-1");
         boolean exist = false;
 
         synchronized (infos) {

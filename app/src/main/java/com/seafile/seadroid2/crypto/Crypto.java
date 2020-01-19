@@ -156,6 +156,7 @@ public class Crypto {
                 PwHash.ARGON2ID_OPSLIMIT_INTERACTIVE,
                 new NativeLong((long) PwHash.ARGON2ID_MEMLIMIT_INTERACTIVE),
                 PwHash.Alg.getDefault()
+
         );
         System.out.println(result.length + " generatedKey length in bytes");
         return new Pair<>(lazySodium.toHexStr(result), "iv");

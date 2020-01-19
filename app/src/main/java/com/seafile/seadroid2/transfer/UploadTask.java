@@ -108,7 +108,7 @@ public class UploadTask extends TransferTask {
                 }
             };
 
-            if (byBlock) {
+            if (byBlock || isUpdate) {
                 dataManager.uploadByBlocks(repoName, repoID, dir, path, monitor, isUpdate, isCopyToLocal);
                 //dataManager.chunkFile(new String(lazySodium.randomBytesBuf(SecretStream.KEYBYTES)), new String(lazySodium.randomBytesBuf(SecretStream.HEADERBYTES)), path );
             } else {

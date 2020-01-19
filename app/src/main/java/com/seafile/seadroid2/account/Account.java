@@ -8,6 +8,8 @@ import com.google.common.base.Objects;
 import com.seafile.seadroid2.BuildConfig;
 import com.seafile.seadroid2.util.Utils;
 
+import java.util.ArrayList;
+
 /**
  * The type Account.
  */
@@ -47,6 +49,8 @@ public class Account implements Parcelable, Comparable<Account> {
      * The Session key.
      */
     public String sessionKey;
+
+    private ArrayList<String> updateList;
 
     /**
      * Instantiates a new Account.

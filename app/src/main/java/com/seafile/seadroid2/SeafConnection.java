@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URLEncoder;
 import java.util.LinkedList;
@@ -845,6 +846,9 @@ public class SeafConnection {
         Pair<String, String> ret = getDownloadLink(repoID, path, false);
         String dlink = ret.first;
         String fileID = ret.second;
+        String method = this.getClass().getEnclosingMethod().getName();
+
+        Log.d("SC GETFILE ", " SEAFCONNECTION GET FILE CALLED INSTEAD OF GET FILE BY BLOCKS   CALLED-BY     "  +  method);
 
         if (fileID.equals(cachedFileID)) {
             // cache is valid
