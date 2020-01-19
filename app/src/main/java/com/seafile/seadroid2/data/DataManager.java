@@ -21,6 +21,7 @@ import com.seafile.seadroid2.account.Account;
 import com.seafile.seadroid2.account.AccountInfo;
 import com.seafile.seadroid2.crypto.Crypto;
 import com.seafile.seadroid2.util.Utils;
+import com.sun.jna.Pointer;
 
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
@@ -36,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
@@ -622,6 +624,7 @@ public class DataManager {
         SeafCachedFile cf = getCachedFile(repoName, repoID, path);
         File localFile = getLocalRepoFile(repoName, repoID, path);
         // If local file is up to date, show it
+        Log.d("DEBUG_ENC_DOWNLOAD", " ENTERING GET FILE BY BLOCKS");
         if (cf != null) {
             if (localFile.exists()) {
                 cachedFileID = cf.fileID;
@@ -689,15 +692,14 @@ public class DataManager {
                     second = true;
                     first = false;
                 }else if(second){
-                    if(filekey.compareTo("") == 0){
+                    if(filekey.compareTo("") == 0) {
                         throw new SodiumException("fileKey generation failed!");
                     }
                     dis.read(header);
                     dis.close();
                     lazySodium.cryptoSecretStreamInitPull(state, header, lazySodium.sodiumHex2Bin(filekey));
-
                     second = false;
-                }else if(!second && !first) {
+                }else {
                     byte[] cipher = new byte[(int)block.second.length()];
                     dis.read(cipher);
                     byte[] message = new byte[(int)block.second.length() - SecretStream.ABYTES];
@@ -711,7 +713,9 @@ public class DataManager {
             dos.close();
             out.close();
 
-        } catch(Exception e){
+        } catch(IOException e){
+            e.printStackTrace();
+        } catch(SodiumException e){
             e.printStackTrace();
         }
         Log.d(DEBUG_TAG, String.format("addCachedFile repoName %s, repoId %s, path %s, fileId %s", repoName, repoID, path, fileBlocks.fileID));
@@ -1650,6 +1654,9 @@ public class DataManager {
 
         byte[] buffer = new byte[BUFFER_SIZE];
         FileBlocks seafBlock = new FileBlocks();
+        int byteRead;
+        int totalByteRead = 0;
+        boolean success = true;
 
         try{
             if(lazySodium.sodiumInit() != 1)
@@ -1661,27 +1668,24 @@ public class DataManager {
             Pair<String,String> filekeypair = Crypto.generateKey(encKey,filesalt,3);
             String filekey = filekeypair.first;
 
-
             lazySodium.cryptoSecretStreamInitPush(state, header, lazySodium.sodiumHex2Bin(filekey));
-            final String hdid = Crypto.sha1(header);
-            File hd = new File(storageManager.getTempDir(), hdid);
-
 
             String salt_hash = Crypto.sha1(filesalt);
             File s = new File(storageManager.getTempDir(), salt_hash);
             Block salt_block = new Block(salt_hash,s.getAbsolutePath(),salt_hash.length(), 0L);
             seafBlock.blocks.add(salt_block);
+
             FileOutputStream out = new FileOutputStream(s);
             DataOutputStream dos = new DataOutputStream(out);
             dos.write(filesalt);
             dos.close();
 
+            final String hdid = Crypto.sha1(header);
+            File hd = new File(storageManager.getTempDir(), hdid);
             Block header_block = new Block(hdid, hd.getAbsolutePath(), hd.length(), 0L);
             seafBlock.blocks.add(header_block);
             out = new FileOutputStream(hd);
             dos = new DataOutputStream(out);
-
-
             dos.write(header);
             dos.close();
 
@@ -1689,9 +1693,6 @@ public class DataManager {
             FileInputStream in = new FileInputStream(file);
             DataInputStream dis = new DataInputStream(in);
 
-            int byteRead;
-            int totalByteRead = 0;
-            boolean success = true;
             while ((byteRead = dis.read(buffer, 0, BUFFER_SIZE)) != -1) {
                 totalByteRead += byteRead;
                 byte[] cipher = new byte[byteRead + SecretStream.ABYTES];
@@ -1730,16 +1731,13 @@ public class DataManager {
             }
             in.close();
             return seafBlock;
-        }catch (NoSuchAlgorithmException f) {
-            f.printStackTrace();
-            return null;
+
         }catch (IOException g){
             g.printStackTrace();
             return null;
         }catch(SodiumException e){
             e.printStackTrace();
         }
-
         return null;
     }
 

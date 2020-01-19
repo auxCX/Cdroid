@@ -23,24 +23,24 @@
         android:layout_marginTop="@dimen/margin_normal"
         android:layout_marginBottom="@dimen/margin_normal">
 
-        <android.support.v7.widget.SwitchCompat
+        <!--<android.support.v7.widget.SwitchCompat
             android:id="@+id/new_repo_encrypt_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="false" />
+            android:checked="false" />-->
 
-        <TextView
+        <!--TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="false"
-            android:layout_toRightOf="@id/new_repo_encrypt_switch"
+            android:checked="true"/>-->
+            <!--android:layout_toRightOf="@id/new_repo_encrypt_switch"
             android:layout_toEndOf="@id/new_repo_encrypt_switch"
             android:paddingLeft="3dp"
             android:paddingRight="3dp"
             android:paddingStart="3dp"
             android:paddingEnd="3dp"
             android:textSize="@dimen/dialog_msg_txt_size"
-            android:text="@string/encrypt" />
+            android:text="@string/encrypt" -->/
     </RelativeLayout>
 
     <android.support.v4.widget.NestedScrollView

@@ -267,7 +267,7 @@ public class SettingsFragment extends CustomPreferenceFragment {
             cPrivacyCategory = (PreferenceCategory) findPreference(SettingsManager.PRIVACY_CATEGORY_KEY);
             // Client side encryption for encrypted Library
             clientEncPref = findPreference(SettingsManager.CLIENT_ENC_SWITCH_KEY);
-            clientEncPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            /*clientEncPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     if (newValue instanceof Boolean) {
@@ -279,7 +279,7 @@ public class SettingsFragment extends CustomPreferenceFragment {
 
                     return false;
                 }
-            });
+            });*/
 
             if (serverInfo != null && !serverInfo.canLocalDecrypt()) {
                 cPrivacyCategory.removePreference(clientEncPref);

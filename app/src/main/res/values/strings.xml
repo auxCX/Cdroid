@@ -156,7 +156,7 @@
   <string name="del_draft">Delete draft</string>
   <string name="update_draft">Update draft</string>
   <string name="release_draft">Release draft</string>
-  <string name="encrypt">Encrypt</string>
+  <!--<string name="encrypt">Encrypt</string>-->
   <string name="download_folder">Download folder</string>
   <string name="download_folder_title">Choose your preferred option</string>
   <string-array name="download_folder_options_array">
@@ -517,10 +517,10 @@
   <string name="permission_not_granted">Permission was not granted</string>
   <string name="history_change_title">Modification Details</string>
   <string name="no_more_activities">No more activities</string>
-  <!--client side encryption and decryption-->
+  <!--client side encryption and decryption
   <string name="enc_on">Decrypt data locally</string>
   <string name="enc_off">Decrypt data on server side</string>
-  <string name="enc_title">Encrypted library data decryption mode</string>
+  <string name="enc_title">Encrypted library data decryption mode</string>-->
   <!--clear password-->
   <string name="clear_password_title">Clear library password</string>
   <string name="clear_password_hint">Click to clear password</string>

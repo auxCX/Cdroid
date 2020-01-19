@@ -94,9 +94,12 @@ public class NewRepoDialog extends TaskDialog {
 
     @Override
     protected View createDialogContentView(LayoutInflater inflater, Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.dialog_new_repo, null);
         mRepoNameText = (EditText) view.findViewById(R.id.new_repo_name);
-        mEncryptSwitch = (SwitchCompat) view.findViewById(R.id.new_repo_encrypt_switch);
+        //mEncryptSwitch = (SwitchCompat) view.findViewById(R.id.new_repo_encrypt_switch);
+        mEncryptSwitch.setChecked(true);
+        mEncryptSwitch.setClickable(false);
         mPasswordText = (EditText) view.findViewById(R.id.new_repo_password);
         mPasswordText.setHint(String.format(
             getResources().getString(R.string.passwd_min_len_limit_hint),
@@ -109,8 +112,9 @@ public class NewRepoDialog extends TaskDialog {
             // Restore state
             mAccount = (Account) savedInstanceState.getParcelable(STATE_ACCOUNT);
         }
+        mNestedScrollView.setVisibility(View.VISIBLE);
 
-        mEncryptSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        /*mEncryptSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -123,7 +127,7 @@ public class NewRepoDialog extends TaskDialog {
                     mPasswordConfirmationText.setText("");
                 }
             }
-        });
+        });*/
 
         return view;
     }
@@ -146,19 +150,19 @@ public class NewRepoDialog extends TaskDialog {
             throw new Exception(getResources().getString(R.string.repo_name_empty));
         }
 
-        if (mEncryptSwitch.isChecked()) {
-            if (getPassword().length() == 0) {
-                throw new Exception(getResources().getString(R.string.err_passwd_empty));
-            }
-
-            if (getPassword().length() < getResources().getInteger(R.integer.minimum_password_length)) {
-                throw new Exception(getResources().getString(R.string.err_passwd_too_short));
-            }
-
-            if (!getPassword().equals(getPasswordConfirmation())) {
-                throw new Exception(getResources().getString(R.string.err_passwd_mismatch));
-            }
+        //if (mEncryptSwitch.isChecked()) {
+        if (getPassword().length() == 0) {
+            throw new Exception(getResources().getString(R.string.err_passwd_empty));
         }
+
+        if (getPassword().length() < getResources().getInteger(R.integer.minimum_password_length)) {
+            throw new Exception(getResources().getString(R.string.err_passwd_too_short));
+        }
+
+        if (!getPassword().equals(getPasswordConfirmation())) {
+            throw new Exception(getResources().getString(R.string.err_passwd_mismatch));
+        }
+        //}
     }
 
     @Override
